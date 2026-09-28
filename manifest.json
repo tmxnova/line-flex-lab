@@ -1,0 +1,37 @@
+{
+  "source": "https://developers.line.biz/flex-simulator/",
+  "assets": [
+    {
+      "url": "https://developers.line.biz/flex-simulator/js/vendors-d70a86f7c674ad60319a.js",
+      "file": "assets/vendors-d70a86f7c674ad60319a.js",
+      "status": 200,
+      "bytes": 357778,
+      "sha256": "9244fb0f77abeb312467ed21db1e225baecf331c83d56023b3ea07b714962326",
+      "source_map_references": []
+    },
+    {
+      "url": "https://developers.line.biz/flex-simulator/js/main-9fb4fc7df502b389a151.js",
+      "file": "assets/main-9fb4fc7df502b389a151.js",
+      "status": 200,
+      "bytes": 69194,
+      "sha256": "a58ec4c5a9a85daf5d38e53dc7b3c122cd78d9235ccd00dbff111b77c3cbd55f",
+      "source_map_references": []
+    },
+    {
+      "url": "https://developers.line.biz/flex-simulator/css/vendors-d781b3a50dd44abc0348.css",
+      "file": "assets/vendors-d781b3a50dd44abc0348.css",
+      "status": 200,
+      "bytes": 266506,
+      "sha256": "33178ce4c7b5e17dc39c3f33152a62238f302b4fa95ee7c2b301102ecce9fd0e",
+      "source_map_references": []
+    },
+    {
+      "url": "https://developers.line.biz/flex-simulator/css/main-32222d62d38ecebd43a8.css",
+      "file": "assets/main-32222d62d38ecebd43a8.css",
+      "status": 200,
+      "bytes": 5216,
+      "sha256": "e25cb53b9b3bfcebfea67b98ff30508f4856a3a25f5727dc1d97bfb6844b6f9a",
+      "source_map_references": []
+    }
+  ]
+}
