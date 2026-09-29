@@ -1,0 +1,34 @@
+[
+  {
+    "description": "JSON editor Apply: JSON.parse plus tree import",
+    "file": "extracted/01-json-apply.txt",
+    "source": "readable/main.js",
+    "startLine": 2758,
+    "endLine": 2771,
+    "note": "Verbatim excerpt; enclosing webpack/Vue scope is required to execute."
+  },
+  {
+    "description": "Axios auth and request defaults",
+    "file": "extracted/02-axios-auth.txt",
+    "source": "readable/main.js",
+    "startLine": 4264,
+    "endLine": 4283,
+    "note": "Verbatim excerpt; enclosing webpack/Vue scope is required to execute."
+  },
+  {
+    "description": "Server render / validation response handler",
+    "file": "extracted/03-server-render-validation.txt",
+    "source": "readable/main.js",
+    "startLine": 4456,
+    "endLine": 4486,
+    "note": "Verbatim excerpt; enclosing webpack/Vue scope is required to execute."
+  },
+  {
+    "description": "Map server paths to editor nodes",
+    "file": "extracted/04-error-node-mapping.txt",
+    "source": "readable/main.js",
+    "startLine": 4563,
+    "endLine": 4574,
+    "note": "Verbatim excerpt; enclosing webpack/Vue scope is required to execute."
+  }
+]

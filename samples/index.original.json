@@ -1,0 +1,64 @@
+{
+  "samples": [
+    {
+      "id": "restaurant",
+      "title": "Restaurant",
+      "pictureUrl": "https://developers-resource.landpress.line.me/fx/snapshot/captcha1.png"
+    },
+    {
+      "id": "apparel",
+      "title": "Apparel",
+      "pictureUrl": "https://developers-resource.landpress.line.me/fx/snapshot/captcha13.png"
+    },
+    {
+      "id": "hotel",
+      "title": "Hotel",
+      "pictureUrl": "https://developers-resource.landpress.line.me/fx/snapshot/captcha8.png"
+    },
+    {
+      "id": "localsearch",
+      "title": "Local Search",
+      "pictureUrl": "https://developers-resource.landpress.line.me/fx/snapshot/captcha12.png"
+    },
+    {
+      "id": "realestate",
+      "title": "Real Estate",
+      "pictureUrl": "https://developers-resource.landpress.line.me/fx/snapshot/captcha11.png"
+    },
+    {
+      "id": "social",
+      "title": "Social",
+      "pictureUrl": "https://developers-resource.landpress.line.me/fx/snapshot/captcha10.png"
+    },
+    {
+      "id": "todoapp",
+      "title": "TODO app",
+      "pictureUrl": "https://developers-resource.landpress.line.me/fx/snapshot/captcha7.png"
+    },
+    {
+      "id": "transit",
+      "title": "Transit",
+      "pictureUrl": "https://developers-resource.landpress.line.me/fx/snapshot/captcha9.png"
+    },
+    {
+      "id": "receipt",
+      "title": "Receipt",
+      "pictureUrl": "https://developers-resource.landpress.line.me/fx/snapshot/captcha3.png"
+    },
+    {
+      "id": "shopping",
+      "title": "Shopping",
+      "pictureUrl": "https://developers-resource.landpress.line.me/fx/snapshot/captcha4.png"
+    },
+    {
+      "id": "menu",
+      "title": "Menu",
+      "pictureUrl": "https://developers-resource.landpress.line.me/fx/snapshot/captcha5.png"
+    },
+    {
+      "id": "ticket",
+      "title": "Ticket",
+      "pictureUrl": "https://developers-resource.landpress.line.me/fx/snapshot/captcha6.png"
+    }
+  ]
+}

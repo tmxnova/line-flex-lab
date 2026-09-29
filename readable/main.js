@@ -1,0 +1,4815 @@
+!(function () {
+  "use strict";
+  var e,
+    t = {
+      4996: function (e, t, o) {
+        var n = o(410),
+          s = o(5771),
+          i = o(7161),
+          r = o(2883),
+          a = o(1236),
+          d = o(2622),
+          l = o(5576),
+          c = {
+            name: "InboxPane",
+            data() {
+              return { dismissSecs: 5, dismissCountDown: 0 };
+            },
+            computed: {
+              messages() {
+                return (this.showAlert(), this.$store.getters.getMessages);
+              },
+            },
+            methods: {
+              countDownChanged(e) {
+                this.dismissCountDown = e;
+              },
+              showAlert() {
+                this.dismissCountDown = this.dismissSecs;
+              },
+            },
+          },
+          u = o(4486),
+          p = (0, u.A)(
+            c,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t(
+                "div",
+                { attrs: { id: "inbox-pane" } },
+                [
+                  e._l(e.messages, function (o, n) {
+                    return [
+                      "success" === o.level
+                        ? t(
+                            "b-alert",
+                            {
+                              key: n,
+                              attrs: {
+                                variant: "success",
+                                dismissible: "",
+                                fade: "",
+                                show: e.dismissCountDown,
+                              },
+                              on: { "dismiss-count-down": e.countDownChanged },
+                            },
+                            [
+                              t("i", { staticClass: "fa fa-check" }),
+                              e._v(" "),
+                              o.path
+                                ? t("strong", [
+                                    e._v(
+                                      "\n        " + e._s(o.path) + "\n      ",
+                                    ),
+                                  ])
+                                : e._e(),
+                              e._v(" " + e._s(o.text) + "\n    "),
+                            ],
+                          )
+                        : t(
+                            "b-alert",
+                            {
+                              key: n,
+                              attrs: {
+                                variant: "danger",
+                                dismissible: "",
+                                fade: "",
+                                show: e.dismissCountDown,
+                              },
+                              on: { "dismiss-count-down": e.countDownChanged },
+                            },
+                            [
+                              t("i", {
+                                staticClass: "fa fa-exclamation-triangle",
+                              }),
+                              e._v(" "),
+                              o.path
+                                ? t("strong", [
+                                    e._v(
+                                      "\n        " + e._s(o.path) + "\n      ",
+                                    ),
+                                  ])
+                                : e._e(),
+                              e._v(" " + e._s(o.text) + "\n    "),
+                            ],
+                          ),
+                    ];
+                  }),
+                ],
+                2,
+              );
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports;
+        function m(e) {
+          return Object.assign(
+            {
+              name: "none",
+              canCopy: !0,
+              canMove: !0,
+              isAddable: !1,
+              addableTypes: [],
+              isRemovable: !1,
+              iconClass: null,
+              isDeprecated: !1,
+            },
+            e,
+          );
+        }
+        class h {
+          static of(e) {
+            if (!e) return null;
+            switch (e.type) {
+              case "carousel":
+                return m({
+                  name: "carousel",
+                  canCopy: !1,
+                  canMove: !1,
+                  isAddable: !0,
+                  isRemovable: !1,
+                  addableTypes: ["bubble"],
+                });
+              case "bubble":
+                return (function (e) {
+                  const t = !!e.root;
+                  return m({ name: "bubble", canMove: !t, isRemovable: !t });
+                })(e);
+              case "box":
+                return (function (e) {
+                  let t = [],
+                    o = "box";
+                  switch (e.layout) {
+                    case "baseline":
+                      ((t = ["icon", "text", "filler"]),
+                        (o = "box [baseline]"));
+                      break;
+                    case "horizontal":
+                    case "vertical":
+                      ((t = [
+                        "box",
+                        "image",
+                        "text",
+                        "button",
+                        "filler",
+                        "separator",
+                      ]),
+                        (o = `box [${e.layout}]`));
+                  }
+                  return m({
+                    name: o,
+                    isAddable: !0,
+                    addableTypes: t,
+                    isRemovable: !0,
+                  });
+                })(e);
+              case "header":
+              case "hero":
+              case "body":
+              case "footer":
+                return (function (e) {
+                  return m({
+                    name: e.type,
+                    canCopy: !1,
+                    canMove: !1,
+                    isAddable: 0 === e.children.length,
+                    addableTypes:
+                      "hero" === e.type ? ["box", "image", "video"] : ["box"],
+                  });
+                })(e);
+              case "text":
+                return (function (e) {
+                  let t = "text";
+                  const o = e.children;
+                  if (Array.isArray(o) && o.length > 0) t = "text";
+                  else if (e.text) {
+                    let o = e.text;
+                    (o.length > 10 && (o = o.substring(0, 9) + "..."),
+                      (t = t + " [" + o + "]"));
+                  }
+                  return m({
+                    name: t,
+                    isRemovable: !0,
+                    iconClass: "fa-font",
+                    isAddable: !0,
+                    addableTypes: ["span"],
+                  });
+                })(e);
+              case "span":
+                return (function (e) {
+                  let t = "span";
+                  if (e.text) {
+                    let o = e.text;
+                    (o.length > 10 && (o = o.substring(0, 9) + "..."),
+                      (t = t + " [" + o + "]"));
+                  }
+                  return m({ name: t, isRemovable: !0, iconClass: "fa-font" });
+                })(e);
+              case "image":
+                return m({
+                  name: "image",
+                  isRemovable: !0,
+                  iconClass: "fa-picture-o",
+                });
+              case "video":
+                return (function (e) {
+                  let t = "video";
+                  return (
+                    0 === e.children.length &&
+                      (t += " (Please set altContent by adding child node)"),
+                    m({
+                      name: t,
+                      isRemovable: !0,
+                      isAddable: 0 === e.children.length,
+                      iconClass: "fa-picture-o",
+                      addableTypes: ["box", "image"],
+                    })
+                  );
+                })(e);
+              case "button":
+                return (function (e) {
+                  let t = "button";
+                  return (
+                    e.action &&
+                      e.action.label &&
+                      (t = t + " [" + e.action.label + "]"),
+                    m({
+                      name: t,
+                      isRemovable: !0,
+                      iconClass: "fa-caret-square-o-right",
+                    })
+                  );
+                })(e);
+              case "filler":
+                return m({
+                  name: "filler",
+                  isRemovable: !0,
+                  iconClass: "fa-arrows",
+                });
+              case "icon":
+                return m({
+                  name: "icon",
+                  isRemovable: !0,
+                  iconClass: "fa-smile-o",
+                });
+              case "separator":
+                return m({
+                  name: "separator",
+                  isRemovable: !0,
+                  iconClass: "fa-minus-square-o",
+                });
+              case "spacer":
+                return m({
+                  name: "spacer",
+                  isRemovable: !0,
+                  iconClass: "fa-square-o",
+                  isDeprecated: !0,
+                });
+              default:
+                throw new Error("unexpected type: " + e.type);
+            }
+          }
+        }
+        var f = {
+            name: "TreeItem",
+            props: { node: { type: Object, required: !0 } },
+            data: () => ({ open: !0 }),
+            computed: {
+              nodeExt() {
+                return h.of(this.node);
+              },
+              isFocused() {
+                return this.$store.getters.getMultiSelectedNodeIds.includes(
+                  this.node.id,
+                );
+              },
+              hasError() {
+                return (
+                  this.$store.getters.getErrors.findIndex(
+                    (e) => e.node.id === this.node.id,
+                  ) >= 0
+                );
+              },
+              classObject() {
+                return {
+                  "has-error": this.hasError,
+                  deprecated: this.nodeExt.isDeprecated,
+                };
+              },
+            },
+            methods: {
+              select(e) {
+                this.isFocused
+                  ? this.$store.commit("removeSelectedNodeId", this.node.id)
+                  : (function (e) {
+                        return (
+                          (e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)
+                        );
+                      })(e)
+                    ? this.$store.commit("addSelectedNodeId", this.node.id)
+                    : this.$store.commit("setSelectedNodeId", this.node.id);
+              },
+              enter() {
+                this.$store.commit("setHoveredNodeId", this.node.id);
+              },
+              leave() {
+                this.$store.commit("setHoveredNodeId", "");
+              },
+              toggle() {
+                this.open = !this.open;
+              },
+            },
+          },
+          v = {
+            name: "TreePane",
+            components: {
+              TreeItem: (0, u.A)(
+                f,
+                function () {
+                  var e = this,
+                    t = e._self._c;
+                  return e.node.type
+                    ? t("li", { class: e.classObject }, [
+                        t(
+                          "div",
+                          {
+                            class: { focused: e.isFocused },
+                            on: {
+                              mouseenter: e.enter,
+                              mouseleave: e.leave,
+                              click: e.select,
+                            },
+                          },
+                          [
+                            e.node.children
+                              ? t(
+                                  "span",
+                                  {
+                                    staticClass: "node-icon",
+                                    on: { click: e.toggle },
+                                  },
+                                  [
+                                    e.open
+                                      ? t("i", {
+                                          staticClass: "fa fa-caret-down",
+                                        })
+                                      : t("i", {
+                                          staticClass: "fa fa-caret-right",
+                                        }),
+                                  ],
+                                )
+                              : t("span", { staticClass: "node-icon" }, [
+                                  e.nodeExt.iconClass
+                                    ? t("i", {
+                                        staticClass: "fa",
+                                        class: e.nodeExt.iconClass,
+                                      })
+                                    : e._e(),
+                                ]),
+                            e._v(" "),
+                            t("span", { staticClass: "node-name" }, [
+                              e._v(
+                                "\n      " + e._s(e.nodeExt.name) + "\n    ",
+                              ),
+                            ]),
+                          ],
+                        ),
+                        e._v(" "),
+                        e.node.children
+                          ? t(
+                              "ul",
+                              {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value: e.open,
+                                    expression: "open",
+                                  },
+                                ],
+                              },
+                              e._l(e.node.children, function (e) {
+                                return t("TreeItem", {
+                                  key: e.id,
+                                  attrs: { node: e },
+                                });
+                              }),
+                              1,
+                            )
+                          : e._e(),
+                      ])
+                    : e._e();
+                },
+                [],
+                !1,
+                null,
+                null,
+                null,
+              ).exports,
+            },
+            computed: {
+              tree() {
+                return this.$store.getters.getTree;
+              },
+            },
+          },
+          g = (0, u.A)(
+            v,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "tree-pane" } }, [
+                e.tree
+                  ? t("ul", [t("TreeItem", { attrs: { node: e.tree } })], 1)
+                  : e._e(),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          b = {
+            name: "ViewerPane",
+            computed: {
+              html() {
+                return this.$store.getters.getHtml;
+              },
+              hoveredNodeId() {
+                return this.$store.getters.getHoveredNodeId;
+              },
+              classObject() {
+                const e = this.$store.getters.getContainerType;
+                return {
+                  flexSolo: "bubble" === e,
+                  flexCarousel: "carousel" === e,
+                };
+              },
+            },
+            watch: {
+              html(e) {
+                const t = this.$refs.frame.contentWindow.document;
+                (t.open(),
+                  e &&
+                    (t.write(e),
+                    t.write('<div id="highlight"></div>'),
+                    t.write(
+                      "\n<style>\n  #highlight {\n    position: absolute;\n    z-index: 100;\n    background-color: #999999;\n    opacity: 0.5;\n    display: none;\n  }\n</style>",
+                    )),
+                  t.close());
+              },
+              hoveredNodeId(e) {
+                const t = this.$refs.frame.contentWindow.document,
+                  o = t.getElementById("highlight");
+                if ((o && (o.style.display = "none"), e && o)) {
+                  const n = t.getElementById(e);
+                  if (n) {
+                    const e = n.getBoundingClientRect();
+                    ((o.style.display = "block"),
+                      (o.style.top = e.top + "px"),
+                      (o.style.left = e.left + "px"),
+                      (o.style.width = e.width + "px"),
+                      (o.style.height = e.height + "px"));
+                  }
+                }
+              },
+            },
+          },
+          _ = (0, u.A)(
+            b,
+            function () {
+              var e = this._self._c;
+              return e("div", { attrs: { id: "viewer-pane" } }, [
+                e("iframe", {
+                  ref: "frame",
+                  class: this.classObject,
+                  attrs: {
+                    id: "viewer-frame",
+                    scrolling: "no",
+                    sandbox: "allow-same-origin",
+                  },
+                }),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports;
+        class y {
+          static ofText(e, t, o = {}) {
+            const n = o.newline;
+            return (
+              n && t && (t = t.replace(/\n/g, "\\n")),
+              {
+                type: "text",
+                name: e,
+                value: t,
+                parser: (e) => (n && e ? e.replace(/\\n/g, "\n") : e),
+                ...o,
+              }
+            );
+          }
+          static ofNumber(e, t, o = {}) {
+            return {
+              type: "text",
+              name: e,
+              value: t,
+              parser: (e) => {
+                const t = parseFloat(e);
+                return isNaN(t) ? e : t;
+              },
+              ...o,
+            };
+          }
+          static ofBool(e, t, o = {}) {
+            const n = Object.assign({ options: ["true", "false"] }, o);
+            return {
+              type: "text",
+              name: e,
+              value: "boolean" == typeof t ? Boolean(t).toString() : void 0,
+              parser: (e) => "true" === e,
+              ...n,
+            };
+          }
+        }
+        var x = {
+            name: "FieldView",
+            props: {
+              id: { type: String, required: !0 },
+              field: { type: Object, required: !0 },
+              parent: { type: String, required: !1, default: null },
+              label: { type: String, required: !1, default: null },
+            },
+            computed: {
+              classObject() {
+                return {
+                  "form-control": !0,
+                  "is-invalid": this.messages.length > 0,
+                };
+              },
+              messages() {
+                return this.$store.getters.getErrors
+                  .filter((e) => e.node.id === this.id)
+                  .filter((e) => e.property === this.field.name)
+                  .filter(
+                    (e) => null === this.parent || e.parent === this.parent,
+                  )
+                  .map((e) => e.text);
+              },
+            },
+            methods: {
+              change(e) {
+                if (this.$listeners && this.$listeners.change)
+                  return void this.$emit("change", e);
+                const t = e.target.value;
+                this.update(t);
+              },
+              update(e) {
+                null != e && e.length > 0
+                  ? this.$store.commit("updateProperty", {
+                      id: this.id,
+                      property: this.field.name,
+                      value: this.field.parser(e),
+                      parent: this.parent,
+                    })
+                  : this.$store.commit("deleteProperty", {
+                      id: this.id,
+                      property: this.field.name,
+                      parent: this.parent,
+                    });
+              },
+            },
+          },
+          w = (0, u.A)(
+            x,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { staticClass: "form-group row" }, [
+                t(
+                  "label",
+                  { staticClass: "col-sm-3 col-form-label" },
+                  [
+                    e.label
+                      ? [e._v("\n      " + e._s(e.label) + "\n    ")]
+                      : [e._v("\n      " + e._s(e.field.name) + "\n    ")],
+                  ],
+                  2,
+                ),
+                e._v(" "),
+                t(
+                  "div",
+                  { staticClass: "col-sm-9" },
+                  [
+                    e.field.readonly
+                      ? [
+                          t("input", {
+                            class: e.classObject,
+                            attrs: { type: "text", readonly: "" },
+                            domProps: { value: e.field.value },
+                          }),
+                        ]
+                      : e.field.options &&
+                          e.field.options.length > 0 &&
+                          e.field.combo
+                        ? [
+                            t("div", { staticClass: "input-group" }, [
+                              t("input", {
+                                class: e.classObject,
+                                attrs: { type: "text" },
+                                domProps: { value: e.field.value },
+                                on: { change: e.change },
+                              }),
+                              e._v(" "),
+                              t(
+                                "div",
+                                { staticClass: "input-group-append" },
+                                [
+                                  t(
+                                    "b-dropdown",
+                                    {
+                                      attrs: {
+                                        text: e.field.combo,
+                                        size: "md",
+                                        variant: "outline-secondary",
+                                      },
+                                    },
+                                    e._l(e.field.options, function (o) {
+                                      return t(
+                                        "b-dropdown-item",
+                                        {
+                                          key: o,
+                                          on: {
+                                            click: function (t) {
+                                              return e.update(o);
+                                            },
+                                          },
+                                        },
+                                        [e._v(e._s(o))],
+                                      );
+                                    }),
+                                    1,
+                                  ),
+                                ],
+                                1,
+                              ),
+                            ]),
+                          ]
+                        : e.field.options && e.field.options.length > 0
+                          ? [
+                              t(
+                                "select",
+                                {
+                                  class: e.classObject,
+                                  on: { change: e.change },
+                                },
+                                [
+                                  e.field.required
+                                    ? e._e()
+                                    : t("option", { attrs: { value: "" } }),
+                                  e._v(" "),
+                                  e._l(e.field.options, function (o) {
+                                    return t(
+                                      "option",
+                                      {
+                                        key: o,
+                                        domProps: {
+                                          selected: o === e.field.value,
+                                          value: o,
+                                        },
+                                      },
+                                      [
+                                        e._v(
+                                          "\n          " +
+                                            e._s(o) +
+                                            "\n        ",
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                                ],
+                                2,
+                              ),
+                            ]
+                          : [
+                              t("input", {
+                                class: e.classObject,
+                                attrs: { type: "text" },
+                                domProps: { value: e.field.value },
+                                on: { change: e.change },
+                              }),
+                            ],
+                    e._v(" "),
+                    e.field.memo
+                      ? t("small", { staticClass: "form-text text-muted" }, [
+                          e._v("\n      " + e._s(e.field.memo) + "\n    "),
+                        ])
+                      : e._e(),
+                    e._v(" "),
+                    e._l(e.messages, function (o) {
+                      return t(
+                        "div",
+                        {
+                          key: o,
+                          staticClass: "invalid-feedback",
+                          staticStyle: { display: "block" },
+                        },
+                        [e._v("\n      " + e._s(o) + "\n    ")],
+                      );
+                    }),
+                  ],
+                  2,
+                ),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          C = {
+            name: "BlockForm",
+            components: { FieldView: w },
+            props: { node: Object },
+            computed: {
+              style() {
+                return {
+                  fields: [
+                    y.ofText(
+                      "backgroundColor",
+                      this.node.style.backgroundColor,
+                    ),
+                    y.ofBool("separator", this.node.style.separator),
+                    y.ofText("separatorColor", this.node.style.separatorColor),
+                  ],
+                };
+              },
+            },
+          },
+          k = (0, u.A)(
+            C,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "form-pane" } }, [
+                t("div", [
+                  t("div", [
+                    t("h4", [e._v("\n        Style\n      ")]),
+                    e._v(" "),
+                    t("div", [
+                      t(
+                        "form",
+                        e._l(e.style.fields, function (o) {
+                          return t("FieldView", {
+                            key: o.name,
+                            attrs: { id: e.node.id, field: o, parent: "style" },
+                          });
+                        }),
+                        1,
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          T = {
+            name: "PostbackForm",
+            components: { FieldView: w },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("label", this.node.action.label),
+                  y.ofText("data", this.node.action.data),
+                  y.ofText("displayText", this.node.action.displayText),
+                ];
+              },
+            },
+          },
+          A = (0, u.A)(
+            T,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t(
+                "div",
+                e._l(e.fields, function (o) {
+                  return t("FieldView", {
+                    key: o.name,
+                    attrs: { id: e.node.id, field: o, parent: "action" },
+                  });
+                }),
+                1,
+              );
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          F = {
+            name: "ObjectForm",
+            components: { FieldView: w },
+            props: {
+              id: { type: String, required: !0 },
+              name: { type: String, required: !0 },
+              fields: { type: Array, required: !0 },
+              parent: { type: String, required: !1, default: null },
+              obj: { type: Object, required: !1, default: () => {} },
+            },
+            methods: {
+              label(e) {
+                return this.name + "." + e.name;
+              },
+              change(e, t) {
+                const o = e.target.value,
+                  n = Object.assign({}, this.obj);
+                (null != o && o.length > 0
+                  ? (n[t.name] = t.parser(o))
+                  : delete n[t.name],
+                  0 === Object.keys(n).length
+                    ? this.$store.commit("deleteProperty", {
+                        id: this.id,
+                        property: this.name,
+                        parent: this.parent,
+                      })
+                    : this.$store.commit("updateProperty", {
+                        id: this.id,
+                        property: this.name,
+                        value: n,
+                        parent: this.parent,
+                      }));
+              },
+            },
+          },
+          $ = {
+            name: "AltUriForm",
+            components: {
+              ObjectForm: (0, u.A)(
+                F,
+                function () {
+                  var e = this,
+                    t = e._self._c;
+                  return t(
+                    "div",
+                    e._l(e.fields, function (o) {
+                      return t("FieldView", {
+                        key: o.name,
+                        attrs: { id: e.id, label: e.label(o), field: o },
+                        on: {
+                          change: function (t) {
+                            return e.change(t, o);
+                          },
+                        },
+                      });
+                    }),
+                    1,
+                  );
+                },
+                [],
+                !1,
+                null,
+                null,
+                null,
+              ).exports,
+            },
+            props: {
+              id: String,
+              altUri: { type: Object, required: !1, default: () => ({}) },
+            },
+            computed: {
+              fields() {
+                return [y.ofText("desktop", this.altUri.desktop)];
+              },
+            },
+          },
+          S = {
+            name: "UriForm",
+            components: {
+              FieldView: w,
+              AltUriForm: (0, u.A)(
+                $,
+                function () {
+                  var e = this;
+                  return (0, e._self._c)("ObjectForm", {
+                    attrs: {
+                      id: e.id,
+                      name: "altUri",
+                      fields: e.fields,
+                      obj: e.altUri,
+                      parent: "action",
+                    },
+                  });
+                },
+                [],
+                !1,
+                null,
+                null,
+                null,
+              ).exports,
+            },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("label", this.node.action.label),
+                  y.ofText("uri", this.node.action.uri),
+                ];
+              },
+            },
+          },
+          R = (0, u.A)(
+            S,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t(
+                "div",
+                [
+                  e._l(e.fields, function (o) {
+                    return t("FieldView", {
+                      key: o.name,
+                      attrs: { id: e.node.id, field: o, parent: "action" },
+                    });
+                  }),
+                  e._v(" "),
+                  t("AltUriForm", {
+                    attrs: { id: e.node.id, altUri: e.node.action.altUri },
+                  }),
+                ],
+                2,
+              );
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          I = {
+            name: "MessageForm",
+            components: { FieldView: w },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("label", this.node.action.label),
+                  y.ofText("text", this.node.action.text),
+                ];
+              },
+            },
+          },
+          O = (0, u.A)(
+            I,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t(
+                "div",
+                e._l(e.fields, function (o) {
+                  return t("FieldView", {
+                    key: o.name,
+                    attrs: { id: e.node.id, field: o, parent: "action" },
+                  });
+                }),
+                1,
+              );
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          M = {
+            name: "DateTimePicker",
+            components: { FieldView: w },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("label", this.node.action.label),
+                  y.ofText("data", this.node.action.data),
+                  y.ofText("mode", this.node.action.mode),
+                  y.ofText("initial", this.node.action.initial),
+                  y.ofText("max", this.node.action.max),
+                  y.ofText("min", this.node.action.min),
+                ];
+              },
+            },
+          },
+          N = (0, u.A)(
+            M,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t(
+                "div",
+                e._l(e.fields, function (o) {
+                  return t("FieldView", {
+                    key: o.name,
+                    attrs: { id: e.node.id, field: o, parent: "action" },
+                  });
+                }),
+                1,
+              );
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          B = function e(t) {
+            switch (t) {
+              case "bubble":
+                return { type: "bubble", body: e("box") };
+              case "carousel":
+                return {
+                  type: "carousel",
+                  contents: [e("bubble"), e("bubble")],
+                };
+              case "box":
+                return { type: "box", layout: "vertical", contents: [] };
+              case "text":
+                return { type: "text", text: "hello, world" };
+              case "span":
+                return { type: "span", text: "hello, world" };
+              case "image":
+                return {
+                  type: "image",
+                  url: "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+                };
+              case "video":
+                return {
+                  type: "video",
+                  url: "https_url_to_video",
+                  previewUrl: "https_url_to_preview_image",
+                  altContent: {
+                    type: "image",
+                    size: "full",
+                    aspectRatio: "20:13",
+                    aspectMode: "cover",
+                    url: "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+                  },
+                };
+              case "button":
+                return { type: "button", action: e("uri") };
+              case "filler":
+                return { type: "filler" };
+              case "icon":
+                return {
+                  type: "icon",
+                  url: "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png",
+                };
+              case "separator":
+                return { type: "separator" };
+              case "postback":
+                return { type: "postback", label: "action", data: "hello" };
+              case "message":
+                return { type: "message", label: "action", text: "hello" };
+              case "uri":
+                return {
+                  type: "uri",
+                  label: "action",
+                  uri: "http://linecorp.com/",
+                };
+              case "datetimepicker":
+                return {
+                  type: "datetimepicker",
+                  label: "action",
+                  data: "hello",
+                  mode: "date",
+                };
+              case "linearGradient":
+                return {
+                  type: "linearGradient",
+                  angle: "0deg",
+                  startColor: "#000000",
+                  endColor: "#ffffff",
+                };
+            }
+            return null;
+          },
+          j = {
+            name: "ActionForm",
+            components: {
+              UriActionForm: R,
+              MessageActionForm: O,
+              DateTimePickerActionForm: N,
+              PostbackActionForm: A,
+            },
+            props: { node: Object },
+            data: function () {
+              return {
+                actionTypes: ["postback", "uri", "message", "datetimepicker"],
+              };
+            },
+            computed: {
+              action() {
+                return this.node.action;
+              },
+            },
+            methods: {
+              changeAction: function (e) {
+                const t = e.target.value;
+                null != t && t.length > 0
+                  ? this.$store.commit("updateProperty", {
+                      id: this.node.id,
+                      property: "action",
+                      value: B(t),
+                    })
+                  : this.$store.commit("deleteProperty", {
+                      id: this.node.id,
+                      property: "action",
+                    });
+              },
+            },
+          },
+          P = (0, u.A)(
+            j,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", [
+                t("h4", [e._v("\n    Action\n  ")]),
+                e._v(" "),
+                t("div", [
+                  t(
+                    "form",
+                    [
+                      t("div", { staticClass: "form-group row" }, [
+                        t("label", { staticClass: "col-sm-3 col-form-label" }, [
+                          e._v("\n          type\n        "),
+                        ]),
+                        e._v(" "),
+                        t("div", { staticClass: "col-sm-9" }, [
+                          t(
+                            "select",
+                            {
+                              staticClass: "form-control",
+                              on: { change: e.changeAction },
+                            },
+                            [
+                              t("option", { attrs: { value: "" } }),
+                              e._v(" "),
+                              e._l(e.actionTypes, function (o) {
+                                return t(
+                                  "option",
+                                  {
+                                    key: o,
+                                    domProps: {
+                                      selected: e.action && o === e.action.type,
+                                      value: o,
+                                    },
+                                  },
+                                  [
+                                    e._v(
+                                      "\n              " +
+                                        e._s(o) +
+                                        "\n            ",
+                                    ),
+                                  ],
+                                );
+                              }),
+                            ],
+                            2,
+                          ),
+                        ]),
+                      ]),
+                      e._v(" "),
+                      e.action && "postback" === e.action.type
+                        ? t("PostbackActionForm", { attrs: { node: e.node } })
+                        : e.action && "uri" === e.action.type
+                          ? t("UriActionForm", { attrs: { node: e.node } })
+                          : e.action && "message" === e.action.type
+                            ? t("MessageActionForm", {
+                                attrs: { node: e.node },
+                              })
+                            : e.action && "datetimepicker" === e.action.type
+                              ? t("DateTimePickerActionForm", {
+                                  attrs: { node: e.node },
+                                })
+                              : e._e(),
+                    ],
+                    1,
+                  ),
+                ]),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports;
+        const E = [
+            "xxs",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "xxl",
+            "3xl",
+            "4xl",
+            "5xl",
+          ],
+          G = ["regular", "bold"],
+          U = ["start", "end", "center"],
+          V = ["top", "bottom", "center"],
+          D = ["none", "xs", "sm", "md", "lg", "xl", "xxl"],
+          L = ["none", "xs", "sm", "md", "lg", "xl", "xxl"],
+          q = ["xs", "sm", "md", "lg", "xl", "xxl"],
+          z = [
+            "xxs",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "xxl",
+            "3xl",
+            "4xl",
+            "5xl",
+            "full",
+          ],
+          Q = ["cover", "fit"],
+          H = ["ltr", "rtl"],
+          W = ["giga", "mega", "kilo", "hecto", "deca", "micro", "nano"],
+          Y = ["baseline", "horizontal", "vertical"],
+          J = ["none", "light", "normal", "medium", "semi-bold", "bold"],
+          K = ["none", "xs", "sm", "md", "lg", "xl", "xxl"],
+          X = ["link", "primary", "secondary"],
+          Z = ["sm", "md"],
+          ee = ["relative", "absolute"],
+          te = ["normal", "italic"],
+          oe = ["none", "underline", "line-through"],
+          ne = [
+            "center",
+            "flex-start",
+            "flex-end",
+            "space-between",
+            "space-around",
+            "space-evenly",
+          ],
+          se = ["center", "flex-start", "flex-end"],
+          ie = ["shrink-to-fit"],
+          re = ["none", "xs", "sm", "md", "lg", "xl", "xxl"],
+          ae = ["none", "xs", "sm", "md", "lg", "xl", "xxl"];
+        var de,
+          le = {
+            name: "OffsetForm",
+            components: { FieldView: w },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("offsetTop", this.node.offsetTop, {
+                    combo: "px, % or keywords",
+                    options: re,
+                  }),
+                  y.ofText("offsetBottom", this.node.offsetBottom, {
+                    combo: "px, % or keywords",
+                    options: re,
+                  }),
+                  y.ofText("offsetStart", this.node.offsetStart, {
+                    combo: "px, % or keywords",
+                    options: re,
+                  }),
+                  y.ofText("offsetEnd", this.node.offsetEnd, {
+                    combo: "px, % or keywords",
+                    options: re,
+                  }),
+                ];
+              },
+            },
+          },
+          ce = (0, u.A)(
+            le,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", [
+                t("h4", [e._v("\n    Offset\n  ")]),
+                e._v(" "),
+                t("div", [
+                  t(
+                    "form",
+                    e._l(e.fields, function (o) {
+                      return t("FieldView", {
+                        key: o.name,
+                        attrs: { id: e.node.id, field: o },
+                      });
+                    }),
+                    1,
+                  ),
+                ]),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          ue = {
+            name: "PaddingForm",
+            components: { FieldView: w },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("paddingAll", this.node.paddingAll, {
+                    combo: "px, % or keywords",
+                    options: ae,
+                  }),
+                  y.ofText("paddingTop", this.node.paddingTop, {
+                    combo: "px, % or keywords",
+                    options: ae,
+                  }),
+                  y.ofText("paddingBottom", this.node.paddingBottom, {
+                    combo: "px, % or keywords",
+                    options: ae,
+                  }),
+                  y.ofText("paddingStart", this.node.paddingStart, {
+                    combo: "px, % or keywords",
+                    options: ae,
+                  }),
+                  y.ofText("paddingEnd", this.node.paddingEnd, {
+                    combo: "px, % or keywords",
+                    options: ae,
+                  }),
+                ];
+              },
+            },
+          },
+          pe = (0, u.A)(
+            ue,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", [
+                t("h4", [e._v("\n    Padding\n  ")]),
+                e._v(" "),
+                t("div", [
+                  t(
+                    "form",
+                    e._l(e.fields, function (o) {
+                      return t("FieldView", {
+                        key: o.name,
+                        attrs: { id: e.node.id, field: o },
+                      });
+                    }),
+                    1,
+                  ),
+                ]),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          me = {
+            name: "LinearGradientForm",
+            components: { FieldView: w },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("angle", this.node.background.angle),
+                  y.ofText("startColor", this.node.background.startColor, {
+                    memo: "#RRGGBB or #RRGGBBAA",
+                  }),
+                  y.ofText("endColor", this.node.background.endColor, {
+                    memo: "#RRGGBB or #RRGGBBAA",
+                  }),
+                  y.ofText("centerColor", this.node.background.centerColor, {
+                    memo: "#RRGGBB or #RRGGBBAA",
+                  }),
+                  y.ofText(
+                    "centerPosition",
+                    this.node.background.centerPosition,
+                  ),
+                ];
+              },
+            },
+          },
+          he = {
+            name: "BackgroundForm",
+            components: {
+              LinearGradientForm: (0, u.A)(
+                me,
+                function () {
+                  var e = this,
+                    t = e._self._c;
+                  return t(
+                    "div",
+                    e._l(e.fields, function (o) {
+                      return t("FieldView", {
+                        key: o.name,
+                        attrs: {
+                          id: e.node.id,
+                          field: o,
+                          parent: "background",
+                        },
+                      });
+                    }),
+                    1,
+                  );
+                },
+                [],
+                !1,
+                null,
+                null,
+                null,
+              ).exports,
+            },
+            props: { node: Object },
+            data: function () {
+              return { backgroundTypes: ["linearGradient"] };
+            },
+            computed: {
+              background() {
+                return this.node.background;
+              },
+            },
+            methods: {
+              changeBackground: function (e) {
+                const t = e.target.value;
+                null != t && t.length > 0
+                  ? this.$store.commit("updateProperty", {
+                      id: this.node.id,
+                      property: "background",
+                      value: B(t),
+                    })
+                  : this.$store.commit("deleteProperty", {
+                      id: this.node.id,
+                      property: "background",
+                    });
+              },
+            },
+          },
+          fe = {
+            name: "BoxForm",
+            components: {
+              BackgroundForm: (0, u.A)(
+                he,
+                function () {
+                  var e = this,
+                    t = e._self._c;
+                  return t("div", [
+                    t("h4", [e._v("\n    Background\n  ")]),
+                    e._v(" "),
+                    t("div", [
+                      t(
+                        "form",
+                        [
+                          t("div", { staticClass: "form-group row" }, [
+                            t(
+                              "label",
+                              { staticClass: "col-sm-3 col-form-label" },
+                              [e._v("\n          type\n        ")],
+                            ),
+                            e._v(" "),
+                            t("div", { staticClass: "col-sm-9" }, [
+                              t(
+                                "select",
+                                {
+                                  staticClass: "form-control",
+                                  on: { change: e.changeBackground },
+                                },
+                                [
+                                  t("option", { attrs: { value: "" } }),
+                                  e._v(" "),
+                                  e._l(e.backgroundTypes, function (o) {
+                                    return t(
+                                      "option",
+                                      {
+                                        key: o,
+                                        domProps: {
+                                          selected:
+                                            e.background &&
+                                            o === e.background.type,
+                                          value: o,
+                                        },
+                                      },
+                                      [
+                                        e._v(
+                                          "\n              " +
+                                            e._s(o) +
+                                            "\n            ",
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                                ],
+                                2,
+                              ),
+                            ]),
+                          ]),
+                          e._v(" "),
+                          e.background && "linearGradient" === e.background.type
+                            ? t("LinearGradientForm", {
+                                attrs: { node: e.node },
+                              })
+                            : e._e(),
+                        ],
+                        1,
+                      ),
+                    ]),
+                  ]);
+                },
+                [],
+                !1,
+                null,
+                null,
+                null,
+              ).exports,
+              FieldView: w,
+              ActionForm: P,
+              OffsetForm: ce,
+              PaddingForm: pe,
+            },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("type", "box", { readonly: !0 }),
+                  y.ofText("layout", this.node.layout, {
+                    required: !0,
+                    options: Y,
+                  }),
+                  y.ofText("position", this.node.position, { options: ee }),
+                  y.ofNumber("flex", this.node.flex),
+                  y.ofText("spacing", this.node.spacing, {
+                    combo: "px or keywords",
+                    options: L,
+                  }),
+                  y.ofText("margin", this.node.margin, {
+                    combo: "px or keywords",
+                    options: D,
+                  }),
+                  y.ofText("width", this.node.width),
+                  y.ofText("height", this.node.height),
+                  y.ofText("maxWidth", this.node.maxWidth),
+                  y.ofText("maxHeight", this.node.maxHeight),
+                  y.ofText("backgroundColor", this.node.backgroundColor, {
+                    memo: "#RRGGBB or #RRGGBBAA",
+                  }),
+                  y.ofText("borderWidth", this.node.borderWidth, {
+                    combo: "px or keywords",
+                    options: J,
+                  }),
+                  y.ofText("borderColor", this.node.borderColor, {
+                    memo: "#RRGGBB or #RRGGBBAA",
+                  }),
+                  y.ofText("cornerRadius", this.node.cornerRadius, {
+                    combo: "px or keywords",
+                    options: K,
+                  }),
+                  y.ofText("justifyContent", this.node.justifyContent, {
+                    options: ne,
+                  }),
+                  y.ofText("alignItems", this.node.alignItems, { options: se }),
+                ];
+              },
+            },
+          },
+          ve = (0, u.A)(
+            fe,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "form-pane" } }, [
+                t(
+                  "div",
+                  [
+                    t("div", [
+                      t("h1", [e._v("\n        Box\n      ")]),
+                      e._v(" "),
+                      t("div", [
+                        t(
+                          "form",
+                          e._l(e.fields, function (o) {
+                            return t("FieldView", {
+                              key: o.name,
+                              attrs: { id: e.node.id, field: o },
+                            });
+                          }),
+                          1,
+                        ),
+                      ]),
+                    ]),
+                    e._v(" "),
+                    t("hr"),
+                    e._v(" "),
+                    t("OffsetForm", { attrs: { node: e.node } }),
+                    e._v(" "),
+                    t("hr"),
+                    e._v(" "),
+                    t("PaddingForm", { attrs: { node: e.node } }),
+                    e._v(" "),
+                    t("hr"),
+                    e._v(" "),
+                    t("BackgroundForm", { attrs: { node: e.node } }),
+                    e._v(" "),
+                    t("hr"),
+                    e._v(" "),
+                    t("ActionForm", { attrs: { node: e.node } }),
+                  ],
+                  1,
+                ),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          ge = {
+            name: "TextForm",
+            components: { FieldView: w, ActionForm: P, OffsetForm: ce },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("type", "text", { readonly: !0 }),
+                  y.ofText("text", this.node.text, {
+                    required: !0,
+                    newline: !0,
+                  }),
+                  y.ofNumber("flex", this.node.flex),
+                  y.ofText("margin", this.node.margin, {
+                    combo: "px or keywords",
+                    options: D,
+                  }),
+                  y.ofText("size", this.node.size, {
+                    combo: "px or keywords",
+                    options: E,
+                  }),
+                  y.ofText("lineSpacing", this.node.lineSpacing),
+                  y.ofText("color", this.node.color, {
+                    memo: "#RRGGBB or #RRGGBBAA",
+                  }),
+                  y.ofText("weight", this.node.weight, { options: G }),
+                  y.ofText("style", this.node.style, { options: te }),
+                  y.ofText("decoration", this.node.decoration, { options: oe }),
+                  y.ofText("position", this.node.position, { options: ee }),
+                  y.ofText("align", this.node.align, { options: U }),
+                  y.ofText("gravity", this.node.gravity, { options: V }),
+                  y.ofBool("wrap", this.node.wrap),
+                  y.ofBool("scaling", this.node.scaling),
+                  y.ofNumber("maxLines", this.node.maxLines, {
+                    memo: "`maxLines` is not supported in simulator",
+                  }),
+                  y.ofText("adjustMode", this.node.adjustMode, {
+                    options: ie,
+                    memo: "`adjustMode` is not supported in simulator",
+                  }),
+                ];
+              },
+            },
+          },
+          be = (0, u.A)(
+            ge,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "form-pane" } }, [
+                t(
+                  "div",
+                  [
+                    t("div", [
+                      t("h1", [e._v("\n        Text\n      ")]),
+                      e._v(" "),
+                      t("div", [
+                        t(
+                          "form",
+                          e._l(e.fields, function (o) {
+                            return t("FieldView", {
+                              key: o.name,
+                              attrs: { id: e.node.id, field: o },
+                            });
+                          }),
+                          1,
+                        ),
+                      ]),
+                    ]),
+                    e._v(" "),
+                    t("hr"),
+                    e._v(" "),
+                    t("OffsetForm", { attrs: { node: e.node } }),
+                    e._v(" "),
+                    t("hr"),
+                    e._v(" "),
+                    t("ActionForm", { attrs: { node: e.node } }),
+                  ],
+                  1,
+                ),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          _e = {
+            name: "ImageForm",
+            components: { FieldView: w, ActionForm: P, OffsetForm: ce },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("type", "image", { readonly: !0 }),
+                  y.ofNumber("flex", this.node.flex),
+                  y.ofText("position", this.node.position, { options: ee }),
+                  y.ofText("url", this.node.url, { required: !0 }),
+                  y.ofText("margin", this.node.margin, {
+                    combo: "px or keywords",
+                    options: D,
+                  }),
+                  y.ofText("align", this.node.align, { options: U }),
+                  y.ofText("gravity", this.node.gravity, { options: V }),
+                  y.ofText("size", this.node.size, {
+                    combo: "px, % or keywords",
+                    options: z,
+                  }),
+                  y.ofText("aspectRatio", this.node.aspectRatio),
+                  y.ofText("aspectMode", this.node.aspectMode, { options: Q }),
+                  y.ofText("backgroundColor", this.node.backgroundColor, {
+                    memo: "#RRGGBB or #RRGGBBAA",
+                  }),
+                  y.ofBool("animated", this.node.animated),
+                ];
+              },
+            },
+          },
+          ye = (0, u.A)(
+            _e,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "form-pane" } }, [
+                t(
+                  "div",
+                  [
+                    t("div", [
+                      t("h1", [e._v("\n        Image\n      ")]),
+                      e._v(" "),
+                      t("div", [
+                        t(
+                          "form",
+                          e._l(e.fields, function (o) {
+                            return t("FieldView", {
+                              key: o.name,
+                              attrs: { id: e.node.id, field: o },
+                            });
+                          }),
+                          1,
+                        ),
+                      ]),
+                    ]),
+                    e._v(" "),
+                    t("hr"),
+                    e._v(" "),
+                    t("OffsetForm", { attrs: { node: e.node } }),
+                    e._v(" "),
+                    t("hr"),
+                    e._v(" "),
+                    t("ActionForm", { attrs: { node: e.node } }),
+                  ],
+                  1,
+                ),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          xe = {
+            name: "VideoForm",
+            components: { FieldView: w, ActionForm: P },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("url", this.node.url, { required: !0 }),
+                  y.ofText("previewUrl", this.node.previewUrl, {
+                    required: !0,
+                  }),
+                  y.ofText("aspectRatio", this.node.aspectRatio),
+                ];
+              },
+            },
+          },
+          we = (0, u.A)(
+            xe,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "form-pane" } }, [
+                t(
+                  "div",
+                  [
+                    t("div", [
+                      t("h1", [e._v("\n        Video\n      ")]),
+                      e._v(" "),
+                      t("div", [
+                        e._m(0),
+                        e._v(" "),
+                        t(
+                          "form",
+                          e._l(e.fields, function (o) {
+                            return t("FieldView", {
+                              key: o.name,
+                              attrs: { id: e.node.id, field: o },
+                            });
+                          }),
+                          1,
+                        ),
+                      ]),
+                    ]),
+                    e._v(" "),
+                    t("hr"),
+                    e._v(" "),
+                    t("ActionForm", { attrs: { node: e.node } }),
+                  ],
+                  1,
+                ),
+              ]);
+            },
+            [
+              function () {
+                var e = this,
+                  t = e._self._c;
+                return t("div", { staticClass: "alert alert-warning" }, [
+                  e._v(
+                    "\n          - Video is not shown in simulator. Instead, you'll see alternative content (altContent)\n          ",
+                  ),
+                  t("br"),
+                  e._v(
+                    "\n          - You can configure altContent by adding/removing the child node of the video\n        ",
+                  ),
+                ]);
+              },
+            ],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          Ce = {
+            name: "IconForm",
+            components: { FieldView: w, OffsetForm: ce },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("type", "icon", { readonly: !0 }),
+                  y.ofText("position", this.node.position, { options: ee }),
+                  y.ofText("url", this.node.url, { required: !0 }),
+                  y.ofText("margin", this.node.margin, {
+                    combo: "px or keywords",
+                    options: D,
+                  }),
+                  y.ofText("size", this.node.size, {
+                    combo: "px or keywords",
+                    options: E,
+                  }),
+                  y.ofBool("scaling", this.node.scaling),
+                  y.ofText("aspectRatio", this.node.aspectRatio),
+                ];
+              },
+            },
+          },
+          ke = (0, u.A)(
+            Ce,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "form-pane" } }, [
+                t(
+                  "div",
+                  [
+                    t("div", [
+                      t("h1", [e._v("\n        Icon\n      ")]),
+                      e._v(" "),
+                      t("div", [
+                        t(
+                          "form",
+                          e._l(e.fields, function (o) {
+                            return t("FieldView", {
+                              key: o.name,
+                              attrs: { id: e.node.id, field: o },
+                            });
+                          }),
+                          1,
+                        ),
+                      ]),
+                    ]),
+                    e._v(" "),
+                    t("hr"),
+                    e._v(" "),
+                    t("OffsetForm", { attrs: { node: e.node } }),
+                  ],
+                  1,
+                ),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          Te = {
+            name: "SeparatorForm",
+            components: { FieldView: w },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("type", "separator", { readonly: !0 }),
+                  y.ofText("margin", this.node.margin, {
+                    combo: "px or keywords",
+                    options: D,
+                  }),
+                  y.ofText("color", this.node.color, {
+                    memo: "#RRGGBB or #RRGGBBAA",
+                  }),
+                ];
+              },
+            },
+          },
+          Ae = (0, u.A)(
+            Te,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "form-pane" } }, [
+                t("div", [
+                  t("div", [
+                    t("h1", [e._v("\n        Separator\n      ")]),
+                    e._v(" "),
+                    t("div", [
+                      t(
+                        "form",
+                        e._l(e.fields, function (o) {
+                          return t("FieldView", {
+                            key: o.name,
+                            attrs: { id: e.node.id, field: o },
+                          });
+                        }),
+                        1,
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          Fe = {
+            name: "FillerForm",
+            components: { FieldView: w },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("type", "filler", { readonly: !0 }),
+                  y.ofNumber("flex", this.node.flex),
+                ];
+              },
+            },
+          },
+          $e = (0, u.A)(
+            Fe,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "form-pane" } }, [
+                t("div", [
+                  t("div", [
+                    t("h1", [e._v("\n        Filler\n      ")]),
+                    e._v(" "),
+                    t("div", [
+                      t(
+                        "form",
+                        e._l(e.fields, function (o) {
+                          return t("FieldView", {
+                            key: o.name,
+                            attrs: { id: e.node.id, field: o },
+                          });
+                        }),
+                        1,
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          Se = {
+            name: "SpacerForm",
+            components: { FieldView: w },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("type", "spacer", { readonly: !0 }),
+                  y.ofText("size", this.node.size, { options: q }),
+                ];
+              },
+            },
+          },
+          Re = (0, u.A)(
+            Se,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "form-pane" } }, [
+                t("div", [
+                  t("div", [
+                    t("h1", [e._v("\n        Spacer\n      ")]),
+                    e._v(" "),
+                    t("div", { staticClass: "alert alert-danger" }, [
+                      e._v(
+                        "\n        Spacer is no longer supported and will be removed in a future version.\n      ",
+                      ),
+                    ]),
+                    e._v(" "),
+                    t("div", [
+                      t(
+                        "form",
+                        e._l(e.fields, function (o) {
+                          return t("FieldView", {
+                            key: o.name,
+                            attrs: { id: e.node.id, field: o },
+                          });
+                        }),
+                        1,
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          Ie = {
+            name: "ButtonForm",
+            components: { FieldView: w, ActionForm: P, OffsetForm: ce },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("type", "button", { readonly: !0 }),
+                  y.ofNumber("flex", this.node.flex),
+                  y.ofText("position", this.node.position, { options: ee }),
+                  y.ofText("margin", this.node.margin, {
+                    combo: "px or keywords",
+                    options: D,
+                  }),
+                  y.ofText("height", this.node.height, { options: Z }),
+                  y.ofText("style", this.node.style, { options: X }),
+                  y.ofText("color", this.node.color, {
+                    memo: "#RRGGBB or #RRGGBBAA",
+                  }),
+                  y.ofText("gravity", this.node.gravity, { options: V }),
+                  y.ofBool("scaling", this.node.scaling),
+                  y.ofText("adjustMode", this.node.adjustMode, {
+                    options: ie,
+                    memo: "`adjustMode` is not supported in simulator",
+                  }),
+                ];
+              },
+            },
+          },
+          Oe = (0, u.A)(
+            Ie,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "form-pane" } }, [
+                t(
+                  "div",
+                  [
+                    t("div", [
+                      t("h1", [e._v("\n        Button\n      ")]),
+                      e._v(" "),
+                      t("div", [
+                        t(
+                          "form",
+                          e._l(e.fields, function (o) {
+                            return t("FieldView", {
+                              key: o.name,
+                              attrs: { id: e.node.id, field: o },
+                            });
+                          }),
+                          1,
+                        ),
+                      ]),
+                    ]),
+                    e._v(" "),
+                    t("hr"),
+                    e._v(" "),
+                    t("OffsetForm", { attrs: { node: e.node } }),
+                    e._v(" "),
+                    t("hr"),
+                    e._v(" "),
+                    t("ActionForm", { attrs: { node: e.node } }),
+                  ],
+                  1,
+                ),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          Me = {
+            name: "BubbleForm",
+            components: { FieldView: w, ActionForm: P },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("type", "bubble", { readonly: !0 }),
+                  y.ofText("direction", this.node.direction, { options: H }),
+                  y.ofText("size", this.node.size, { options: W }),
+                ];
+              },
+            },
+          },
+          Ne = (0, u.A)(
+            Me,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "form-pane" } }, [
+                t(
+                  "div",
+                  [
+                    t("div", [
+                      t("h1", [e._v("\n        Bubble\n      ")]),
+                      e._v(" "),
+                      t("div", [
+                        t(
+                          "form",
+                          e._l(e.fields, function (o) {
+                            return t("FieldView", {
+                              key: o.name,
+                              attrs: { id: e.node.id, field: o },
+                            });
+                          }),
+                          1,
+                        ),
+                      ]),
+                    ]),
+                    e._v(" "),
+                    t("ActionForm", { attrs: { node: e.node } }),
+                  ],
+                  1,
+                ),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          Be = {
+            name: "CarouselForm",
+            components: { FieldView: w },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [y.ofText("type", "carousel", { readonly: !0 })];
+              },
+            },
+          },
+          je = (0, u.A)(
+            Be,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "form-pane" } }, [
+                t("div", [
+                  t("div", [
+                    t("h1", [e._v("\n        Carousel\n      ")]),
+                    e._v(" "),
+                    t("div", [
+                      t(
+                        "form",
+                        e._l(e.fields, function (o) {
+                          return t("FieldView", {
+                            key: o.name,
+                            attrs: { id: e.node.id, field: o },
+                          });
+                        }),
+                        1,
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          Pe = {
+            name: "SpanForm",
+            components: { FieldView: w },
+            props: { node: Object },
+            computed: {
+              fields() {
+                return [
+                  y.ofText("type", "span", { readonly: !0 }),
+                  y.ofText("text", this.node.text, {
+                    required: !0,
+                    newline: !0,
+                  }),
+                  y.ofText("size", this.node.size, {
+                    combo: "px or keywords",
+                    options: E,
+                  }),
+                  y.ofText("color", this.node.color, {
+                    memo: "#RRGGBB or #RRGGBBAA",
+                  }),
+                  y.ofText("weight", this.node.weight, { options: G }),
+                  y.ofText("style", this.node.style, { options: te }),
+                  y.ofText("decoration", this.node.decoration, { options: oe }),
+                ];
+              },
+            },
+          },
+          Ee = {
+            name: "FormPane",
+            components: {
+              ButtonForm: Oe,
+              BubbleForm: Ne,
+              CarouselForm: je,
+              BlockForm: k,
+              BoxForm: ve,
+              TextForm: be,
+              ImageForm: ye,
+              VideoForm: we,
+              IconForm: ke,
+              SeparatorForm: Ae,
+              FillerForm: $e,
+              SpacerForm: Re,
+              SpanForm: (0, u.A)(
+                Pe,
+                function () {
+                  var e = this,
+                    t = e._self._c;
+                  return t("div", { attrs: { id: "form-pane" } }, [
+                    t("div", [
+                      t("div", [
+                        t("h1", [e._v("\n        Span\n      ")]),
+                        e._v(" "),
+                        t("div", [
+                          t(
+                            "form",
+                            e._l(e.fields, function (o) {
+                              return t("FieldView", {
+                                key: o.name,
+                                attrs: { id: e.node.id, field: o },
+                              });
+                            }),
+                            1,
+                          ),
+                        ]),
+                      ]),
+                    ]),
+                  ]);
+                },
+                [],
+                !1,
+                null,
+                null,
+                null,
+              ).exports,
+            },
+            computed: {
+              node() {
+                return this.$store.getters.getSelectedNode;
+              },
+            },
+          },
+          Ge = (0, u.A)(
+            Ee,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return (e.node && "header" === e.node.type) ||
+                (e.node && "hero" === e.node.type) ||
+                (e.node && "body" === e.node.type) ||
+                (e.node && "footer" === e.node.type)
+                ? t("BlockForm", { attrs: { node: e.node } })
+                : e.node && "box" === e.node.type
+                  ? t("BoxForm", { attrs: { node: e.node } })
+                  : e.node && "bubble" === e.node.type
+                    ? t("BubbleForm", { attrs: { node: e.node } })
+                    : e.node && "carousel" === e.node.type
+                      ? t("CarouselForm", { attrs: { node: e.node } })
+                      : e.node && "button" === e.node.type
+                        ? t("ButtonForm", { attrs: { node: e.node } })
+                        : e.node && "filler" === e.node.type
+                          ? t("FillerForm", { attrs: { node: e.node } })
+                          : e.node && "icon" === e.node.type
+                            ? t("IconForm", { attrs: { node: e.node } })
+                            : e.node && "image" === e.node.type
+                              ? t("ImageForm", { attrs: { node: e.node } })
+                              : e.node && "video" === e.node.type
+                                ? t("VideoForm", { attrs: { node: e.node } })
+                                : e.node && "separator" === e.node.type
+                                  ? t("SeparatorForm", {
+                                      attrs: { node: e.node },
+                                    })
+                                  : e.node && "spacer" === e.node.type
+                                    ? t("SpacerForm", {
+                                        attrs: { node: e.node },
+                                      })
+                                    : e.node && "text" === e.node.type
+                                      ? t("TextForm", {
+                                          attrs: { node: e.node },
+                                        })
+                                      : e.node && "span" === e.node.type
+                                        ? t("SpanForm", {
+                                            attrs: { node: e.node },
+                                          })
+                                        : t("div", {
+                                            attrs: { id: "form-pane" },
+                                          });
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          Ue = {
+            name: "CommandPane",
+            computed: {
+              id() {
+                return this.$store.getters.getSelectedNodeId;
+              },
+              ids() {
+                return this.$store.getters.getMultiSelectedNodeIds;
+              },
+              singleSelectionMode() {
+                return this.node && 1 === this.ids.length;
+              },
+              node() {
+                const e = this.$store.getters.getSelectedNode;
+                return e ? h.of(e) : null;
+              },
+              nodes() {
+                return this.ids
+                  .map((e) => this.$store.getters.getById(e))
+                  .map((e) => h.of(e));
+              },
+              clipboard() {
+                return this.$store.getters.getClipboard;
+              },
+              isRemovable() {
+                return this.nodes && this.nodes.every((e) => e.isRemovable);
+              },
+              isAddable() {
+                return this.singleSelectionMode && this.node.isAddable;
+              },
+              addableTypes() {
+                return this.node && this.node.addableTypes;
+              },
+              canCopy() {
+                return this.nodes && this.nodes.every((e) => e.canCopy);
+              },
+              canCut() {
+                return (
+                  this.nodes &&
+                  this.nodes.every((e) => e.canCopy && e.isRemovable)
+                );
+              },
+              canPaste() {
+                return (
+                  !!(
+                    this.singleSelectionMode &&
+                    this.node.isAddable &&
+                    this.clipboard.length > 0
+                  ) &&
+                  this.clipboard.every((e) =>
+                    this.node.addableTypes.includes(e.type),
+                  )
+                );
+              },
+              canMove() {
+                return this.singleSelectionMode && this.node.canMove;
+              },
+              canUndo() {
+                return this.$store.getters.canUndo;
+              },
+              canRedo() {
+                return this.$store.getters.canRedo;
+              },
+            },
+            methods: {
+              removeNode() {
+                this.$store.commit("removeNode", { ids: this.ids });
+              },
+              addNode(e) {
+                this.$store.commit("addNode", { parentId: this.id, type: e });
+              },
+              move(e) {
+                this.$store.commit("move", { id: this.id, direction: e });
+              },
+              copy() {
+                this.$store.commit("copyNode", { ids: this.ids });
+              },
+              cut() {
+                this.$store.commit("cutNode", { ids: this.ids });
+              },
+              paste() {
+                this.$store.commit("pasteNode", { parentId: this.id });
+              },
+              undo() {
+                this.$store.commit("undo");
+              },
+              redo() {
+                this.$store.commit("redo");
+              },
+            },
+          },
+          Ve = (0, u.A)(
+            Ue,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t(
+                "div",
+                { attrs: { id: "command-pane" } },
+                [
+                  t(
+                    "b-dropdown",
+                    {
+                      attrs: {
+                        size: "sm",
+                        variant: "primary",
+                        disabled: !e.isAddable,
+                      },
+                    },
+                    [
+                      t("template", { slot: "button-content" }, [
+                        t("i", { staticClass: "fa fa-plus" }),
+                      ]),
+                      e._v(" "),
+                      e._l(e.addableTypes, function (o) {
+                        return t(
+                          "b-dropdown-item",
+                          {
+                            key: o,
+                            on: {
+                              click: function (t) {
+                                return e.addNode(o);
+                              },
+                            },
+                          },
+                          [e._v("\n      " + e._s(o) + "\n    ")],
+                        );
+                      }),
+                    ],
+                    2,
+                  ),
+                  e._v(" "),
+                  t("div", { staticClass: "btn-group btn-group-sm" }, [
+                    t(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", disabled: !e.canMove },
+                        on: {
+                          click: function (t) {
+                            return e.move(-1);
+                          },
+                        },
+                      },
+                      [t("i", { staticClass: "fa fa-chevron-up" })],
+                    ),
+                    e._v(" "),
+                    t(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", disabled: !e.canMove },
+                        on: {
+                          click: function (t) {
+                            return e.move(1);
+                          },
+                        },
+                      },
+                      [t("i", { staticClass: "fa fa-chevron-down" })],
+                    ),
+                  ]),
+                  e._v(" "),
+                  t("div", { staticClass: "btn-group btn-group-sm" }, [
+                    t(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", disabled: !e.canCopy },
+                        on: { click: e.copy },
+                      },
+                      [t("i", { staticClass: "fa fa-files-o" })],
+                    ),
+                    e._v(" "),
+                    t(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", disabled: !e.canCut },
+                        on: { click: e.cut },
+                      },
+                      [t("i", { staticClass: "fa fa-scissors" })],
+                    ),
+                    e._v(" "),
+                    t(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", disabled: !e.canPaste },
+                        on: { click: e.paste },
+                      },
+                      [t("i", { staticClass: "fa fa-clipboard" })],
+                    ),
+                  ]),
+                  e._v(" "),
+                  t("div", { staticClass: "btn-group btn-group-sm" }, [
+                    t(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", disabled: !e.canUndo },
+                        on: { click: e.undo },
+                      },
+                      [t("i", { staticClass: "fa fa-undo" })],
+                    ),
+                    e._v(" "),
+                    t(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", disabled: !e.canRedo },
+                        on: { click: e.redo },
+                      },
+                      [t("i", { staticClass: "fa fa-repeat" })],
+                    ),
+                  ]),
+                  e._v(" "),
+                  t("div", { staticClass: "btn-group btn-group-sm" }, [
+                    t(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { type: "button", disabled: !e.isRemovable },
+                        on: { click: e.removeNode },
+                      },
+                      [t("i", { staticClass: "fa fa-times" })],
+                    ),
+                  ]),
+                ],
+                1,
+              );
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          De = [
+            function () {
+              var e = this._self._c;
+              return e("div", { staticClass: "logo" }, [
+                e("img", { attrs: { src: o(3431) } }),
+              ]);
+            },
+          ],
+          Le = {
+            name: "HeaderPane",
+            data: () => ({ locale: "en" }),
+            computed: {
+              samples() {
+                return this.$store.state.samples;
+              },
+            },
+            methods: {
+              reset(e) {
+                this.$store.dispatch("doReset", e);
+              },
+              doLoadSample(e) {
+                this.$store.dispatch("doLoadSample", e);
+              },
+            },
+            watch: {
+              locale(e) {
+                this.$i18n.locale = e;
+              },
+            },
+          },
+          qe = (0, u.A)(
+            Le,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { staticClass: "header-root" }, [
+                e._m(0),
+                e._v(" "),
+                t(
+                  "a",
+                  { staticClass: "link-to-top-page", attrs: { href: "/" } },
+                  [e._v(e._s(e.$t("back_to_home")))],
+                ),
+                e._v(" "),
+                t("div", { staticClass: "language-selector" }, [
+                  t(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: e.locale,
+                          expression: "locale",
+                        },
+                      ],
+                      on: {
+                        change: function (t) {
+                          var o = Array.prototype.filter
+                            .call(t.target.options, function (e) {
+                              return e.selected;
+                            })
+                            .map(function (e) {
+                              return "_value" in e ? e._value : e.value;
+                            });
+                          e.locale = t.target.multiple ? o : o[0];
+                        },
+                      },
+                    },
+                    [
+                      t("option", { attrs: { value: "ja" } }, [e._v("日本語")]),
+                      e._v(" "),
+                      t("option", { attrs: { value: "en" } }, [
+                        e._v("English"),
+                      ]),
+                    ],
+                  ),
+                ]),
+              ]);
+            },
+            De,
+            !1,
+            null,
+            "2f1611e7",
+            null,
+          ).exports,
+          ze = {
+            name: "EditorModal",
+            props: { value: Boolean },
+            data: () => ({ show: !1, json: "" }),
+            computed: {
+              flex() {
+                return this.$store.getters.getAsFlex;
+              },
+            },
+            watch: {
+              value(e) {
+                this.show = e;
+              },
+              show(e) {
+                this.$emit("input", e);
+              },
+              flex() {
+                this.reset();
+              },
+            },
+            methods: {
+              change(e) {
+                this.json = e;
+              },
+              reset() {
+                const e = this.$store.getters.getAsFlex;
+                this.json = null !== e ? JSON.stringify(e, null, "  ") : "";
+              },
+              copy() {
+                const e = document.querySelector("#editor");
+                (e.select(),
+                  document.execCommand("copy"),
+                  e.blur(),
+                  this.$refs.tooltipCopied.$emit("open"));
+                const t = this.$refs.tooltipCopied;
+                setTimeout(function () {
+                  t.$emit("close");
+                }, 2e3);
+              },
+              close() {
+                ((this.show = !1), this.reset());
+              },
+              apply() {
+                try {
+                  this.$store.commit("initTree", JSON.parse(this.json));
+                } catch (e) {
+                  (this.$store.commit("setMessages", [
+                    { text: "invalid json", level: "error" },
+                  ]),
+                    console.error(e));
+                }
+                this.show = !1;
+              },
+            },
+          },
+          Qe = (0, u.A)(
+            ze,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t(
+                "b-modal",
+                {
+                  attrs: {
+                    size: "lg",
+                    "hide-header": !0,
+                    "no-fade": !0,
+                    title: "JSON",
+                  },
+                  model: {
+                    value: e.show,
+                    callback: function (t) {
+                      e.show = t;
+                    },
+                    expression: "show",
+                  },
+                },
+                [
+                  t("form", [
+                    t("textarea", {
+                      attrs: { id: "editor" },
+                      domProps: { value: e.json },
+                      on: {
+                        change: function (t) {
+                          return e.change(t.target.value);
+                        },
+                      },
+                    }),
+                  ]),
+                  e._v(" "),
+                  t("div", [
+                    t(
+                      "a",
+                      {
+                        staticClass: "link-json-spec",
+                        attrs: {
+                          href: `https://developers.line.biz/${e.$i18n.locale}/docs/messaging-api/using-flex-messages/`,
+                          target: "_blank",
+                        },
+                      },
+                      [e._v(e._s(e.$t("json_spec")) + "\n    ")],
+                    ),
+                  ]),
+                  e._v(" "),
+                  t(
+                    "div",
+                    { attrs: { slot: "modal-footer" }, slot: "modal-footer" },
+                    [
+                      t(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline-primary",
+                          attrs: { type: "button", id: "copyButton" },
+                          on: { click: e.copy },
+                        },
+                        [e._v("\n      " + e._s(e.$t("copy")) + "\n    ")],
+                      ),
+                      e._v(" "),
+                      t(
+                        "b-tooltip",
+                        {
+                          ref: "tooltipCopied",
+                          attrs: { target: "copyButton", triggers: "" },
+                        },
+                        [t("strong", [e._v(e._s(e.$t("copied")))])],
+                      ),
+                      e._v(" "),
+                      t(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary",
+                          attrs: { type: "button" },
+                          on: { click: e.close },
+                        },
+                        [e._v("\n      " + e._s(e.$t("close")) + "\n    ")],
+                      ),
+                      e._v(" "),
+                      t(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button" },
+                          on: { click: e.apply },
+                        },
+                        [e._v("\n      " + e._s(e.$t("apply")) + "\n    ")],
+                      ),
+                    ],
+                    1,
+                  ),
+                ],
+              );
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          He = {
+            name: "ShowcaseModal",
+            props: { value: Boolean },
+            data: () => ({ show: !1, selectedSampleId: "" }),
+            computed: {
+              samples() {
+                return this.$store.state.samples;
+              },
+            },
+            watch: {
+              value(e) {
+                this.show = e;
+              },
+              show(e) {
+                this.$emit("input", e);
+              },
+            },
+            methods: {
+              selectSample(e) {
+                this.selectedSampleId = e.currentTarget.dataset.sampleId;
+              },
+              create() {
+                ((this.show = !1), this.doLoadSample(this.selectedSampleId));
+              },
+              close() {
+                this.show = !1;
+              },
+              doLoadSample(e) {
+                this.$store.dispatch("doLoadSample", e);
+              },
+            },
+          },
+          We = (0, u.A)(
+            He,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t(
+                "b-modal",
+                {
+                  attrs: {
+                    size: "lg",
+                    "hide-header": !0,
+                    "no-fade": !0,
+                    centered: !0,
+                    title: "Showcase",
+                  },
+                  model: {
+                    value: e.show,
+                    callback: function (t) {
+                      e.show = t;
+                    },
+                    expression: "show",
+                  },
+                },
+                [
+                  t("div", { staticClass: "modal-body" }, [
+                    t("p", { staticClass: "has-text-bold" }, [
+                      e._v("サンプルメッセージから作成"),
+                    ]),
+                    e._v(" "),
+                    t(
+                      "div",
+                      { staticClass: "samples" },
+                      [
+                        t(
+                          "b-container",
+                          [
+                            t(
+                              "b-row",
+                              e._l(e.samples, function (o) {
+                                return t(
+                                  "b-col",
+                                  {
+                                    key: o.id,
+                                    staticClass: "sample-item",
+                                    class: {
+                                      selected: e.selectedSampleId === o.id,
+                                    },
+                                    attrs: {
+                                      cols: "6",
+                                      sm: "6",
+                                      md: "6",
+                                      lg: "4",
+                                      "data-sample-id": o.id,
+                                    },
+                                    on: {
+                                      click: function (t) {
+                                        return e.selectSample(t);
+                                      },
+                                    },
+                                  },
+                                  [
+                                    t(
+                                      "div",
+                                      { staticClass: "thumb" },
+                                      [
+                                        t("b-img", {
+                                          attrs: {
+                                            src: o.pictureUrl,
+                                            fluid: "",
+                                          },
+                                        }),
+                                      ],
+                                      1,
+                                    ),
+                                    e._v(" "),
+                                    t("div", { staticClass: "label" }, [
+                                      e._v(
+                                        "\n              " +
+                                          e._s(o.title) +
+                                          "\n            ",
+                                      ),
+                                    ]),
+                                  ],
+                                );
+                              }),
+                              1,
+                            ),
+                          ],
+                          1,
+                        ),
+                      ],
+                      1,
+                    ),
+                  ]),
+                  e._v(" "),
+                  t(
+                    "div",
+                    { attrs: { slot: "modal-footer" }, slot: "modal-footer" },
+                    [
+                      t(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary",
+                          attrs: { type: "button" },
+                          on: { click: e.close },
+                        },
+                        [e._v("\n      " + e._s(e.$t("cancel")) + "\n    ")],
+                      ),
+                      e._v(" "),
+                      t(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function (t) {
+                              return e.create();
+                            },
+                          },
+                        },
+                        [e._v("\n      " + e._s(e.$t("create")) + "\n    ")],
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
+            [],
+            !1,
+            null,
+            "597ba6dc",
+            null,
+          ).exports,
+          Ye = o(4150),
+          Je = {
+            API_ROOT: "/api",
+            ...((de = {
+              real: {
+                LOGIN_ENDPOINT: "https://account.line.biz/login",
+                LIFF_URL: "https://liff.line.me/1655988307-x8AN9nro",
+                OA_QR: "https://qr-official.line.me/sid/L/574jeoaw.png",
+              },
+              rc: {
+                LOGIN_ENDPOINT: "https://account.line-rc.biz/login",
+                LIFF_URL: "https://liff.line-rc.me/1655988307-KGrzg50p",
+                OA_QR: "https://qr-official.line.me/sid/L/574jeoaw.png",
+              },
+              beta: {
+                LOGIN_ENDPOINT: "https://account.line-beta.biz/login",
+                LIFF_URL: "https://liff.line-beta.me/1651823217-A0baOb1q",
+                OA_QR: "https://qr-official.line-beta.me/sid/L/082dfuri.png",
+              },
+              local: {
+                LOGIN_ENDPOINT: "https://account.line-beta.biz/login",
+                LIFF_URL: "https://liff.line-beta.me/1651826828-8lQZdOq5",
+                OA_QR: "https://qr-official.line-beta.me/sid/L/839cpqir.png",
+              },
+            }),
+            "developers.line.biz" === window.location.hostname
+              ? de.real
+              : window.location.hostname.match(/[.]line-rc[.]biz$/)
+                ? de.rc
+                : window.location.hostname.match(/[.]line-beta[.]biz$/)
+                  ? de.beta
+                  : de.local),
+            get LIFF_ID() {
+              return this.LIFF_URL.match(/[^/]+$/)[0];
+            },
+          },
+          Ke = o(4568),
+          Xe = o(4470),
+          Ze = o.n(Xe),
+          et = {
+            name: "RegisterDestinationModal",
+            props: { value: Boolean },
+            data: () => ({
+              show: !1,
+              step: 0,
+              verificationCode: "",
+              qrCode: "",
+              validUntil: null,
+              targetName: "",
+              targetPictureUrl: "",
+              error: "",
+            }),
+            filters: {
+              formatValidUntil: function (e) {
+                return Ze()("%Y-%m-%d %H:%M", new Date(e));
+              },
+            },
+            computed: {
+              registeredDestination() {
+                return this.$store.getters.getMessageDestinations.filter(
+                  (e) => e.validUntil,
+                )[0];
+              },
+            },
+            watch: {
+              value(e) {
+                this.show = e;
+              },
+              show(e) {
+                (console.log("register destination modal show"),
+                  (this.step = 0),
+                  (this.verificationCode = ""),
+                  (this.error = ""),
+                  this.showQrCode(),
+                  this.$emit("input", e));
+              },
+            },
+            methods: {
+              close() {
+                this.show = !1;
+              },
+              async next() {
+                try {
+                  const e = await Ke.A.post(
+                    `${Je.API_ROOT}/v2/fx/send/destinations/verify`,
+                    { token: this.token, code: this.verificationCode },
+                  );
+                  (console.log(e),
+                    (this.targetName = e.data.name),
+                    (this.targetPictureUrl = e.data.pictureUrl),
+                    (this.step = 1));
+                } catch (e) {
+                  ((this.error = "failed_to_verify_code"),
+                    (this.verificationCode = ""));
+                }
+              },
+              async register() {
+                console.log(this.verificationCode);
+                const e = await Ke.A.post(
+                  `${Je.API_ROOT}/v2/fx/send/destinations`,
+                  { token: this.token, code: this.verificationCode },
+                );
+                if ((console.log(e), 200 !== e.status))
+                  return (
+                    alert("failed to verify"),
+                    void (this.verificationCode = "")
+                  );
+                (this.$store.dispatch("doGetMessageDestinations"),
+                  this.close());
+              },
+              async showQrCode() {
+                const e = await Ke.A.post(
+                  `${Je.API_ROOT}/v2/fx/send/issueInviteChallenge`,
+                );
+                (console.log(e),
+                  (this.token = e.data.token),
+                  (this.validUntil = e.data.validUntil));
+                const t = Je.LIFF_URL + "?token=" + this.token;
+                (console.log(t), (this.qrCode = await Ye.toDataURL(t)));
+              },
+            },
+          },
+          tt = {
+            name: "SendMessageModal",
+            components: {
+              RegisterDestinationModal: (0, u.A)(
+                et,
+                function () {
+                  var e = this,
+                    t = e._self._c;
+                  return t(
+                    "b-modal",
+                    {
+                      attrs: {
+                        size: "md",
+                        "hide-header": !1,
+                        "no-fade": !0,
+                        centered: !0,
+                        title: e.$t("register_destination"),
+                      },
+                      on: {
+                        hidden: function (t) {
+                          return e.$emit("close");
+                        },
+                      },
+                      model: {
+                        value: e.show,
+                        callback: function (t) {
+                          e.show = t;
+                        },
+                        expression: "show",
+                      },
+                    },
+                    [
+                      0 == e.step
+                        ? t("div", [
+                            t("div", { staticClass: "modal-body" }, [
+                              t("p", [
+                                e._v(e._s(e.$t("register_destination.line1"))),
+                              ]),
+                              e._v(" "),
+                              t(
+                                "div",
+                                { staticStyle: { "text-align": "center" } },
+                                [
+                                  t("img", {
+                                    attrs: {
+                                      src: e.qrCode,
+                                      width: "128",
+                                      height: "128",
+                                    },
+                                  }),
+                                  e._v(" "),
+                                  t(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "figure-caption text-black-50",
+                                    },
+                                    [
+                                      e._v(
+                                        e._s(e.$t("valid_until")) +
+                                          ": " +
+                                          e._s(
+                                            e._f("formatValidUntil")(
+                                              e.validUntil,
+                                            ),
+                                          ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              e._v(" "),
+                              t("p", [
+                                e._v(e._s(e.$t("register_destination.line2"))),
+                              ]),
+                              e._v(" "),
+                              t("p", [e._v(e._s(e.$t("validation_code")))]),
+                              e._v(" "),
+                              t("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: e.verificationCode,
+                                    expression: "verificationCode",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text" },
+                                domProps: { value: e.verificationCode },
+                                on: {
+                                  input: function (t) {
+                                    t.target.composing ||
+                                      (e.verificationCode = t.target.value);
+                                  },
+                                },
+                              }),
+                              e._v(" "),
+                              e.error
+                                ? t(
+                                    "div",
+                                    {
+                                      staticClass: "alert alert-danger",
+                                      staticStyle: { "margin-top": "1em" },
+                                      attrs: { role: "alert" },
+                                    },
+                                    [
+                                      e._v(
+                                        "\n        " +
+                                          e._s(e.$t(e.error)) +
+                                          "\n      ",
+                                      ),
+                                    ],
+                                  )
+                                : e._e(),
+                            ]),
+                            e._v(" "),
+                            t("div", { staticClass: "buttons" }, [
+                              t(
+                                "button",
+                                {
+                                  staticClass: "btn btn-secondary",
+                                  attrs: { type: "button" },
+                                  on: { click: e.close },
+                                },
+                                [
+                                  e._v(
+                                    "\n        " +
+                                      e._s(e.$t("close")) +
+                                      "\n      ",
+                                  ),
+                                ],
+                              ),
+                              e._v(" "),
+                              t(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: {
+                                    type: "button",
+                                    disabled: !e.verificationCode,
+                                  },
+                                  on: { click: e.next },
+                                },
+                                [
+                                  e._v(
+                                    "\n        " +
+                                      e._s(e.$t("next")) +
+                                      "\n      ",
+                                  ),
+                                ],
+                              ),
+                            ]),
+                          ])
+                        : e._e(),
+                      e._v(" "),
+                      1 == e.step
+                        ? t("div", [
+                            t("div", { staticClass: "modal-body" }, [
+                              t("p", [
+                                e._v(e._s(e.$t("register_destination.line3"))),
+                              ]),
+                              e._v(" "),
+                              t(
+                                "div",
+                                {
+                                  staticStyle: {
+                                    "text-align": "center",
+                                    padding: "1em",
+                                  },
+                                },
+                                [
+                                  t("img", {
+                                    staticClass: "user-picture",
+                                    attrs: {
+                                      src: e.targetPictureUrl,
+                                      width: "64",
+                                      height: "64",
+                                    },
+                                  }),
+                                  e._v(" "),
+                                  t("span", { staticClass: "user-name" }, [
+                                    e._v(e._s(e.targetName)),
+                                  ]),
+                                ],
+                              ),
+                              e._v(" "),
+                              e.registeredDestination
+                                ? t(
+                                    "div",
+                                    {
+                                      staticClass: "alert alert-warning",
+                                      attrs: { role: "alert" },
+                                    },
+                                    [
+                                      t("p", [
+                                        e._v(
+                                          e._s(
+                                            e.$t(
+                                              "register_destination.line_unregister",
+                                            ),
+                                          ),
+                                        ),
+                                      ]),
+                                      e._v(" "),
+                                      t("img", {
+                                        staticClass: "user-picture",
+                                        attrs: {
+                                          src: e.registeredDestination
+                                            .pictureUrl,
+                                          width: "64",
+                                          height: "64",
+                                        },
+                                      }),
+                                      e._v(" "),
+                                      t("span", { staticClass: "user-name" }, [
+                                        e._v(
+                                          e._s(e.registeredDestination.name),
+                                        ),
+                                      ]),
+                                    ],
+                                  )
+                                : e._e(),
+                            ]),
+                            e._v(" "),
+                            t("div", { staticClass: "buttons" }, [
+                              t(
+                                "button",
+                                {
+                                  staticClass: "btn btn-secondary",
+                                  attrs: { type: "button" },
+                                  on: { click: e.close },
+                                },
+                                [
+                                  e._v(
+                                    "\n        " +
+                                      e._s(e.$t("close")) +
+                                      "\n      ",
+                                  ),
+                                ],
+                              ),
+                              e._v(" "),
+                              t(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: { type: "button" },
+                                  on: { click: e.register },
+                                },
+                                [
+                                  e._v(
+                                    "\n        " +
+                                      e._s(e.$t("register_destination")) +
+                                      "\n      ",
+                                  ),
+                                ],
+                              ),
+                            ]),
+                          ])
+                        : e._e(),
+                      e._v(" "),
+                      t("div", {
+                        attrs: { slot: "modal-footer" },
+                        slot: "modal-footer",
+                      }),
+                    ],
+                  );
+                },
+                [],
+                !1,
+                null,
+                "71fce120",
+                null,
+              ).exports,
+            },
+            props: { value: Boolean },
+            data: () => ({
+              show: !1,
+              showRegisterDestinationModal: !1,
+              selected: "",
+              showOAQR: !1,
+              OA_QR: Je.OA_QR,
+            }),
+            filters: {
+              formatValidUntil: function (e) {
+                return Ze()("%Y-%m-%d %H:%M", new Date(e));
+              },
+            },
+            computed: {
+              destinations() {
+                return (
+                  console.log(
+                    "computed",
+                    this.$store.getters.getMessageDestinations,
+                  ),
+                  this.$store.getters.getMessageDestinations
+                );
+              },
+            },
+            watch: {
+              value(e) {
+                this.show = e;
+              },
+              show(e) {
+                (this.$emit("input", e),
+                  e && this.$store.dispatch("doGetMessageDestinations"));
+              },
+              flex() {},
+            },
+            mounted: function () {
+              (console.log("mounted"),
+                this.$refs.registerDestinationModal.$on("close", () => {
+                  this.show = !0;
+                }));
+            },
+            methods: {
+              close() {
+                this.show = !1;
+              },
+              send() {
+                if (!this.selected) return;
+                const e = this.$store.getters.getMessageDestinations.find(
+                    (e) => e.uid === this.selected,
+                  ),
+                  t = this.$store.getters.getAsFlex;
+                (console.log("doSendMessage", e.uid, [t]),
+                  this.$store.dispatch("doSendMessage", {
+                    toUserId: e.uid,
+                    messages: [
+                      {
+                        type: "flex",
+                        altText: "This is a flex message",
+                        contents: t,
+                      },
+                    ],
+                  }),
+                  this.close());
+              },
+              registerDestination() {
+                ((this.showRegisterDestinationModal = !0),
+                  console.log(this.$refs.registerDestinationModal));
+              },
+              async unregisterDestination() {
+                confirm("Sure to unregister?") &&
+                  (await Ke.A.delete(`${Je.API_ROOT}/v2/fx/send/destinations`),
+                  this.$store.dispatch("doGetMessageDestinations"));
+              },
+            },
+          },
+          ot = {
+            name: "MenuPane",
+            components: {
+              EditorModal: Qe,
+              ShowcaseModal: We,
+              SendMessageModal: (0, u.A)(
+                tt,
+                function () {
+                  var e = this,
+                    t = e._self._c;
+                  return t(
+                    "div",
+                    [
+                      t(
+                        "b-modal",
+                        {
+                          attrs: {
+                            size: "md",
+                            "hide-header": !1,
+                            "no-fade": !0,
+                            centered: !0,
+                            title: "Send Message",
+                          },
+                          model: {
+                            value: e.show,
+                            callback: function (t) {
+                              e.show = t;
+                            },
+                            expression: "show",
+                          },
+                        },
+                        [
+                          t("div", { staticClass: "modal-body" }, [
+                            t("p", [e._v(e._s(e.$t("destination_label")))]),
+                            e._v(" "),
+                            t(
+                              "div",
+                              { staticClass: "list-group" },
+                              [
+                                e._l(e.destinations, function (o) {
+                                  return t(
+                                    "div",
+                                    {
+                                      key: o.uid,
+                                      staticClass: "list-group-item",
+                                      staticStyle: { "margin-bottom": "0" },
+                                    },
+                                    [
+                                      t(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "custom-control custom-radio",
+                                        },
+                                        [
+                                          t("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: e.selected,
+                                                expression: "selected",
+                                              },
+                                            ],
+                                            staticClass: "custom-control-input",
+                                            attrs: { type: "radio", id: o.uid },
+                                            domProps: {
+                                              value: o.uid,
+                                              checked: e._q(e.selected, o.uid),
+                                            },
+                                            on: {
+                                              change: function (t) {
+                                                e.selected = o.uid;
+                                              },
+                                            },
+                                          }),
+                                          e._v(" "),
+                                          t(
+                                            "label",
+                                            {
+                                              staticClass:
+                                                "custom-control-label",
+                                              attrs: { for: o.uid },
+                                            },
+                                            [
+                                              t("img", {
+                                                staticClass: "user-picture",
+                                                attrs: {
+                                                  src: o.pictureUrl,
+                                                  width: "64",
+                                                  height: "64",
+                                                },
+                                              }),
+                                              e._v(" "),
+                                              t(
+                                                "span",
+                                                { staticClass: "user-name" },
+                                                [e._v(e._s(o.name))],
+                                              ),
+                                            ],
+                                          ),
+                                          e._v(" "),
+                                          o.validUntil
+                                            ? t(
+                                                "div",
+                                                {
+                                                  staticStyle: {
+                                                    padding: "10px 0 0 0",
+                                                  },
+                                                },
+                                                [
+                                                  t(
+                                                    "button",
+                                                    {
+                                                      staticClass:
+                                                        "btn btn-outline-secondary",
+                                                      attrs: { type: "button" },
+                                                      on: {
+                                                        click:
+                                                          e.unregisterDestination,
+                                                      },
+                                                    },
+                                                    [
+                                                      e._v(
+                                                        "\n              " +
+                                                          e._s(
+                                                            e.$t("unregister"),
+                                                          ) +
+                                                          "\n            ",
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  e._v(" "),
+                                                  t(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "figure-caption text-black-50",
+                                                    },
+                                                    [
+                                                      e._v(
+                                                        e._s(
+                                                          e.$t("valid_until"),
+                                                        ) +
+                                                          ": " +
+                                                          e._s(
+                                                            e._f(
+                                                              "formatValidUntil",
+                                                            )(o.validUntil),
+                                                          ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              )
+                                            : e._e(),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                }),
+                                e._v(" "),
+                                t("div", { staticClass: "list-group-item" }, [
+                                  t(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-outline-primary",
+                                      attrs: { type: "button" },
+                                      on: { click: e.registerDestination },
+                                    },
+                                    [
+                                      e._v(
+                                        "\n          " +
+                                          e._s(e.$t("register_destination")) +
+                                          "\n        ",
+                                      ),
+                                    ],
+                                  ),
+                                ]),
+                              ],
+                              2,
+                            ),
+                            e._v(" "),
+                            t(
+                              "div",
+                              { staticStyle: { "padding-top": "1em" } },
+                              [
+                                t("p", [
+                                  e._v(
+                                    "\n        " +
+                                      e._s(
+                                        e.$t(
+                                          "to_receive_message_add_frined.prefix",
+                                        ),
+                                      ) +
+                                      "\n        ",
+                                  ),
+                                  t(
+                                    "a",
+                                    {
+                                      attrs: { href: "javascript:void()" },
+                                      on: {
+                                        click: function (t) {
+                                          (t.preventDefault(),
+                                            (e.showOAQR = !e.showOAQR));
+                                        },
+                                      },
+                                    },
+                                    [
+                                      e._v(
+                                        e._s(
+                                          e.$t(
+                                            "to_receive_message_add_frined.link",
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  e._v(
+                                    "\n        " +
+                                      e._s(
+                                        e.$t(
+                                          "to_receive_message_add_frined.suffix",
+                                        ),
+                                      ) +
+                                      "\n      ",
+                                  ),
+                                ]),
+                                e._v(" "),
+                                e.showOAQR
+                                  ? t(
+                                      "div",
+                                      {
+                                        staticStyle: { "text-align": "center" },
+                                      },
+                                      [
+                                        t("img", {
+                                          attrs: {
+                                            src: e.OA_QR,
+                                            width: "240",
+                                            height: "240",
+                                          },
+                                        }),
+                                      ],
+                                    )
+                                  : e._e(),
+                              ],
+                            ),
+                          ]),
+                          e._v(" "),
+                          t(
+                            "div",
+                            {
+                              attrs: { slot: "modal-footer" },
+                              slot: "modal-footer",
+                            },
+                            [
+                              t(
+                                "button",
+                                {
+                                  staticClass: "btn btn-secondary",
+                                  attrs: { type: "button" },
+                                  on: { click: e.close },
+                                },
+                                [
+                                  e._v(
+                                    "\n      " +
+                                      e._s(e.$t("cancel")) +
+                                      "\n    ",
+                                  ),
+                                ],
+                              ),
+                              e._v(" "),
+                              t(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: {
+                                    type: "button",
+                                    disabled: !e.selected,
+                                  },
+                                  on: { click: e.send },
+                                },
+                                [
+                                  e._v(
+                                    "\n      " + e._s(e.$t("send")) + "\n    ",
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      e._v(" "),
+                      t("RegisterDestinationModal", {
+                        ref: "registerDestinationModal",
+                        model: {
+                          value: e.showRegisterDestinationModal,
+                          callback: function (t) {
+                            e.showRegisterDestinationModal = t;
+                          },
+                          expression: "showRegisterDestinationModal",
+                        },
+                      }),
+                    ],
+                    1,
+                  );
+                },
+                [],
+                !1,
+                null,
+                "aaf274f0",
+                null,
+              ).exports,
+            },
+            data: () => ({
+              showEditorModal: !1,
+              showShowcaseModal: !1,
+              showSendMessageModal: !1,
+            }),
+            computed: {
+              samples() {
+                return this.$store.state.samples;
+              },
+            },
+            methods: {
+              reset(e) {
+                this.$store.dispatch("doReset", e);
+              },
+              doLoadSample(e) {
+                this.$store.dispatch("doLoadSample", e);
+              },
+              openEditor() {
+                this.showEditorModal = !0;
+              },
+              openShowcase() {
+                this.showShowcaseModal = !0;
+              },
+              openSendMessage() {
+                this.showSendMessageModal = !0;
+              },
+            },
+          },
+          nt = (0, u.A)(
+            ot,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t(
+                "div",
+                [
+                  t(
+                    "b-dropdown",
+                    { attrs: { text: "New", variant: "primary" } },
+                    [
+                      t(
+                        "b-dropdown-item",
+                        {
+                          key: "bubble",
+                          on: {
+                            click: function (t) {
+                              return e.reset("bubble");
+                            },
+                          },
+                        },
+                        [e._v("\n      bubble\n    ")],
+                      ),
+                      e._v(" "),
+                      t(
+                        "b-dropdown-item",
+                        {
+                          key: "carousel",
+                          on: {
+                            click: function (t) {
+                              return e.reset("carousel");
+                            },
+                          },
+                        },
+                        [e._v("\n      carousel\n    ")],
+                      ),
+                    ],
+                    1,
+                  ),
+                  e._v(" "),
+                  t("div", { staticClass: "btn-group" }, [
+                    t(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button" },
+                        on: { click: e.openShowcase },
+                      },
+                      [e._v("\n      Showcase\n    ")],
+                    ),
+                  ]),
+                  e._v(" "),
+                  t("div", { staticClass: "btn-group" }, [
+                    t(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button" },
+                        on: { click: e.openSendMessage },
+                      },
+                      [
+                        t("i", { staticClass: "fab fa-line" }),
+                        e._v(" Send...\n    "),
+                      ],
+                    ),
+                  ]),
+                  e._v(" "),
+                  t("div", { staticClass: "btn-group" }, [
+                    t(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button" },
+                        on: { click: e.openEditor },
+                      },
+                      [
+                        t("i", { staticClass: "fa fa-code" }),
+                        e._v(" View as JSON\n    "),
+                      ],
+                    ),
+                  ]),
+                  e._v(" "),
+                  t("ShowcaseModal", {
+                    model: {
+                      value: e.showShowcaseModal,
+                      callback: function (t) {
+                        e.showShowcaseModal = t;
+                      },
+                      expression: "showShowcaseModal",
+                    },
+                  }),
+                  e._v(" "),
+                  t("EditorModal", {
+                    model: {
+                      value: e.showEditorModal,
+                      callback: function (t) {
+                        e.showEditorModal = t;
+                      },
+                      expression: "showEditorModal",
+                    },
+                  }),
+                  e._v(" "),
+                  t("SendMessageModal", {
+                    model: {
+                      value: e.showSendMessageModal,
+                      callback: function (t) {
+                        e.showSendMessageModal = t;
+                      },
+                      expression: "showSendMessageModal",
+                    },
+                  }),
+                ],
+                1,
+              );
+            },
+            [],
+            !1,
+            null,
+            null,
+            null,
+          ).exports,
+          st = o(7604);
+        class it {
+          constructor({ withId: e } = {}) {
+            this.withId = e || !1;
+          }
+          handleCarousel(e) {
+            if (!e) throw new Error(`unexpected data: ${e}`);
+            return {
+              type: "carousel",
+              contents: e.children.map((e) => this.handleBubble(e)),
+            };
+          }
+          handleBubble(e) {
+            if (!e) throw new Error(`unexpected data: ${e}`);
+            const t = { type: "bubble" },
+              o = {};
+            return (
+              Object.keys(e).forEach((n) => {
+                "id" === n ||
+                  "root" === n ||
+                  ("children" === n
+                    ? e.children.forEach((e) => {
+                        const n = e.type,
+                          s = e.children;
+                        (Array.isArray(s) &&
+                          1 === s.length &&
+                          (t[n] = this.handleComponent(s[0])),
+                          Object.keys(e.style).length > 0 && (o[n] = e.style));
+                      })
+                    : (t[n] = e[n]));
+              }),
+              Object.keys(o).length > 0 && (t.styles = o),
+              t
+            );
+          }
+          handleComponent(e) {
+            if (!e) throw new Error(`unexpected data: ${e}`);
+            const t = e.type;
+            if (!t) throw new Error(`unexpected component type: ${t}`);
+            const o = {};
+            return (
+              Object.keys(e).forEach((n) => {
+                ("id" !== n || this.withId) &&
+                  ("children" === n && "video" === t
+                    ? 1 === e.children.length
+                      ? (o.altContent = this.handleComponent(e.children[0]))
+                      : (o.altContent = null)
+                    : "children" === n
+                      ? (o.contents = e.children.map((e) =>
+                          this.handleComponent(e),
+                        ))
+                      : (o[n] = e[n]));
+              }),
+              o
+            );
+          }
+          convert(e) {
+            if (!e) throw new Error(`unexpected data: ${e}`);
+            switch (e.type) {
+              case "carousel":
+                return this.handleCarousel(e);
+              case "bubble":
+                return this.handleBubble(e);
+              default:
+                return this.handleComponent(e);
+            }
+          }
+        }
+        var rt = o(3236);
+        class at {
+          constructor({ idgen: e } = {}) {
+            this.idgen = e || rt.A;
+          }
+          handleBlock(e, t) {
+            let o = {};
+            return (
+              t.styles && t.styles[e] && (o = t.styles[e]),
+              {
+                type: e,
+                id: this.idgen(),
+                style: o,
+                children: t[e] ? [this.handleComponent(t[e])] : [],
+              }
+            );
+          }
+          handleCarousel(e) {
+            if (!e) throw new Error(`unexpected data: ${e}`);
+            return {
+              type: "carousel",
+              id: this.idgen(),
+              root: !0,
+              children: e.contents.map((e) => this.handleBubble(e)),
+            };
+          }
+          handleBubble(e) {
+            if (!e) throw new Error(`unexpected data: ${e}`);
+            const t = {};
+            return (
+              void 0 !== e.size && (t.size = e.size),
+              void 0 !== e.direction && (t.direction = e.direction),
+              {
+                type: "bubble",
+                ...t,
+                id: this.idgen(),
+                root: !1,
+                children: ["header", "hero", "body", "footer"].map((t) =>
+                  this.handleBlock(t, e),
+                ),
+              }
+            );
+          }
+          handleComponent(e) {
+            if (!e) throw new Error(`unexpected data: ${e}`);
+            const t = e.type;
+            if (!t) throw new Error(`unexpected component type: ${t}`);
+            const o = { id: this.idgen() };
+            return (
+              Object.keys(e).forEach((t) => {
+                "contents" === t
+                  ? (o.children = e.contents.map((e) =>
+                      this.handleComponent(e),
+                    ))
+                  : "altContent" === t
+                    ? (o.children = [this.handleComponent(e.altContent)])
+                    : (o[t] = e[t]);
+              }),
+              o
+            );
+          }
+          convert(e, t = !1) {
+            if (!e) throw new Error(`unexpected data: ${e}`);
+            switch (e.type) {
+              case "carousel":
+                return this.handleCarousel(e);
+              case "bubble": {
+                const o = this.handleBubble(e);
+                return ((o.root = t), o);
+              }
+              default:
+                return this.handleComponent(e);
+            }
+          }
+        }
+        function dt(e, t) {
+          const o = e.shift();
+          switch (o) {
+            case "contents": {
+              const n = parseInt(e.shift());
+              return n >= 0 ? dt(e, t.children[n]) : { node: t, property: o };
+            }
+            case "style":
+            case "background":
+            case "action":
+              return { node: t, property: e.shift(), parent: o };
+            default:
+              return { node: t, property: o };
+          }
+        }
+        var lt = {
+          findByPath: function e(t, o) {
+            switch (
+              (Array.isArray(t) ||
+                (t = t.split("/").filter((e) => e.length > 0)),
+              o.type)
+            ) {
+              case "carousel":
+                return (function (t, o) {
+                  const n = t.shift();
+                  if ("contents" === n) {
+                    const n = parseInt(t.shift());
+                    if (n >= 0) return e(t, o.children[n]);
+                  }
+                  return { node: o, property: n };
+                })(t, o);
+              case "bubble":
+                return (function (e, t) {
+                  const o = e.shift();
+                  switch (o) {
+                    case "styles": {
+                      const o = e.shift();
+                      return (
+                        e.unshift("style"),
+                        dt(
+                          e,
+                          t.children.find((e) => e.type === o),
+                        )
+                      );
+                    }
+                    case "header":
+                    case "hero":
+                    case "body":
+                    case "footer":
+                      return dt(
+                        e,
+                        t.children.find((e) => e.type === o).children[0],
+                      );
+                    default:
+                      return { node: t, property: o };
+                  }
+                })(t, o);
+              default:
+                return dt(t, o);
+            }
+          },
+        };
+        function ct(e, t) {
+          if (!e) return null;
+          if (e.id === t) return e;
+          if (e.children)
+            for (const o of e.children) {
+              const e = ct(o, t);
+              if (null != e) return e;
+            }
+          return null;
+        }
+        function ut(e, t) {
+          return e
+            ? e.id === t
+              ? null
+              : (e.children &&
+                  (e.children = e.children
+                    .map((e) => ut(e, t))
+                    .filter((e) => null != e)),
+                e)
+            : null;
+        }
+        function pt(e) {
+          if (!e) return null;
+          const t = Object.assign({}, e);
+          return (
+            (function (e) {
+              let t = e.type;
+              return (
+                "header" === t || "hero" === t || "body" === t || "footer" === t
+              );
+            })(e) && (t.style = pt(e.style)),
+            e.children && (t.children = e.children.map((e) => pt(e))),
+            e.action && (t.action = pt(e.action)),
+            t
+          );
+        }
+        function mt(e, t, o) {
+          if (!e) return null;
+          if (e.id === t) return e;
+          if (e.children) {
+            const n = e.children;
+            let s = -1;
+            if (
+              (n.forEach((e, n) => {
+                null != mt(e, t, o) && (s = n);
+              }),
+              s >= 0)
+            ) {
+              const e = s + (o > 0 ? 1 : -1);
+              e >= 0 && e < n.length && ([n[s], n[e]] = [n[e], n[s]]);
+            }
+          }
+          return null;
+        }
+        class ht {
+          constructor(e, t = {}) {
+            ((this.root = pt(e)), (this.flexToTree = new at(t)));
+          }
+          getRoot() {
+            return this.root;
+          }
+          findById(e) {
+            return ct(this.root, e);
+          }
+          findByPath(e) {
+            return lt.findByPath(e, this.root);
+          }
+          addNode(e, t) {
+            const o = this.findById(e);
+            if (null == o) console.error("node not found");
+            else {
+              const e = this.flexToTree.convert(t);
+              Array.isArray(o.children)
+                ? o.children.push(e)
+                : (o.children = [e]);
+            }
+          }
+          removeNode(e) {
+            ut(this.root, e);
+          }
+          moveNode(e, t) {
+            mt(this.root, e, t);
+          }
+        }
+        (n.Ay.use(st.Ay),
+          (Ke.A.defaults.timeout = 6e4),
+          (Ke.A.defaults.withCredentials = !0),
+          (Ke.A.defaults.xsrfHeaderName = "X-CSRF-Token"),
+          (Ke.A.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest"),
+          (Ke.A.defaults.validateStatus = (e) =>
+            (e >= 200 && e < 300) || 401 == e),
+          Ke.A.interceptors.response.use(
+            function (e) {
+              return (
+                401 == e.status &&
+                  (location.href = `${Je.LOGIN_ENDPOINT}?redirectUri=${encodeURIComponent(location.href)}`),
+                e
+              );
+            },
+            function (e) {
+              return Promise.reject(e);
+            },
+          ));
+        var ft = new st.Ay.Store({
+            state: {
+              selectedNodeId: "",
+              multiSelectedNodeIds: [],
+              hoveredNodeId: "",
+              tree: {},
+              clipboard: [],
+              samples: [],
+              messages: [],
+              undo: [],
+              redo: [],
+              html: "",
+              containerType: "bubble",
+              shareUrl: "",
+              destinations: [],
+            },
+            mutations: {
+              setRenderResult(e, { html: t, containerType: o }) {
+                ((e.html = t), (e.containerType = o));
+              },
+              clearRenderResult(e) {
+                ((e.html = ""), (e.containerType = "bubble"));
+              },
+              setMessages(e, t) {
+                e.messages = t;
+              },
+              initDestinations(e, t) {
+                e.destinations = t;
+              },
+              initTree(e, t) {
+                (Object.keys(e.tree).length > 0 &&
+                  (e.undo.push(e.tree), (e.redo = [])),
+                  (e.selectedNodeId = ""),
+                  (e.multiSelectedNodeIds = []),
+                  (e.tree = new at().convert(t, !0)));
+              },
+              updateProperty(e, { id: t, property: o, value: n, parent: s }) {
+                const i = new ht(e.tree),
+                  r = i.findById(t);
+                r
+                  ? (s
+                      ? (console.log(`property set: ${s}#${o} = ${n}`),
+                        (r[s][o] = n))
+                      : (console.log(`property set: ${o} = ${n}`), (r[o] = n)),
+                    e.undo.push(e.tree),
+                    (e.redo = []),
+                    (e.tree = i.getRoot()))
+                  : console.error("target node not found: " + t);
+              },
+              deleteProperty(e, { id: t, property: o, parent: n }) {
+                const s = new ht(e.tree),
+                  i = s.findById(t);
+                i
+                  ? (n
+                      ? (console.log(`property deleted: ${n}#${o}`),
+                        delete i[n][o])
+                      : (console.log(`property deleted: ${o}`), delete i[o]),
+                    e.undo.push(e.tree),
+                    (e.redo = []),
+                    (e.tree = s.getRoot()))
+                  : console.error("target node not found: " + t);
+              },
+              setSamples(e, t) {
+                e.samples = t;
+              },
+              setSelectedNodeId(e, t) {
+                ((e.selectedNodeId = t), (e.multiSelectedNodeIds = [t]));
+              },
+              addSelectedNodeId(e, t) {
+                ((e.selectedNodeId = ""), e.multiSelectedNodeIds.push(t));
+              },
+              removeSelectedNodeId(e, t) {
+                (e.selectedNodeId === t && (e.selectedNodeId = ""),
+                  (e.multiSelectedNodeIds = e.multiSelectedNodeIds.filter(
+                    (e) => e !== t,
+                  )));
+              },
+              setHoveredNodeId(e, t) {
+                e.hoveredNodeId = t;
+              },
+              addNode(e, { parentId: t, type: o }) {
+                const n = B(o);
+                if (n) {
+                  const o = new ht(e.tree);
+                  (o.addNode(t, n),
+                    e.undo.push(e.tree),
+                    (e.redo = []),
+                    (e.tree = o.getRoot()));
+                } else console.error("unexpected node type: " + o);
+              },
+              removeNode(e, { ids: t }) {
+                const o = new ht(e.tree);
+                (t.forEach((e) => o.removeNode(e)),
+                  (e.selectedNodeId = ""),
+                  (e.multiSelectedNodeIds = []),
+                  e.undo.push(e.tree),
+                  (e.redo = []),
+                  (e.tree = o.getRoot()));
+              },
+              copyNode(e, { ids: t }) {
+                const o = new ht(e.tree);
+                ((e.clipboard = t.map((e) => o.findById(e))),
+                  (e.messages = [{ text: "copied!", level: "success" }]));
+              },
+              cutNode(e, { ids: t }) {
+                const o = new ht(e.tree);
+                ((e.clipboard = t.map((e) => o.findById(e))),
+                  t.forEach((e) => o.removeNode(e)),
+                  (e.selectedNodeId = ""),
+                  (e.multiSelectedNodeIds = []),
+                  e.undo.push(e.tree),
+                  (e.redo = []),
+                  (e.tree = o.getRoot()));
+              },
+              pasteNode(e, { parentId: t }) {
+                if (e.clipboard.length > 0) {
+                  const o = new ht(e.tree);
+                  (e.clipboard.forEach((e) => {
+                    o.addNode(t, new it().convert(e));
+                  }),
+                    e.undo.push(e.tree),
+                    (e.redo = []),
+                    (e.tree = o.getRoot()));
+                }
+              },
+              move(e, { id: t, direction: o }) {
+                const n = new ht(e.tree);
+                (n.moveNode(t, o),
+                  e.undo.push(e.tree),
+                  (e.redo = []),
+                  (e.tree = n.getRoot()));
+              },
+              undo(e) {
+                e.undo.length > 0 &&
+                  (e.redo.push(e.tree), (e.tree = e.undo.pop()));
+              },
+              redo(e) {
+                e.redo.length > 0 &&
+                  (e.undo.push(e.tree), (e.tree = e.redo.pop()));
+              },
+              setShareUrl(e, t) {
+                e.shareUrl = t;
+              },
+            },
+            actions: {
+              async doGetSession(e) {
+                try {
+                  const e = await Ke.A.get(`${Je.API_ROOT}/v1/session`);
+                  if (401 === e.status) return;
+                  if (!e.data.account) {
+                    const e = new URLSearchParams();
+                    (e.append("redirect", location.pathname + location.search),
+                      (location.href = `${location.protocol}//${location.host}/console/register?${e.toString()}`));
+                  }
+                } catch (t) {
+                  (console.error(t),
+                    e.commit("setMessages", [
+                      { text: "failed to retrieve session" },
+                    ]));
+                }
+              },
+              doGetSamples(e) {
+                return Ke.A.get(`${Je.API_ROOT}/v1/fx/samples`)
+                  .then((t) => {
+                    e.commit("setSamples", t.data.samples);
+                  })
+                  .catch((t) => {
+                    (console.error(t),
+                      e.commit("setMessages", [
+                        { text: "failed to retrieve samples" },
+                      ]));
+                  });
+              },
+              doRender(e) {
+                e.commit("setMessages", []);
+                const t = e.getters.getAsFlexWithId;
+                return Ke.A.post(`${Je.API_ROOT}/v1/fx/render`, t)
+                  .then((o) => {
+                    (e.commit("setRenderResult", {
+                      html: o.data,
+                      containerType: t.type,
+                    }),
+                      e.commit("setMessages", [
+                        { text: "OK", level: "success" },
+                      ]));
+                  })
+                  .catch((t) => {
+                    if (
+                      (console.error(t),
+                      e.commit("clearRenderResult"),
+                      t.response.data && t.response.data.details)
+                    ) {
+                      const o = t.response.data.details.map((e) => ({
+                        path: e.property,
+                        text: e.message,
+                      }));
+                      e.commit("setMessages", o);
+                    } else
+                      e.commit("setMessages", [
+                        { text: "failed to render message" },
+                      ]);
+                  });
+              },
+              doLoadSample(e, t) {
+                return Ke.A.get(`${Je.API_ROOT}/v1/fx/samples/${t}`)
+                  .then((t) => {
+                    e.commit("initTree", t.data);
+                  })
+                  .catch((t) => {
+                    (console.error(t),
+                      e.commit("setMessages", [
+                        { text: "failed to load preset" },
+                      ]));
+                  });
+              },
+              doReset(e, t) {
+                e.commit("initTree", B(t));
+              },
+              doGetMessageDestinations(e) {
+                return Ke.A.get(`${Je.API_ROOT}/v2/fx/send/destinations`)
+                  .then((t) => {
+                    e.commit("initDestinations", t.data);
+                  })
+                  .catch((t) => {
+                    (console.error(t),
+                      e.commit("setMessages", [
+                        { text: "failed to get message destinations" },
+                      ]));
+                  });
+              },
+              doSendMessage(e, t) {
+                return Ke.A.post(`${Je.API_ROOT}/v2/fx/send/message`, {
+                  toUserId: t.toUserId,
+                  messages: t.messages,
+                })
+                  .then((t) => {
+                    e.commit("setMessages", [
+                      { text: "Message Sent", level: "success" },
+                    ]);
+                  })
+                  .catch((t) => {
+                    (console.error(t),
+                      e.commit("setMessages", [
+                        { text: "failed to load preset" },
+                      ]));
+                  });
+              },
+            },
+            getters: {
+              getMessages(e) {
+                return e.messages;
+              },
+              getTree(e) {
+                return e.tree.type ? e.tree : null;
+              },
+              getMessageDestinations(e) {
+                return e.destinations;
+              },
+              getAsFlex(e) {
+                return e.tree.type ? new it().convert(e.tree) : null;
+              },
+              getAsFlexWithId(e) {
+                return e.tree.type
+                  ? new it({ withId: !0 }).convert(e.tree)
+                  : null;
+              },
+              getById: (e) => (t) =>
+                e.tree.type ? new ht(e.tree).findById(t) : null,
+              getSelectedNodeId(e) {
+                return e.selectedNodeId;
+              },
+              getMultiSelectedNodeIds(e) {
+                return e.multiSelectedNodeIds;
+              },
+              getHoveredNodeId(e) {
+                return e.hoveredNodeId;
+              },
+              getSelectedNode(e, t) {
+                return t.getById(e.selectedNodeId);
+              },
+              getErrors(e) {
+                if (0 === e.messages.length) return [];
+                const t = new ht(e.tree);
+                return e.messages
+                  .filter((e) => !!e.path)
+                  .map((e) => {
+                    const o = t.findByPath(e.path);
+                    return o ? Object.assign({}, e, o) : null;
+                  })
+                  .filter((e) => null != e);
+              },
+              getClipboard(e) {
+                return e.clipboard;
+              },
+              canUndo(e) {
+                return e.undo.length > 0;
+              },
+              canRedo(e) {
+                return e.redo.length > 0;
+              },
+              getHtml(e) {
+                return e.html;
+              },
+              getContainerType(e) {
+                return e.containerType;
+              },
+              getShareUrl(e) {
+                return e.shareUrl;
+              },
+            },
+          }),
+          vt = o(6368);
+        (o(453),
+          n.Ay.use(s.z),
+          n.Ay.use(i.l),
+          n.Ay.use(r.r),
+          n.Ay.use(a.C),
+          n.Ay.use(d.q),
+          n.Ay.use(l.T),
+          n.Ay.use(vt.A));
+        var gt = {
+            name: "App",
+            i18n: new vt.A({ locale: "en", messages: o(9024) }),
+            components: {
+              HeaderPane: qe,
+              InboxPane: p,
+              ViewerPane: _,
+              TreePane: g,
+              FormPane: Ge,
+              CommandPane: Ve,
+              MenuPane: nt,
+            },
+            store: ft,
+            mounted() {
+              this.$store.watch(
+                (e) => e.tree,
+                () => {
+                  this.$store.dispatch("doRender");
+                },
+              );
+            },
+            async created() {
+              "cancelled" !== new URLSearchParams(location.search).get("status")
+                ? (await this.$store.dispatch("doGetSession"),
+                  await this.$store.dispatch("doGetSamples"),
+                  await this.$store.dispatch(
+                    "doLoadSample",
+                    this.$store.state.samples[0].id,
+                  ))
+                : (location.href = `${location.protocol}//${location.host}/`);
+            },
+          },
+          bt = (0, u.A)(
+            gt,
+            function () {
+              var e = this,
+                t = e._self._c;
+              return t("div", { attrs: { id: "app" } }, [
+                t("div", { attrs: { id: "header" } }, [t("HeaderPane")], 1),
+                e._v(" "),
+                t(
+                  "div",
+                  { attrs: { id: "top-pane" } },
+                  [
+                    t("h1", [e._v("FLEX MESSAGE SIMULATOR")]),
+                    e._v(" "),
+                    t("MenuPane"),
+                  ],
+                  1,
+                ),
+                e._v(" "),
+                t(
+                  "div",
+                  { attrs: { id: "main-pane" } },
+                  [
+                    t(
+                      "div",
+                      { attrs: { id: "left-pane" } },
+                      [t("ViewerPane"), e._v(" "), t("InboxPane")],
+                      1,
+                    ),
+                    e._v(" "),
+                    t(
+                      "div",
+                      { attrs: { id: "center-pane" } },
+                      [t("CommandPane"), e._v(" "), t("TreePane")],
+                      1,
+                    ),
+                    e._v(" "),
+                    t("FormPane"),
+                  ],
+                  1,
+                ),
+              ]);
+            },
+            [],
+            !1,
+            null,
+            "c0d4981a",
+            null,
+          ).exports;
+        new n.Ay({ el: "#app", render: (e) => e(bt) });
+      },
+      3431: function (e, t, o) {
+        e.exports = o.p + "images/logo-black.png";
+      },
+      9024: function (e) {
+        e.exports = JSON.parse(
+          '{"en":{"cancel":"Cancel","create":"Create","copy":"Copy","copied":"Copied","apply":"Apply","close":"Close","send":"Send","json_spec":"JSON spec","register_destination":"Register destination","back_to_home":"HOME","unregister":"Unregister","next":"Next","register_destination.line1":"First, scan this QR code in your LINE app.","register_destination.line2":"You will receive a validation code on the app. Enter the code in the form below.","validation_code":"Validation code","valid_until":"Valid until","register_destination.line3":"You are about to register the following destination. Are you sure?","register_destination.line_unregister":"Your current destination will be unregistered:","to_receive_message_add_frined.prefix":"To receive the test message, you need to","to_receive_message_add_frined.link":"add Flex Message Simulator LINE Official Account","to_receive_message_add_frined.suffix":" as a friend in LINE App.","issue_verification_code":"Issue validation code","liff_register.line1":"The following person is about to register you as a destination in the Flex Message Simulator.","liff_register.line2":"If you are sure, select \\"Issue validation code\\" to proceed.","liff_register.line3":"If you are sure, enter the following code in the Flex Message Simulator.","destination_label":"Destination:","failed_to_verify_code":"This code is unavailable.","invalid_token":"Expired invitation. Please re-issue the invitation QR code.","inviter_is_same_as_you":"You are invited as destination of the Flex Message Simulator, but you are already registered as destination.","user_must_be_friend_with_bot":"You are not friends with the Flex Message Simulator LINE Official Account."},"ja":{"cancel":"キャンセル","create":"作成","copy":"コピー","copied":"コピーしました","apply":"適用","close":"閉じる","send":"送信","json_spec":"JSON仕様","register_destination":"送信先を登録","back_to_home":"トップへ戻る","unregister":"登録解除","next":"次へ","register_destination.line1":"次のQRコードをLINEでスキャンしてください","register_destination.line2":"LINE上に表示される検証コードを次のフォームに入力してください","validation_code":"検証コード","valid_until":"有効期限","register_destination.line3":"次のLINEアカウントを送信先として追加します。よろしいですか？","register_destination.line_unregister":"現在登録中の送信先は削除されます","to_receive_message_add_frined.prefix":"テストメッセージを受信するには、LINEで","to_receive_message_add_frined.link":"Flex Message SimulatorのLINE公式アカウントを追加","to_receive_message_add_frined.suffix":"する必要があります","issue_verification_code":"検証コードを発行","liff_register.line1":"次のアカウントがFlex Message Simulatorで、あなたを送信先として登録しようとしています","liff_register.line2":"よろしければ「検証コードを発行」ボタンを押してください","liff_register.line3":"次の検証コードをFlex Message Simulatorに入力してください","destination_label":"送信先:","failed_to_verify_code":"検証コードが有効ではありせん","invalid_token":"無効なトークンです。登録用QRコードを再発行してください","inviter_is_same_as_you":"Flex Message Simulatorの送信先として招待されていますが、あなたは既に送信先として登録済みです","user_must_be_friend_with_bot":"Flex Message SimulatorのLINE公式アカウントと、友だちである必要があります"}}',
+        );
+      },
+    },
+    o = {};
+  function n(e) {
+    var s = o[e];
+    if (void 0 !== s) return s.exports;
+    var i = (o[e] = { exports: {} });
+    return (t[e](i, i.exports, n), i.exports);
+  }
+  ((n.m = t),
+    (e = []),
+    (n.O = function (t, o, s, i) {
+      if (!o) {
+        var r = 1 / 0;
+        for (c = 0; c < e.length; c++) {
+          ((o = e[c][0]), (s = e[c][1]), (i = e[c][2]));
+          for (var a = !0, d = 0; d < o.length; d++)
+            (!1 & i || r >= i) &&
+            Object.keys(n.O).every(function (e) {
+              return n.O[e](o[d]);
+            })
+              ? o.splice(d--, 1)
+              : ((a = !1), i < r && (r = i));
+          if (a) {
+            e.splice(c--, 1);
+            var l = s();
+            void 0 !== l && (t = l);
+          }
+        }
+        return t;
+      }
+      i = i || 0;
+      for (var c = e.length; c > 0 && e[c - 1][2] > i; c--) e[c] = e[c - 1];
+      e[c] = [o, s, i];
+    }),
+    (n.n = function (e) {
+      var t =
+        e && e.__esModule
+          ? function () {
+              return e.default;
+            }
+          : function () {
+              return e;
+            };
+      return (n.d(t, { a: t }), t);
+    }),
+    (n.d = function (e, t) {
+      if (Array.isArray(t))
+        for (var o = 0; o < t.length; ) {
+          var s = t[o++],
+            i = t[o++];
+          n.o(e, s)
+            ? 0 === i && o++
+            : 0 === i
+              ? Object.defineProperty(e, s, { enumerable: !0, value: t[o++] })
+              : Object.defineProperty(e, s, { enumerable: !0, get: i });
+        }
+      else
+        for (var s in t)
+          n.o(t, s) &&
+            !n.o(e, s) &&
+            Object.defineProperty(e, s, { enumerable: !0, get: t[s] });
+    }),
+    (n.g = (function () {
+      if ("object" == typeof globalThis) return globalThis;
+      try {
+        return this || new Function("return this")();
+      } catch (e) {
+        if ("object" == typeof window) return window;
+      }
+    })()),
+    (n.o = function (e, t) {
+      return Object.prototype.hasOwnProperty.call(e, t);
+    }),
+    (n.r = function (e) {
+      ("undefined" != typeof Symbol &&
+        Symbol.toStringTag &&
+        Object.defineProperty(e, Symbol.toStringTag, { value: "Module" }),
+        Object.defineProperty(e, "__esModule", { value: !0 }));
+    }),
+    (n.j = 792),
+    (n.dn = function (e) {
+      var t = Object.getOwnPropertyDescriptor(e, "name");
+      (!t || (!t.writable && t.configurable)) &&
+        Object.defineProperty(e, "name", {
+          value: "default",
+          configurable: !0,
+        });
+    }),
+    (n.p = "/flex-simulator/"),
+    (function () {
+      var e = { 792: 0 };
+      n.O.j = function (t) {
+        return 0 === e[t];
+      };
+      var t = function (t, o) {
+          var s,
+            i,
+            r = o[0],
+            a = o[1],
+            d = o[2],
+            l = 0;
+          if (
+            r.some(function (t) {
+              return 0 !== e[t];
+            })
+          ) {
+            for (s in a) n.o(a, s) && (n.m[s] = a[s]);
+            if (d) var c = d(n);
+          }
+          for (t && t(o); l < r.length; l++)
+            ((i = r[l]), n.o(e, i) && e[i] && e[i][0](), (e[i] = 0));
+          return n.O(c);
+        },
+        o = (self.webpackChunkflex_simulator =
+          self.webpackChunkflex_simulator || []);
+      (o.forEach(t.bind(null, 0)), (o.push = t.bind(null, o.push.bind(o))));
+    })());
+  var s = n.O(void 0, [96], function () {
+    return n(4996);
+  });
+  s = n.O(s);
+})();
