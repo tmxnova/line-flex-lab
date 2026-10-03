@@ -1,0 +1,23 @@
+[
+  {
+    "directory": "third-party/flex2html",
+    "remote": "https://github.com/PamornT/flex2html.git",
+    "commit": "2757c2eb8f066387ff33a8d850b3e0a87d1c5d5a",
+    "commitDate": "2024-04-11T23:18:43+07:00",
+    "license": "MIT"
+  },
+  {
+    "directory": "third-party/flex-guard",
+    "remote": "https://github.com/loncoeng/flex-guard.git",
+    "commit": "44d38312d418c3c23520c60beb0b8c62974fa946",
+    "commitDate": "2026-10-06T15:09:01+09:00",
+    "license": "MIT"
+  },
+  {
+    "directory": "third-party/line-flex-renderer",
+    "remote": "https://github.com/kanketsu-jp/line-flex-renderer-npm.git",
+    "commit": "7ec3f27dd8af23e357d8ead8de91fccc01b435ea",
+    "commitDate": "2026-09-25T22:40:42+09:00",
+    "license": "MIT"
+  }
+]

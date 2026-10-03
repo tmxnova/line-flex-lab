@@ -1,0 +1,118 @@
+[
+  {
+    "case": "invalid hero image size",
+    "lineStatus": 400,
+    "local": {
+      "ok": true,
+      "findings": [],
+      "errors": [],
+      "warnings": []
+    }
+  },
+  {
+    "case": "valid hero image size",
+    "lineStatus": 200,
+    "local": {
+      "ok": true,
+      "findings": [],
+      "errors": [],
+      "warnings": []
+    }
+  },
+  {
+    "case": "size on a hero box",
+    "lineStatus": 400,
+    "local": {
+      "ok": false,
+      "findings": [
+        {
+          "rule": "schema/unknown-property",
+          "severity": "error",
+          "path": "$.hero.size",
+          "message": "FlexBox has no property \"size\"",
+          "hint": "LINE rejects a message containing properties it does not know. If you attach your own metadata, strip it just before sending — on every send path you have.",
+          "spec": "https://developers.line.biz/en/reference/messaging-api/#flex-message"
+        },
+        {
+          "rule": "render/empty-container",
+          "severity": "warning",
+          "path": "$.hero.contents",
+          "message": "this box has nothing in it",
+          "hint": "Nothing is drawn and the spacing stays, so everything around it sits wrong. Drop it while building the message."
+        }
+      ],
+      "errors": [
+        {
+          "rule": "schema/unknown-property",
+          "severity": "error",
+          "path": "$.hero.size",
+          "message": "FlexBox has no property \"size\"",
+          "hint": "LINE rejects a message containing properties it does not know. If you attach your own metadata, strip it just before sending — on every send path you have.",
+          "spec": "https://developers.line.biz/en/reference/messaging-api/#flex-message"
+        }
+      ],
+      "warnings": [
+        {
+          "rule": "render/empty-container",
+          "severity": "warning",
+          "path": "$.hero.contents",
+          "message": "this box has nothing in it",
+          "hint": "Nothing is drawn and the spacing stays, so everything around it sits wrong. Drop it while building the message."
+        }
+      ]
+    }
+  },
+  {
+    "case": "invalid layout",
+    "lineStatus": 400,
+    "local": {
+      "ok": false,
+      "findings": [
+        {
+          "rule": "schema/invalid-enum",
+          "severity": "error",
+          "path": "$.body.layout",
+          "message": "\"BAD\" is not a value FlexBox.layout accepts",
+          "hint": "The ones it does: horizontal / vertical / baseline.",
+          "spec": "https://developers.line.biz/en/reference/messaging-api/#flex-message"
+        },
+        {
+          "rule": "render/empty-container",
+          "severity": "warning",
+          "path": "$.body.contents",
+          "message": "this box has nothing in it",
+          "hint": "Nothing is drawn and the spacing stays, so everything around it sits wrong. Drop it while building the message."
+        }
+      ],
+      "errors": [
+        {
+          "rule": "schema/invalid-enum",
+          "severity": "error",
+          "path": "$.body.layout",
+          "message": "\"BAD\" is not a value FlexBox.layout accepts",
+          "hint": "The ones it does: horizontal / vertical / baseline.",
+          "spec": "https://developers.line.biz/en/reference/messaging-api/#flex-message"
+        }
+      ],
+      "warnings": [
+        {
+          "rule": "render/empty-container",
+          "severity": "warning",
+          "path": "$.body.contents",
+          "message": "this box has nothing in it",
+          "hint": "Nothing is drawn and the spacing stays, so everything around it sits wrong. Drop it while building the message."
+        }
+      ]
+    }
+  },
+  {
+    "case": "missing text",
+    "lineStatus": 400,
+    "local": {
+      "ok": true,
+      "findings": [],
+      "errors": [],
+      "warnings": []
+    }
+  }
+]

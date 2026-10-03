@@ -1,0 +1,58 @@
+[
+  {
+    "url": "https://developers.line.biz/flex-simulator/font/font-awesome/fontawesome-webfont.eot",
+    "file": "assets/font/font-awesome/fontawesome-webfont.eot",
+    "status": 200,
+    "bytes": 165742,
+    "sha256": "7bfcab6db99d5cfbf1705ca0536ddc78585432cc5fa41bbd7ad0f009033b2979"
+  },
+  {
+    "url": "https://developers.line.biz/flex-simulator/font/font-awesome/fontawesome-webfont.woff2",
+    "file": "assets/font/font-awesome/fontawesome-webfont.woff2",
+    "status": 200,
+    "bytes": 77160,
+    "sha256": "2adefcbc041e7d18fcf2d417879dc5a09997aa64d675b7a3c4b6ce33da13f3fe"
+  },
+  {
+    "url": "https://developers.line.biz/flex-simulator/font/font-awesome/fontawesome-webfont.woff",
+    "file": "assets/font/font-awesome/fontawesome-webfont.woff",
+    "status": 200,
+    "bytes": 98024,
+    "sha256": "ba0c59deb5450f5cb41b3f93609ee2d0d995415877ddfa223e8a8a7533474f07"
+  },
+  {
+    "url": "https://developers.line.biz/flex-simulator/font/font-awesome/fontawesome-webfont.ttf",
+    "file": "assets/font/font-awesome/fontawesome-webfont.ttf",
+    "status": 200,
+    "bytes": 165548,
+    "sha256": "aa58f33f239a0fb02f5c7a6c45c043d7a9ac9a093335806694ecd6d4edc0d6a8"
+  },
+  {
+    "url": "https://developers.line.biz/flex-simulator/images/fontawesome-webfont.svg",
+    "file": "assets/images/fontawesome-webfont.svg",
+    "status": 200,
+    "bytes": 444379,
+    "sha256": "ad6157926c1622ba4e1d03d478f1541368524bfc46f51e42fe0d945f7ef323e4"
+  },
+  {
+    "url": "https://developers.line.biz/flex-simulator/images/logo-black.png",
+    "file": "assets/images/logo-black.png",
+    "status": 200,
+    "bytes": 4068,
+    "sha256": "bfcce92ca33416d558187493187c4bfd412f4fcd526b538763788d7f7f9547f7"
+  },
+  {
+    "url": "https://developers.line.biz/favicon.ico",
+    "file": "assets/favicon.ico",
+    "status": 200,
+    "bytes": 53158,
+    "sha256": "f014fbdb09977e9251fa55d5e9f7f3c8495e6bdbf75c647ff71d06ec3c42ce53"
+  },
+  {
+    "url": "https://static.line-scdn.net/line_flexible_msg/188b38e2f32/css/sp/main.css?29854563",
+    "file": "assets/render.original.css",
+    "status": 200,
+    "bytes": 17569,
+    "sha256": "00b1b8339093ff10be4e09d25d980f87e4e1efb9e3ccdcd8eb2eaaee9d46ccab"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "method": "Requests made without cookies or authorization headers",
+  "origin": "https://developers.line.biz",
+  "results": [
+    {
+      "method": "GET",
+      "path": "/api/v1/session",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/fx/samples",
+      "status": 401
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/fx/render",
+      "status": 401
+    }
+  ]
+}

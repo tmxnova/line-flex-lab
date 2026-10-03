@@ -1,0 +1,146 @@
+{
+  "https://developers-resource.landpress.line.me/fx/clip/clip1.jpg": {
+    "file": "assets/sample-images/5f76ca8662fac40b5f6c.jpg",
+    "mime": "image/jpeg",
+    "sha256": "11dfcd37ff2382de6d571d320b518c1924defc76d670ef54ad8bb69848e6b7e7",
+    "bytes": 140460
+  },
+  "https://developers-resource.landpress.line.me/fx/clip/clip10.jpg": {
+    "file": "assets/sample-images/27f720f5f5ebd2dd6d9b.jpg",
+    "mime": "image/jpeg",
+    "sha256": "b602e45b038709050b6c7eccabc790d06abd3d7791dce3c9aa0c2da9361ef4db",
+    "bytes": 29539
+  },
+  "https://developers-resource.landpress.line.me/fx/clip/clip11.jpg": {
+    "file": "assets/sample-images/5308982c208094981481.jpg",
+    "mime": "image/jpeg",
+    "sha256": "75d5b09b08ae3b762f61d261802ff34a081fce69dad6f8979ca326c240b5ec75",
+    "bytes": 27667
+  },
+  "https://developers-resource.landpress.line.me/fx/clip/clip12.jpg": {
+    "file": "assets/sample-images/1d377a1b80e54bcd14ee.jpg",
+    "mime": "image/jpeg",
+    "sha256": "bb3ecb112f353e5417ca7007fa57dfe04cf0a130bdf09cc65b2069db978e9d36",
+    "bytes": 26432
+  },
+  "https://developers-resource.landpress.line.me/fx/clip/clip13.jpg": {
+    "file": "assets/sample-images/e36e4851ad5a3de4a8df.jpg",
+    "mime": "image/jpeg",
+    "sha256": "38bb9dfcb7885f9f3f6c49be1306b0af4fb0b5a4d7981dc2ba4cadbeb74b15fc",
+    "bytes": 15699
+  },
+  "https://developers-resource.landpress.line.me/fx/clip/clip14.png": {
+    "file": "assets/sample-images/ce7793221c79c92e25bb.png",
+    "mime": "image/png",
+    "sha256": "aa10ad0a27029c6233e6c2cc9cc0b9c280f5636733ac01faa0e5afc3cb194756",
+    "bytes": 652
+  },
+  "https://developers-resource.landpress.line.me/fx/clip/clip2.jpg": {
+    "file": "assets/sample-images/8c8dd582b06c9c8cea52.jpg",
+    "mime": "image/jpeg",
+    "sha256": "d6e5d8e127ff800ce0a6b566a2e3a17beebf1706d0d93a89d30693bdfb8bdc95",
+    "bytes": 36920
+  },
+  "https://developers-resource.landpress.line.me/fx/clip/clip3.jpg": {
+    "file": "assets/sample-images/50d4ae78df520fcbbfd2.jpg",
+    "mime": "image/jpeg",
+    "sha256": "753374f99ac4e5fc36d2635c457f5fc9a16481ed8494dbd9be09956e1e32bee7",
+    "bytes": 28945
+  },
+  "https://developers-resource.landpress.line.me/fx/clip/clip4.jpg": {
+    "file": "assets/sample-images/ea5de0efd667ac2c105a.jpg",
+    "mime": "image/jpeg",
+    "sha256": "61ceec5120eb455b64aaeb7a4eb5385fdae34825f5110ff8b0b2ab828a9448b8",
+    "bytes": 10848
+  },
+  "https://developers-resource.landpress.line.me/fx/clip/clip5.jpg": {
+    "file": "assets/sample-images/162401d28c0d0da37821.jpg",
+    "mime": "image/jpeg",
+    "sha256": "f89f78c0de7080b01e25e2db111d923e0108341b89519ce3fb7dddb946e3fafa",
+    "bytes": 46162
+  },
+  "https://developers-resource.landpress.line.me/fx/clip/clip6.jpg": {
+    "file": "assets/sample-images/dc0123140ebd011a5494.jpg",
+    "mime": "image/jpeg",
+    "sha256": "65e5d5f515b7ee6e9dcecf939b2d508f0d47a51697c8bb9fd0d5d39918192410",
+    "bytes": 9234
+  },
+  "https://developers-resource.landpress.line.me/fx/clip/clip7.jpg": {
+    "file": "assets/sample-images/0ce1ca326c52a84c5ae0.jpg",
+    "mime": "image/jpeg",
+    "sha256": "b48a9b79c771617ab38625765cba65ee16f935dc9f3938408eeec9b2580babc4",
+    "bytes": 17473
+  },
+  "https://developers-resource.landpress.line.me/fx/clip/clip8.jpg": {
+    "file": "assets/sample-images/e9e0101c8ed8585095c8.jpg",
+    "mime": "image/jpeg",
+    "sha256": "396aa78a2f8324ad90ba7dfa1318f7d824727df8e3f50a0cbafeb34d648a8e79",
+    "bytes": 9955
+  },
+  "https://developers-resource.landpress.line.me/fx/clip/clip9.jpg": {
+    "file": "assets/sample-images/0492862245594a4175ae.jpg",
+    "mime": "image/jpeg",
+    "sha256": "32dc0a0b48697ac226dcfb60d2c319c3c32d5869cbf684e7b01c5160d29a3df2",
+    "bytes": 21635
+  },
+  "https://developers-resource.landpress.line.me/fx/img/01_1_cafe.png": {
+    "file": "assets/sample-images/57d05929cd134e8fca55.png",
+    "mime": "image/png",
+    "sha256": "e1747c9bcdbac532b78dbeeebe5a061c1e6d47aa0fe3f0604eefb1ff689b8dbc",
+    "bytes": 268775
+  },
+  "https://developers-resource.landpress.line.me/fx/img/01_2_restaurant.png": {
+    "file": "assets/sample-images/6a99c1fa91dfc0070a52.png",
+    "mime": "image/png",
+    "sha256": "6ba28aea36650a0673f61ea57590db9380a728c89c34e62acad472e273eb685a",
+    "bytes": 390167
+  },
+  "https://developers-resource.landpress.line.me/fx/img/01_3_movie.png": {
+    "file": "assets/sample-images/82d95f5d98468169d85e.png",
+    "mime": "image/png",
+    "sha256": "360e1dbb6e1b5b96326fd76dee4837845acb7b72ec29a6ae2c5d9f9d4929c1e4",
+    "bytes": 124030
+  },
+  "https://developers-resource.landpress.line.me/fx/img/01_5_carousel.png": {
+    "file": "assets/sample-images/4d6cc719b3dfade8b3f7.png",
+    "mime": "image/png",
+    "sha256": "eacff4be896877865db2bd5fa7fbcaf92fd7e30d95f00c2d20d10a48cc649cb8",
+    "bytes": 106209
+  },
+  "https://developers-resource.landpress.line.me/fx/img/01_6_carousel.png": {
+    "file": "assets/sample-images/24496f6b8fa6e00f902b.png",
+    "mime": "image/png",
+    "sha256": "4f7e159c2ddacb2dfcd3427458657b416d64e4f254c18f596bab2962f196ca43",
+    "bytes": 170471
+  },
+  "https://developers-resource.landpress.line.me/fx/img/linecorp_code_withborder.png": {
+    "file": "assets/sample-images/382b7a2eb3d84852595e.png",
+    "mime": "image/png",
+    "sha256": "2e9cc4c069083153c021e195e6472ad83f34f5f47b0bdc1eea130fb8a25281da",
+    "bytes": 16605
+  },
+  "https://developers-resource.landpress.line.me/fx/img/restaurant_large_32.png": {
+    "file": "assets/sample-images/d221ccff2a22da8ae7be.png",
+    "mime": "image/png",
+    "sha256": "60b7453ca37de57e8bfb0a48c65035641f0eef229c23b7789063eaa2f4e7c60c",
+    "bytes": 1135
+  },
+  "https://developers-resource.landpress.line.me/fx/img/restaurant_regular_32.png": {
+    "file": "assets/sample-images/7b81c92925bcfd91ec72.png",
+    "mime": "image/png",
+    "sha256": "f5476da8f6b6f079dbad202588dc06226c3fe3b4765f79ac3e9d8551d54fac85",
+    "bytes": 1313
+  },
+  "https://developers-resource.landpress.line.me/fx/img/review_gold_star_28.png": {
+    "file": "assets/sample-images/275ce715511653c0fc2b.png",
+    "mime": "image/png",
+    "sha256": "74e882adedd4d5edd9805a176dacaa90457c992408265968ce0dd2e29f978816",
+    "bytes": 1394
+  },
+  "https://developers-resource.landpress.line.me/fx/img/review_gray_star_28.png": {
+    "file": "assets/sample-images/f71ef0b0c9a0304a5dd4.png",
+    "mime": "image/png",
+    "sha256": "f4ddc4fe5def1a3a122d36cc0bc2683fe8b1af2e452f1929bf938de72316047d",
+    "bytes": 1380
+  }
+}
