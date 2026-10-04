@@ -1,0 +1,43 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  # Called from publish. Reused rather than copied over there, so that
+  # nothing gets published without having passed these.
+  workflow_call:
+
+# The token this job is given. Without this block it gets the repository's
+# default, which is wider than anything here needs: nothing writes back to the
+# repository, and a step that is compromised should not be able to.
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Needs the ability to strip types and run .ts directly: 22.18 and up.
+        node-version: ["22.18", "24"]
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # No runtime dependencies; tsc is used in development only.
+      - run: npm ci
+      - name: Type check
+        run: npm run check
+      - name: Unit tests
+        run: npm test
+
+      # The demo page embeds src's build output. It is not a rewrite, so a
+      # change to src means regenerating it. Forget, and the page alone stays
+      # on the old behaviour.
+      - name: The demo page matches src
+        run: npm run demo:check

@@ -1,0 +1,106 @@
+import type React from "react";
+import type { FlexBubble, FlexContainer } from "../types";
+import { NodeInspector } from "./inspectors";
+import { JsonPanel } from "./JsonPanel";
+import { Outline } from "./Outline";
+import { getNode } from "./path";
+import { ghostButtonStyle, hintStyle, panelStyle, summaryStyle } from "./theme";
+import type { EditorTemplate, FlexNodePath, InsertableKind } from "./types";
+import { validateFlex } from "./validate";
+
+export interface EditorPanelProps {
+	lockedUris?: string[];
+	container: FlexContainer;
+	bubble: FlexBubble;
+	selected: FlexNodePath | null;
+	templates: EditorTemplate[];
+	onSelect: (path: FlexNodePath) => void;
+	onPatch: (path: FlexNodePath, patch: Record<string, unknown>) => void;
+	onMove: (path: FlexNodePath, delta: number) => void;
+	onRemove: (path: FlexNodePath) => void;
+	onInsert: (parentPath: FlexNodePath, kind: InsertableKind) => void;
+	onApplyTemplate: (template: EditorTemplate) => void;
+	onImportJson: (container: FlexContainer) => void;
+}
+
+export function EditorPanel({
+	lockedUris,
+	container,
+	bubble,
+	selected,
+	templates,
+	onSelect,
+	onPatch,
+	onMove,
+	onRemove,
+	onInsert,
+	onApplyTemplate,
+	onImportJson,
+}: EditorPanelProps): React.ReactElement {
+	const selectedNode = selected ? getNode(bubble, selected) : undefined;
+
+	return (
+		<div>
+			<details style={panelStyle}>
+				<summary style={summaryStyle}>テンプレートから始める</summary>
+				<div
+					style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}
+				>
+					{templates.map((t) => (
+						<button
+							type="button"
+							key={t.id}
+							style={ghostButtonStyle}
+							onClick={() => onApplyTemplate(t)}
+							title={t.description}
+						>
+							{t.name}
+						</button>
+					))}
+				</div>
+			</details>
+
+			<details open style={panelStyle}>
+				<summary style={summaryStyle}>組み立て</summary>
+				<div style={{ marginTop: 8 }}>
+					<Outline
+						lockedUris={lockedUris}
+						bubble={bubble}
+						selected={selected}
+						onSelect={onSelect}
+						onMove={onMove}
+						onRemove={onRemove}
+						onInsert={onInsert}
+					/>
+				</div>
+			</details>
+
+			<details open style={panelStyle}>
+				<summary style={summaryStyle}>選んだ部品の設定</summary>
+				<div style={{ marginTop: 8 }}>
+					{selected && selectedNode ? (
+						<NodeInspector
+							lockedUris={lockedUris}
+							node={selectedNode}
+							onPatch={(patch) => onPatch(selected, patch)}
+						/>
+					) : (
+						<p style={hintStyle}>左の一覧から編集したい部品を選んでください</p>
+					)}
+				</div>
+			</details>
+
+			<details style={panelStyle}>
+				<summary style={summaryStyle}>JSON</summary>
+				<div style={{ marginTop: 8 }}>
+					<JsonPanel
+						lockedUris={lockedUris}
+						container={container}
+						onImport={onImportJson}
+						issues={validateFlex(container)}
+					/>
+				</div>
+			</details>
+		</div>
+	);
+}

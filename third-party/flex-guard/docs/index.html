@@ -1,0 +1,1550 @@
+<title>flex-guard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* Built on a marked-up proof: a cool paper ground, proof-pencil blue, and
+     findings in madder and ochre. The grey leans green so that it reads as a
+     colour somebody chose. */
+  :root {
+    --ground: #EDEFEA;
+    --surface: #FCFCFA;
+    --surface-sunk: #E4E7DF;
+    --ink: #191D18;
+    --ink-soft: #5C645B;
+    --ink-faint: #8B928A;
+    --rule: #D3D8CD;
+    --accent: #1C4E93;
+    --accent-soft: #E3EAF5;
+    --error: #A32A1C;
+    --error-soft: #F7E7E4;
+    --warn: #8A6510;
+    --warn-soft: #F6EEDC;
+    --pass: #2C6B4A;
+    --pass-soft: #E2EFE7;
+
+    --step--1: 0.8125rem;
+    --step-0: 0.9375rem;
+    --step-1: 1.125rem;
+    --step-2: 1.5rem;
+    --step-3: 2.25rem;
+
+    --sans: "Public Sans", ui-sans-serif, system-ui, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    --display: "Familjen Grotesk", "Public Sans", ui-sans-serif, system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #151813;
+      --surface: #1D211B;
+      --surface-sunk: #12150F;
+      --ink: #E4E7DF;
+      --ink-soft: #9AA196;
+      --ink-faint: #6E756B;
+      --rule: #2F342C;
+      --accent: #8DB1E9;
+      --accent-soft: #1C2635;
+      --error: #E88F80;
+      --error-soft: #33201C;
+      --warn: #D8B460;
+      --warn-soft: #2E2716;
+      --pass: #7FC79E;
+      --pass-soft: #17271E;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #151813;
+    --surface: #1D211B;
+    --surface-sunk: #12150F;
+    --ink: #E4E7DF;
+    --ink-soft: #9AA196;
+    --ink-faint: #6E756B;
+    --rule: #2F342C;
+    --accent: #8DB1E9;
+    --accent-soft: #1C2635;
+    --error: #E88F80;
+    --error-soft: #33201C;
+    --warn: #D8B460;
+    --warn-soft: #2E2716;
+    --pass: #7FC79E;
+    --pass-soft: #17271E;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 4vw, 2rem) 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  /* --- masthead --- */
+
+  .masthead { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, var(--step-3));
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .mark { color: var(--accent); font-weight: 600; }
+
+  .thesis {
+    max-width: 62ch;
+    color: var(--ink-soft);
+    margin: 0;
+    font-size: var(--step-1);
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+  .thesis strong { color: var(--ink); font-weight: 600; }
+
+  /* --- the bench --- */
+
+  .bench {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 1.25rem;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .bench { grid-template-columns: minmax(0, 1fr); } }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .panel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .panel-title {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .counter {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-faint);
+  }
+
+  /* --- input --- */
+
+  .presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.75rem 0.9rem;
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface-sunk);
+  }
+
+  .preset {
+    font: inherit;
+    font-size: var(--step--1);
+    font-family: var(--sans);
+    padding: 0.28rem 0.62rem;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    background: var(--surface);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: color 120ms, border-color 120ms, background 120ms;
+  }
+  .preset:hover { color: var(--accent); border-color: var(--accent); }
+  .preset[aria-pressed="true"] {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    font-weight: 600;
+  }
+  .preset:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  textarea {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    line-height: 1.6;
+    tab-size: 2;
+    border: 0;
+    resize: vertical;
+    min-height: 22rem;
+    padding: 0.9rem;
+    background: transparent;
+    color: var(--ink);
+    width: 100%;
+  }
+  textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  /* --- verdict --- */
+
+  .verdict {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.85rem 0.9rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .verdict-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .verdict-text { font-weight: 600; font-size: var(--step-1); font-family: var(--display); letter-spacing: -0.01em; }
+  .verdict-note { color: var(--ink-soft); font-size: var(--step--1); margin-left: auto; text-align: right; }
+
+  .verdict[data-state="pass"] { background: var(--pass-soft); }
+  .verdict[data-state="pass"] .verdict-dot { background: var(--pass); }
+  .verdict[data-state="pass"] .verdict-text { color: var(--pass); }
+  .verdict[data-state="fail"] { background: var(--error-soft); }
+  .verdict[data-state="fail"] .verdict-dot { background: var(--error); }
+  .verdict[data-state="fail"] .verdict-text { color: var(--error); }
+  .verdict[data-state="idle"] { background: var(--surface-sunk); }
+  .verdict[data-state="idle"] .verdict-dot { background: var(--ink-faint); }
+  .verdict[data-state="idle"] .verdict-text { color: var(--ink-soft); }
+
+  /* --- findings --- */
+
+  .findings { padding: 0.9rem; display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .group { display: flex; flex-direction: column; gap: 0.55rem; }
+
+  .group-head { display: flex; flex-direction: column; gap: 0.1rem; }
+  .group-label {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .group-note { font-size: var(--step--1); color: var(--ink-soft); }
+  .group[data-kind="error"] .group-label { color: var(--error); }
+  .group[data-kind="warning"] .group-label { color: var(--warn); }
+
+  /* A solid rule for error, a dashed one for warning. "It sends, so you never
+     find out" is marked by shape rather than colour, because colour alone
+     makes the two read as equally heavy. */
+  .finding {
+    padding: 0.55rem 0 0.55rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .finding[data-kind="error"] { border-left: 3px solid var(--error); background: var(--error-soft); }
+  .finding[data-kind="warning"] { border-left: 3px dashed var(--warn); background: var(--warn-soft); }
+
+  .finding-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; }
+
+  .path {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--ink);
+    word-break: break-all;
+  }
+
+  .rule-id {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.03em;
+    color: var(--ink-faint);
+  }
+
+  .finding-message { font-size: var(--step--1); }
+  .finding-hint {
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    padding-left: 0.85rem;
+    border-left: 1px solid var(--rule);
+    text-wrap: pretty;
+  }
+
+  .empty { color: var(--ink-faint); font-size: var(--step--1); padding: 1.5rem 0; text-align: center; }
+
+  /* --- the message-type check --- */
+
+  .detect {
+    margin-top: auto;
+    border-top: 1px solid var(--rule);
+    padding: 0.75rem 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: var(--step--1);
+    background: var(--surface-sunk);
+  }
+  .detect-label {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .detect-value { font-weight: 600; }
+  .detect[data-flex="true"] .detect-value { color: var(--error); }
+  .detect[data-flex="false"] .detect-value { color: var(--ink-soft); }
+  .detect-reason { color: var(--ink-soft); font-family: var(--mono); font-size: 0.6875rem; }
+
+  /* --- how to read it --- */
+
+  .reading {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .card[data-kind="error"] { border-top: 3px solid var(--error); }
+  .card[data-kind="warning"] { border-top: 3px dashed var(--warn); }
+
+  .card h2 {
+    font-family: var(--display);
+    font-size: var(--step-1);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .card[data-kind="error"] h2 { color: var(--error); }
+  .card[data-kind="warning"] h2 { color: var(--warn); }
+  .card p { margin: 0; color: var(--ink-soft); font-size: var(--step--1); text-wrap: pretty; }
+  .card p strong { color: var(--ink); font-weight: 600; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+    color: var(--ink-faint);
+    font-size: var(--step--1);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+  }
+  footer a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  footer code { font-family: var(--mono); font-size: 0.6875rem; color: var(--ink-soft); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">LINE Messaging API / Flex Message</div>
+    <h1>The Flex failures<br>types cannot catch</h1>
+    <p class="thesis">
+      Your types compile and LINE still returns <span class="mark">400</span>. And there
+      are two kinds of failure: <strong>one you notice immediately, and one you never
+      notice at all.</strong> Paste your own JSON, or pick an example below.
+    </p>
+  </header>
+
+  <div class="bench">
+    <section class="panel" aria-label="The JSON being checked">
+      <div class="panel-head">
+        <span class="panel-title">What you are about to send</span>
+        <span class="counter" id="size-readout">—</span>
+      </div>
+      <div class="presets" id="presets" role="group" aria-label="Pick an example"></div>
+      <textarea id="input" spellcheck="false" aria-label="A Flex message, as JSON"></textarea>
+    </section>
+
+    <section class="panel" aria-label="The result">
+      <div class="panel-head">
+        <span class="panel-title">Result</span>
+        <span class="counter" id="counts">—</span>
+      </div>
+      <div class="verdict" id="verdict" data-state="idle" role="status">
+        <span class="verdict-dot" aria-hidden="true"></span>
+        <span class="verdict-text" id="verdict-text">—</span>
+        <span class="verdict-note" id="verdict-note"></span>
+      </div>
+      <div class="findings" id="findings"></div>
+      <div class="detect" id="detect" data-flex="false">
+        <span class="detect-label">looksLikeFlex</span>
+        <span class="detect-value" id="detect-value">—</span>
+        <span class="detect-reason" id="detect-reason"></span>
+      </div>
+    </section>
+  </div>
+
+  <div class="reading">
+    <article class="card" data-kind="error">
+      <h2>error — LINE will not accept it</h2>
+      <p>
+        The send itself fails and <code>400</code> comes back. <strong>There is no option
+        of leaving it alone.</strong> A property not in the specification, a missing
+        required one, over 10KB or 50KB, or an action's <code>data</code> past 300
+        characters.
+      </p>
+    </article>
+    <article class="card" data-kind="warning">
+      <h2>warning — it sends</h2>
+      <p>
+        LINE accepts it and the delivery count goes up. It is just that on the
+        recipient's screen the text has dissolved into the background, or the image
+        slot is blank. <strong>No error comes back, and nothing reaches a log.</strong>
+        The only sign of it is the absence of a reply, so running it in production will
+        not tell you either.
+      </p>
+    </article>
+  </div>
+
+  <footer>
+    <span>What runs here is <code>flex-guard</code>'s own build output, not a rewrite for the demo.</span>
+    <span>The table of permitted properties is generated from LINE's published OpenAPI definition.</span>
+    <span>MIT</span>
+  </footer>
+</div>
+
+<script>
+// flex-guard's build output, bundled as it is. Not a rewrite for the demo.
+// Generated by: npm run demo:build
+const FlexGuard = (() => {
+// ---- spec.js ----
+// Generated. Do not edit by hand.
+//
+//   npm run spec:generate
+//
+// Source    https://raw.githubusercontent.com/line/line-openapi/main/messaging-api.yml
+// Retrieved 2026-09-02
+// sha256    0227978ce1b3133e20da034fc33a9241000619ae4fea2fda7b61983abf79577a
+//
+// The property names in this table come from LINE's own definition.
+// Nothing was copied by hand, so no misspelling of one can cause a
+// false positive.
+/** The Flex message itself: altText and contents */
+const FLEX_MESSAGE = {
+    "schema": "FlexMessage",
+    "properties": [
+        "altText",
+        "contents",
+        "quickReply",
+        "sender",
+        "type"
+    ],
+    "required": [
+        "altText",
+        "contents",
+        "type"
+    ],
+    "limits": {},
+    "enums": {}
+};
+/** bubble and carousel */
+const FLEX_CONTAINERS = {
+    "bubble": {
+        schema: "FlexBubble",
+        properties: ["action", "body", "direction", "footer", "header", "hero", "size", "styles", "type"],
+        required: ["type"],
+        limits: {},
+        enums: { "direction": ["ltr", "rtl"], "size": ["nano", "micro", "deca", "hecto", "kilo", "mega", "giga"] },
+    },
+    "carousel": {
+        schema: "FlexCarousel",
+        properties: ["contents", "type"],
+        required: ["contents", "type"],
+        limits: {},
+        enums: {},
+    },
+};
+/** box, text, image, video and the rest */
+const FLEX_COMPONENTS = {
+    "box": {
+        schema: "FlexBox",
+        properties: ["action", "alignItems", "background", "backgroundColor", "borderColor", "borderWidth", "contents", "cornerRadius", "flex", "height", "justifyContent", "layout", "margin", "maxHeight", "maxWidth", "offsetBottom", "offsetEnd", "offsetStart", "offsetTop", "paddingAll", "paddingBottom", "paddingEnd", "paddingStart", "paddingTop", "position", "spacing", "type", "width"],
+        required: ["contents", "layout", "type"],
+        limits: {},
+        enums: { "layout": ["horizontal", "vertical", "baseline"], "position": ["relative", "absolute"], "justifyContent": ["center", "flex-start", "flex-end", "space-between", "space-around", "space-evenly"], "alignItems": ["center", "flex-start", "flex-end"] },
+    },
+    "button": {
+        schema: "FlexButton",
+        properties: ["action", "adjustMode", "color", "flex", "gravity", "height", "margin", "offsetBottom", "offsetEnd", "offsetStart", "offsetTop", "position", "scaling", "style", "type"],
+        required: ["action", "type"],
+        limits: {},
+        enums: { "style": ["primary", "secondary", "link"], "gravity": ["top", "bottom", "center"], "position": ["relative", "absolute"], "height": ["md", "sm"], "adjustMode": ["shrink-to-fit"] },
+    },
+    "image": {
+        schema: "FlexImage",
+        properties: ["action", "align", "animated", "aspectMode", "aspectRatio", "backgroundColor", "flex", "gravity", "margin", "offsetBottom", "offsetEnd", "offsetStart", "offsetTop", "position", "size", "type", "url"],
+        required: ["type", "url"],
+        limits: { "url": 2000 },
+        enums: { "position": ["relative", "absolute"], "align": ["start", "end", "center"], "gravity": ["top", "bottom", "center"], "aspectMode": ["fit", "cover"] },
+    },
+    "video": {
+        schema: "FlexVideo",
+        properties: ["action", "altContent", "aspectRatio", "previewUrl", "type", "url"],
+        required: ["altContent", "previewUrl", "type", "url"],
+        limits: {},
+        enums: {},
+    },
+    "icon": {
+        schema: "FlexIcon",
+        properties: ["aspectRatio", "margin", "offsetBottom", "offsetEnd", "offsetStart", "offsetTop", "position", "scaling", "size", "type", "url"],
+        required: ["type", "url"],
+        limits: {},
+        enums: { "position": ["relative", "absolute"] },
+    },
+    "text": {
+        schema: "FlexText",
+        properties: ["action", "adjustMode", "align", "color", "contents", "decoration", "flex", "gravity", "lineSpacing", "margin", "maxLines", "offsetBottom", "offsetEnd", "offsetStart", "offsetTop", "position", "scaling", "size", "style", "text", "type", "weight", "wrap"],
+        required: ["type"],
+        limits: {},
+        enums: { "align": ["start", "end", "center"], "gravity": ["top", "bottom", "center"], "weight": ["regular", "bold"], "style": ["normal", "italic"], "decoration": ["none", "underline", "line-through"], "position": ["relative", "absolute"], "adjustMode": ["shrink-to-fit"] },
+    },
+    "span": {
+        schema: "FlexSpan",
+        properties: ["color", "decoration", "size", "style", "text", "type", "weight"],
+        required: ["type"],
+        limits: {},
+        enums: { "weight": ["regular", "bold"], "style": ["normal", "italic"], "decoration": ["none", "underline", "line-through"] },
+    },
+    "separator": {
+        schema: "FlexSeparator",
+        properties: ["color", "margin", "type"],
+        required: ["type"],
+        limits: {},
+        enums: {},
+    },
+    "filler": {
+        schema: "FlexFiller",
+        properties: ["flex", "type"],
+        required: ["type"],
+        limits: {},
+        enums: {},
+    },
+};
+/** postback, uri, message and the rest */
+const ACTIONS = {
+    "camera": {
+        schema: "CameraAction",
+        properties: ["label", "type"],
+        required: [],
+        limits: {},
+        enums: {},
+    },
+    "cameraRoll": {
+        schema: "CameraRollAction",
+        properties: ["label", "type"],
+        required: [],
+        limits: {},
+        enums: {},
+    },
+    "clipboard": {
+        schema: "ClipboardAction",
+        properties: ["clipboardText", "label", "type"],
+        required: ["clipboardText"],
+        limits: { "clipboardText": 1000 },
+        enums: {},
+    },
+    "datetimepicker": {
+        schema: "DatetimePickerAction",
+        properties: ["data", "initial", "label", "max", "min", "mode", "type"],
+        required: [],
+        limits: { "data": 300 },
+        enums: { "mode": ["date", "time", "datetime"] },
+    },
+    "location": {
+        schema: "LocationAction",
+        properties: ["label", "type"],
+        required: [],
+        limits: {},
+        enums: {},
+    },
+    "message": {
+        schema: "MessageAction",
+        properties: ["label", "text", "type"],
+        required: [],
+        limits: {},
+        enums: {},
+    },
+    "postback": {
+        schema: "PostbackAction",
+        properties: ["data", "displayText", "fillInText", "inputOption", "label", "text", "type"],
+        required: [],
+        limits: { "data": 300 },
+        enums: { "inputOption": ["closeRichMenu", "openRichMenu", "openKeyboard", "openVoice"] },
+    },
+    "richmenuswitch": {
+        schema: "RichMenuSwitchAction",
+        properties: ["data", "label", "richMenuAliasId", "type"],
+        required: [],
+        limits: { "data": 300, "richMenuAliasId": 32 },
+        enums: {},
+    },
+    "uri": {
+        schema: "URIAction",
+        properties: ["altUri", "label", "type", "uri"],
+        required: [],
+        limits: {},
+        enums: {},
+    },
+};
+
+// ---- walk.js ----
+// Walking the tree of a Flex message.
+//
+// Where the children are is written out per type. "Descend into anything with
+// a type" would be shorter, and it would also treat objects that are not
+// components — styles, background — as though they were, and start claiming
+// that valid JSON contains unknown types. A false positive costs more than a
+// miss, so what gets walked is stated explicitly.
+
+/** For each type, the properties children live in. Anything not here is not walked. */
+const COMPONENT_CHILDREN = {
+    bubble: ["header", "hero", "body", "footer"],
+    box: ["contents"],
+    // text.contents is an array of spans, and a span checks against the same
+    // table as any other component.
+    text: ["contents"],
+};
+/** carousel is the only type with containers as children. */
+const CONTAINER_CHILDREN = {
+    carousel: ["contents"],
+};
+const isObject = (value) => typeof value === "object" && value !== null && !Array.isArray(value);
+const typeOf = (node) => typeof node["type"] === "string" ? node["type"] : undefined;
+/**
+ * Work out what was handed in.
+ *
+ * Sometimes it is `{type:"flex", altText, contents}`, and sometimes it is just
+ * the bubble from inside one. Accepting either is the more useful behaviour.
+ */
+function rootKind(value) {
+    if (!isObject(value))
+        return undefined;
+    const type = typeOf(value);
+    if (type === "flex")
+        return "message";
+    if (type !== undefined && type in FLEX_CONTAINERS)
+        return "container";
+    return undefined;
+}
+/**
+ * Walk the tree depth-first, yielding in visit order.
+ *
+ * An object is never walked twice. Putting the same object in two places
+ * while building a message stops it being a tree, and a plain recursion into
+ * one never comes back.
+ */
+function* walk(root) {
+    const kind = rootKind(root);
+    if (kind === undefined || !isObject(root))
+        return;
+    const seen = new WeakSet();
+    if (kind === "message") {
+        yield { kind: "message", node: root, path: "$", type: typeOf(root) };
+        seen.add(root);
+        const contents = root["contents"];
+        if (isObject(contents))
+            yield* visit(contents, "$.contents", "container", seen);
+        return;
+    }
+    yield* visit(root, "$", "container", seen);
+}
+function* visit(node, path, kind, seen) {
+    if (seen.has(node))
+        return;
+    seen.add(node);
+    const type = typeOf(node);
+    yield { kind, node, path, type };
+    // An action can hang off any component, so it is picked up by key rather
+    // than by type.
+    const action = node["action"];
+    if (isObject(action)) {
+        yield* visit(action, `${path}.action`, "action", seen);
+    }
+    if (kind === "action" || type === undefined)
+        return;
+    for (const key of CONTAINER_CHILDREN[type] ?? []) {
+        yield* children(node[key], `${path}.${key}`, "container", seen);
+    }
+    for (const key of COMPONENT_CHILDREN[type] ?? []) {
+        yield* children(node[key], `${path}.${key}`, "component", seen);
+    }
+}
+function* children(value, path, kind, seen) {
+    if (Array.isArray(value)) {
+        for (const [index, item] of value.entries()) {
+            if (isObject(item))
+                yield* visit(item, `${path}[${index}]`, kind, seen);
+        }
+        return;
+    }
+    if (isObject(value))
+        yield* visit(value, path, kind, seen);
+}
+/** The spec table for a visit, or undefined for a type that is not in one. */
+function specFor(visit) {
+    if (visit.type === undefined)
+        return undefined;
+    if (visit.kind === "container")
+        return FLEX_CONTAINERS[visit.type];
+    if (visit.kind === "component")
+        return FLEX_COMPONENTS[visit.type];
+    return undefined;
+}
+
+// ---- detect.js ----
+// Deciding that something is not text.
+//
+// Unlike the other rules, this one doubts **the message type being sent**
+// rather than the contents of a Flex message. Where messages are stored and
+// sent later, the type and the contents come apart. Send Flex JSON with the
+// type still set to text and LINE treats it as a string, and **the recipient
+// gets the JSON on their screen.**
+//
+// Nothing about this is an error. The send succeeds and the delivery count
+// goes up. A preview in an admin screen usually renders from the contents
+// rather than the type, so it draws correctly there. **From the sending side,
+// everything looks fine.**
+//
+// Which is why it is worth one line just before sending.
+const NOT_FLEX = (reason) => ({
+    looksLikeFlex: false,
+    containerType: undefined,
+    reason,
+});
+/**
+ * Check whether a string about to be sent as text is in fact Flex.
+ *
+ * The test is narrow: does it parse as JSON, and is it shaped like a Flex
+ * container. Looking only at whether it starts with `{` misses an array
+ * starting with `[`. Loosen it too far and ordinary body text that starts
+ * with a bracket, like `[FORM_1]`, gets called Flex.
+ */
+function looksLikeFlex(text) {
+    const trimmed = text.trim();
+    if (trimmed === "")
+        return NOT_FLEX("empty string");
+    if (!trimmed.startsWith("{") && !trimmed.startsWith("[")) {
+        return NOT_FLEX("does not start the way JSON does");
+    }
+    let parsed;
+    try {
+        parsed = JSON.parse(trimmed);
+    }
+    catch {
+        // Ordinary body text starting with a bracket lands here, correctly.
+        return NOT_FLEX("does not parse as JSON");
+    }
+    const candidates = Array.isArray(parsed) ? parsed : [parsed];
+    for (const item of candidates) {
+        if (typeof item !== "object" || item === null)
+            continue;
+        const record = item;
+        const type = record["type"];
+        if (type === "bubble" || type === "carousel") {
+            return {
+                looksLikeFlex: true,
+                containerType: type,
+                reason: `the type is "${type}"`,
+            };
+        }
+        // It also arrives whole, as {type:"flex", contents:{...}}.
+        if (type === "flex" && typeof record["contents"] === "object") {
+            const contents = record["contents"];
+            const inner = contents === null ? undefined : contents["type"];
+            return {
+                looksLikeFlex: true,
+                containerType: typeof inner === "string" ? inner : undefined,
+                reason: 'the type is "flex"',
+            };
+        }
+    }
+    return NOT_FLEX("no Flex container in it");
+}
+
+// ---- rules/schema.js ----
+// The structural checks. All of them are errors.
+//
+// Everything here makes the LINE API answer 400. The send itself fails, so
+// there is no option of leaving it alone.
+
+
+const REFERENCE = "https://developers.line.biz/en/reference/messaging-api/#flex-message";
+function tableFor(visit) {
+    if (visit.kind === "message")
+        return FLEX_MESSAGE;
+    if (visit.kind === "action")
+        return visit.type === undefined ? undefined : ACTIONS[visit.type];
+    return specFor(visit);
+}
+function known(kind) {
+    if (kind === "container")
+        return Object.keys(FLEX_CONTAINERS);
+    if (kind === "component")
+        return Object.keys(FLEX_COMPONENTS);
+    if (kind === "action")
+        return Object.keys(ACTIONS);
+    return ["flex"];
+}
+/**
+ * A property that is not in the specification.
+ *
+ * The LINE API refuses the whole message over a key it does not know. Usually
+ * this happens because the JSON is carrying metadata of your own: a tap count
+ * or an internal id tucked into the content, stripped out just before
+ * sending. Add one more send path and that is the one that forgets.
+ */
+function unknownProperty(context) {
+    const findings = [];
+    for (const visit of walk(context.message)) {
+        const spec = tableFor(visit);
+        if (!spec)
+            continue;
+        for (const key of Object.keys(visit.node)) {
+            if (spec.properties.includes(key))
+                continue;
+            findings.push({
+                rule: "schema/unknown-property",
+                severity: "error",
+                path: `${visit.path}.${key}`,
+                message: `${spec.schema} has no property "${key}"`,
+                hint: "LINE rejects a message containing properties it does not know. If you attach"
+                    + " your own metadata, strip it just before sending — on every send path you have.",
+                spec: REFERENCE,
+            });
+        }
+    }
+    return findings;
+}
+/** A missing required property. altText and a video's previewUrl come up here. */
+function missingRequired(context) {
+    const findings = [];
+    for (const visit of walk(context.message)) {
+        const spec = tableFor(visit);
+        if (!spec)
+            continue;
+        for (const key of spec.required) {
+            if (key in visit.node && visit.node[key] !== undefined)
+                continue;
+            findings.push({
+                rule: "schema/missing-required",
+                severity: "error",
+                path: `${visit.path}.${key}`,
+                message: `${spec.schema} is missing the required "${key}"`,
+                hint: hintForRequired(spec.schema, key),
+                spec: REFERENCE,
+            });
+        }
+    }
+    return findings;
+}
+function hintForRequired(schema, key) {
+    if (schema === "FlexMessage" && key === "altText") {
+        return "This is the text shown on desktop and in the notification. Without it the message cannot be sent.";
+    }
+    if (schema === "FlexVideo" && key === "previewUrl") {
+        return "The URL of a thumbnail. If you cannot produce one, either do not send the video or generate it from the first frame.";
+    }
+    if (schema === "FlexVideo" && key === "altContent") {
+        return "The image shown instead on a LINE that cannot play video. Without it, those devices show nothing at all.";
+    }
+    return `${schema} requires ${key}. Without it, LINE rejects the whole message.`;
+}
+/** A type value the specification does not have — a misspelling, or a type of your own. */
+function unknownType(context) {
+    const findings = [];
+    for (const visit of walk(context.message)) {
+        if (visit.kind === "message")
+            continue;
+        if (visit.type !== undefined && tableFor(visit))
+            continue;
+        findings.push({
+            rule: "schema/unknown-type",
+            severity: "error",
+            path: `${visit.path}.type`,
+            message: visit.type === undefined
+                ? "there is no type here"
+                : `"${visit.type}" is not a ${visit.kind} type in the specification`,
+            hint: `The ones there are: ${known(visit.kind).join(" / ")}.`,
+            spec: REFERENCE,
+        });
+    }
+    return findings;
+}
+/** A value outside an enum — catches writing "large" for a size, and the like. */
+function invalidEnum(context) {
+    const findings = [];
+    for (const visit of walk(context.message)) {
+        const spec = tableFor(visit);
+        if (!spec)
+            continue;
+        for (const [key, allowed] of Object.entries(spec.enums)) {
+            const value = visit.node[key];
+            if (typeof value !== "string" || allowed.includes(value))
+                continue;
+            findings.push({
+                rule: "schema/invalid-enum",
+                severity: "error",
+                path: `${visit.path}.${key}`,
+                message: `"${value}" is not a value ${spec.schema}.${key} accepts`,
+                hint: `The ones it does: ${allowed.join(" / ")}.`,
+                spec: REFERENCE,
+            });
+        }
+    }
+    return findings;
+}
+
+// ---- rules/size.js ----
+// The size checks.
+//
+// This is the territory a type checker cannot reach at all. Nothing is known
+// until the thing is serialized and the bytes are counted, so at compile time
+// there is nothing to say. And over the limit, the send fails.
+
+
+// Source: LINE Engineering, "Introducing Flex Message"
+// https://engineering.linecorp.com/en/blog/introducing-flex-message-a-new-message-type-for-line-messaging-api/
+const BUBBLE_MAX_BYTES = 10 * 1024;
+const CAROUSEL_MAX_BYTES = 50 * 1024;
+const SIZE_REFERENCE = "https://engineering.linecorp.com/en/blog/introducing-flex-message-a-new-message-type-for-line-messaging-api/";
+// TextEncoder rather than Buffer, so this runs in a browser as well as in
+// Node. The limit is in bytes, and non-ASCII text is three bytes a character
+// in UTF-8 — counting characters is out by nearly a factor of three.
+const encoder = new TextEncoder();
+const bytes = (value) => encoder.encode(JSON.stringify(value) ?? "").length;
+const kb = (n) => `${(n / 1024).toFixed(1)}KB`;
+/**
+ * A bubble may be 10KB and a carousel 50KB.
+ *
+ * What takes you over is an image embedded as a data URI, or a long body of
+ * text. Non-ASCII text is three bytes a character, so it reaches the limit
+ * well before it looks like it should.
+ */
+function containerTooLarge(context) {
+    const message = context.message;
+    const container = rootKind(message) === "message" && message ? message["contents"] : message;
+    if (typeof container !== "object" || container === null)
+        return [];
+    const type = container["type"];
+    const limit = type === "carousel" ? CAROUSEL_MAX_BYTES : BUBBLE_MAX_BYTES;
+    const actual = bytes(container);
+    if (actual <= limit)
+        return [];
+    return [
+        {
+            rule: type === "carousel" ? "size/carousel-too-large" : "size/bubble-too-large",
+            severity: "error",
+            path: "$.contents",
+            message: `${String(type)} exceeds ${kb(limit)} (${kb(actual)})`,
+            hint: "Are you embedding an image as a data URI? A URL instead takes most of it off."
+                + " Non-ASCII text is three bytes a character, so the body counts for more than it looks like.",
+            spec: SIZE_REFERENCE,
+        },
+    ];
+}
+/**
+ * A property with a limit in the specification, over that limit.
+ *
+ * Not only an action's `data`: an image's `url` has a 2000-character limit
+ * too. Where the limits are is read from the spec table, so no number is
+ * written here. **Written here, it becomes a lie the moment LINE changes it.**
+ *
+ * How this shows up is the bad part. For `data`, it takes the form of a
+ * button that does nothing when tapped. No exception, nothing in a log.
+ */
+function propertyTooLong(context) {
+    const findings = [];
+    for (const visit of walk(context.message)) {
+        const spec = specFor(visit)
+            ?? (visit.kind === "action" && visit.type !== undefined ? ACTIONS[visit.type] : undefined);
+        if (!spec)
+            continue;
+        for (const [key, limit] of Object.entries(spec.limits)) {
+            const value = visit.node[key];
+            if (typeof value !== "string" || value.length <= limit)
+                continue;
+            findings.push({
+                rule: "size/property-too-long",
+                severity: "error",
+                path: `${visit.path}.${key}`,
+                message: `${spec.schema}.${key} exceeds ${limit} characters (${value.length})`,
+                hint: hintFor(spec.schema, key),
+                spec: "https://github.com/line/line-openapi/blob/main/messaging-api.yml",
+            });
+        }
+    }
+    return findings;
+}
+function hintFor(schema, key) {
+    if (key === "data") {
+        return "Are you putting the action itself in here? Carry an identifier and read the"
+            + " payload back from somewhere else, and the limit stops mattering.";
+    }
+    if (key === "url") {
+        return "A signed URL, or a lot of query string? Shorten it, or put something in front of it to redirect.";
+    }
+    return `${schema}.${key} over its limit is refused by LINE.`;
+}
+
+// ---- rules/render.js ----
+// The checks on how it looks. All of them are warnings.
+//
+// This is the real subject. Everything here sends successfully. LINE accepts
+// it, the recipient gets it, and on their screen it is not what was intended.
+//
+// No error comes back to the sender. Nothing reaches a log. The only sign of
+// it is the absence of a reply, so **running this in production will not tell
+// you**. Which leaves looking before it goes out.
+
+/** Luminance from #FFF / #FFFFFF / #FFFFFFFF. undefined if it is not a colour. */
+function luminance(color) {
+    if (typeof color !== "string")
+        return undefined;
+    const hex = color.trim().replace(/^#/, "");
+    const short = hex.length === 3 || hex.length === 4;
+    const full = hex.length === 6 || hex.length === 8;
+    if (!short && !full)
+        return undefined;
+    if (!/^[0-9a-fA-F]+$/.test(hex))
+        return undefined;
+    const part = (index) => {
+        const raw = short
+            ? hex[index].repeat(2)
+            : hex.slice(index * 2, index * 2 + 2);
+        return Number.parseInt(raw, 16) / 255;
+    };
+    // ITU-R BT.709 luminance. Not a rigorous perceptual quantity, and enough to
+    // decide whether something is close to white.
+    return 0.2126 * part(0) + 0.7152 * part(1) + 0.0722 * part(2);
+}
+/** Whether a background colour is set. If it is, this is no longer about the
+ *  automatic adjustment. */
+const hasOwnBackground = (node) => typeof node["backgroundColor"] === "string" || isObject(node["background"]);
+/**
+ * A text colour that disappears in dark mode.
+ *
+ * LINE adapts the default text colour to the background. Set a colour and
+ * that adaptation stops applying. Build on a light screen, pick something
+ * close to white, and it dissolves for anyone in dark mode.
+ *
+ * Where a background colour is set, this stays quiet: that is a combination
+ * somebody chose.
+ */
+function darkModeInvisible(context) {
+    const findings = [];
+    const backgrounds = [];
+    for (const visit of walk(context.message)) {
+        if (visit.kind === "component" && hasOwnBackground(visit.node)) {
+            backgrounds.push(true);
+        }
+        if (visit.type !== "text" && visit.type !== "span")
+            continue;
+        const level = luminance(visit.node["color"]);
+        if (level === undefined || level < 0.85)
+            continue;
+        if (backgrounds.length > 0)
+            continue;
+        findings.push({
+            rule: "render/dark-mode-invisible",
+            severity: "warning",
+            path: `${visit.path}.color`,
+            message: `A near-white text colour (${String(visit.node["color"])}) is set explicitly`,
+            hint: "LINE adapts only the default text colour to the background. Setting a colour"
+                + " opts out of that, so it dissolves for anyone in dark mode. Either drop the"
+                + " colour, or set a background colour in the same place.",
+        });
+    }
+    return findings;
+}
+/** A box with nothing in it. It takes up space and draws nothing, which is
+ *  where uneven spacing comes from. */
+function emptyContainer(context) {
+    const findings = [];
+    for (const visit of walk(context.message)) {
+        if (visit.type !== "box")
+            continue;
+        const contents = visit.node["contents"];
+        if (!Array.isArray(contents) || contents.length > 0)
+            continue;
+        findings.push({
+            rule: "render/empty-container",
+            severity: "warning",
+            path: `${visit.path}.contents`,
+            message: "this box has nothing in it",
+            hint: "Nothing is drawn and the spacing stays, so everything around it sits wrong. Drop it while building the message.",
+        });
+    }
+    return findings;
+}
+/** bubbles of different sizes in one carousel, which lines up unevenly. */
+function mixedBubbleSize(context) {
+    const sizes = new Map();
+    for (const visit of walk(context.message)) {
+        if (visit.type !== "bubble")
+            continue;
+        const size = typeof visit.node["size"] === "string" ? visit.node["size"] : "mega";
+        sizes.set(visit.path, size);
+    }
+    const distinct = new Set(sizes.values());
+    if (sizes.size < 2 || distinct.size < 2)
+        return [];
+    return [
+        {
+            rule: "render/mixed-bubble-size",
+            severity: "warning",
+            path: "$.contents.contents",
+            message: `the bubbles in this carousel are not the same size (${[...distinct].join(" / ")})`,
+            hint: "They line up at different widths. Unless that is deliberate, make them match. size defaults to mega.",
+        },
+    ];
+}
+/**
+ * An image or video URL that is not https.
+ *
+ * LINE's documentation says, of image and video messages, to "make sure the
+ * URLs have the HTTPS (TLS 1.2 or later) scheme". The Flex section says no
+ * such thing, and **nowhere could be found stating that the API rejects it.**
+ *
+ * So this is a warning and not an error. What can actually be observed is
+ * that the slot arrives blank, and the send goes through. Calling it an error
+ * would assert that LINE rejects the message, and there is nothing to back
+ * that up. **Not treating something as serious without being able to cite it**
+ * is how this library is built.
+ *
+ * Confirm a rejection and this becomes an error.
+ */
+function insecureUrl(context) {
+    const keys = ["url", "previewUrl", "iconUrl", "backgroundImage"];
+    const findings = [];
+    for (const visit of walk(context.message)) {
+        for (const key of keys) {
+            const value = visit.node[key];
+            if (typeof value !== "string" || value === "")
+                continue;
+            if (value.startsWith("https://") || value.startsWith("data:"))
+                continue;
+            findings.push({
+                rule: "render/insecure-url",
+                severity: "warning",
+                path: `${visit.path}.${key}`,
+                message: `this URL is not https (${value.slice(0, 60)})`,
+                hint: "LINE asks for HTTPS (TLS 1.2 or later) on images and video."
+                    + " It will not load, and the slot arrives blank.",
+                spec: "https://developers.line.biz/en/docs/messaging-api/message-types/",
+            });
+        }
+    }
+    return findings;
+}
+
+// ---- rules/variables.js ----
+// The check for templates with values substituted in later.
+//
+// Storing a Flex message as a template and filling in per-recipient values at
+// send time is a pattern that turns up in almost any real use of this. And a
+// substituted value containing a newline or a quote breaks the JSON.
+//
+// How it breaks is the bad part. It works on the machine the template was
+// built on, it works for most values, and **it fails only when sending to one
+// particular person** — because one of them has a " in their name.
+
+/** Catches shapes like {name} {field:birthday} {{first_name}} $NAME. */
+const PLACEHOLDER = /\{\{?[^{}\n]{1,60}\}?\}/g;
+/** The string properties a value might be substituted into. */
+const TEXT_KEYS = ["text", "altText", "label", "data", "displayText", "uri", "url"];
+/**
+ * A string containing a placeholder.
+ *
+ * Whether the substituted value gets escaped is not something this JSON can
+ * say. So this is a warning — "this can break", not "this is broken" — along
+ * with what to go and check.
+ */
+function unescapedPlaceholder(context) {
+    const findings = [];
+    const seen = new Set();
+    for (const visit of walk(context.message)) {
+        for (const key of TEXT_KEYS) {
+            const value = visit.node[key];
+            if (typeof value !== "string")
+                continue;
+            const matches = [...value.matchAll(PLACEHOLDER)].map((m) => m[0]);
+            if (matches.length === 0)
+                continue;
+            const path = `${visit.path}.${key}`;
+            if (seen.has(path))
+                continue;
+            seen.add(path);
+            findings.push({
+                rule: "variables/unescaped-placeholder",
+                severity: "warning",
+                path,
+                message: `this looks like a placeholder (${matches.slice(0, 3).join(" ")})`,
+                hint: "A substituted value containing a newline or a quote breaks the JSON. When"
+                    + " substituting into JSON, insert JSON.stringify of the value with the"
+                    + " surrounding quotes taken off. Insert it raw and it fails for one recipient.",
+            });
+        }
+    }
+    return findings;
+}
+
+// ---- index.js ----
+// The public entry points.
+//
+//   validate(message)      check a Flex message
+//   looksLikeFlex(text)    check whether what is about to go out as text is Flex
+
+/** The rules that run by default, paired with the identifier that disables one. */
+const RULES = {
+    "schema/unknown-type": unknownType,
+    "schema/unknown-property": unknownProperty,
+    "schema/missing-required": missingRequired,
+    "schema/invalid-enum": invalidEnum,
+    "size/container-too-large": containerTooLarge,
+    "size/property-too-long": propertyTooLong,
+    "render/dark-mode-invisible": darkModeInvisible,
+    "render/empty-container": emptyContainer,
+    "render/mixed-bubble-size": mixedBubbleSize,
+    "render/insecure-url": insecureUrl,
+    "variables/unescaped-placeholder": unescapedPlaceholder,
+};
+const applies = (rule, disabled) => !disabled.some((prefix) => rule === prefix || rule.startsWith(`${prefix}/`));
+/**
+ * Check a Flex message.
+ *
+ * Takes `{type:"flex", altText, contents}`, and also a bare bubble or
+ * carousel from inside one. With the former, a missing altText is visible too.
+ */
+function validate(message, options = {}) {
+    const disabled = options.disable ?? [];
+    const allowed = new Set(options.allowProperties ?? []);
+    if (rootKind(message) === undefined) {
+        return finish([
+            {
+                rule: "schema/unknown-type",
+                severity: "error",
+                path: "$",
+                message: 'this is not a Flex message (type is none of "flex", "bubble" or "carousel")',
+                hint: "Did you pass text? If so, looksLikeFlex() is the one you want.",
+            },
+        ]);
+    }
+    const serialized = serialize(message);
+    if (serialized === undefined) {
+        // A cycle, usually. LINE could not be sent this either, so it comes back
+        // as an error. Throwing here would take down whatever called the check,
+        // and **a checker that falls over on its input is worse than a miss.**
+        return finish([
+            {
+                rule: "schema/not-serializable",
+                severity: "error",
+                path: "$",
+                message: "this cannot be turned into JSON (it may contain a cycle)",
+                hint: "Did you put the same object in two places while building it?",
+            },
+        ]);
+    }
+    const context = { message, serialized };
+    const findings = [];
+    for (const [name, rule] of Object.entries(RULES)) {
+        if (!applies(name, disabled))
+            continue;
+        for (const finding of rule(context)) {
+            if (finding.rule === "schema/unknown-property") {
+                const key = finding.path.slice(finding.path.lastIndexOf(".") + 1);
+                if (allowed.has(key))
+                    continue;
+            }
+            findings.push(finding);
+        }
+    }
+    return finish(findings);
+}
+function serialize(value) {
+    try {
+        return JSON.stringify(value) ?? "";
+    }
+    catch {
+        return undefined;
+    }
+}
+function finish(findings) {
+    const errors = findings.filter((f) => f.severity === "error");
+    const warnings = findings.filter((f) => f.severity === "warning");
+    // ok answers one question: will LINE accept it. Warnings are judgement
+    // calls and stay out of it — fold them in and you create a reason to turn
+    // the check off to make them go away.
+    return { ok: errors.length === 0, findings, errors, warnings };
+}
+/** One line for a person to read. Goes straight into a CI log or a console.log. */
+function format(finding) {
+    const head = `[${finding.severity}] ${finding.path}  ${finding.message}`;
+    return finding.hint === undefined ? head : `${head}\n          ${finding.hint}`;
+}
+
+return { validate, format, looksLikeFlex };
+})();
+</script>
+
+<script>
+  (() => {
+    const bubble = (extra = {}, bodyExtra = []) => ({
+      type: "flex",
+      altText: "Today's notice",
+      contents: {
+        type: "bubble",
+        size: "mega",
+        body: {
+          type: "box",
+          layout: "vertical",
+          spacing: "md",
+          contents: [
+            { type: "text", text: "Today's notice", weight: "bold", size: "lg" },
+            { type: "text", text: "Going out at 17:00", wrap: true },
+            ...bodyExtra,
+          ],
+        },
+        footer: {
+          type: "box",
+          layout: "vertical",
+          contents: [{
+            type: "button",
+            style: "primary",
+            action: { type: "postback", label: "Read more", data: "detail" },
+          }],
+        },
+      },
+      ...extra,
+    });
+
+    const withAction = (data) => {
+      const message = bubble();
+      message.contents.footer.contents[0].action.data = data;
+      return message;
+    };
+
+    const PRESETS = [
+      { name: "Nothing wrong", build: () => bubble() },
+      {
+        name: "Metadata left in",
+        build: () => bubble({ appMeta: { tapLimit: 1, group: "a3f" } }),
+      },
+      {
+        name: "Video with no thumbnail",
+        build: () => bubble({}, [{ type: "video", url: "https://cdn.example.com/spot.mp4" }]),
+      },
+      {
+        name: "data too long",
+        build: () => withAction(JSON.stringify({ action: "open", label: "Read more", target: "x".repeat(320) })),
+      },
+      {
+        name: "Disappears in dark mode",
+        build: () => {
+          const message = bubble();
+          message.contents.body.contents[0].color = "#FFFFFF";
+          message.contents.body.contents[1].color = "#F8F8F8";
+          return message;
+        },
+      },
+      {
+        name: "A placeholder that can break it",
+        build: () => {
+          const message = bubble();
+          message.contents.body.contents[0].text = "{name}, hello";
+          return message;
+        },
+      },
+      {
+        name: "Being sent as text",
+        raw: () => JSON.stringify(bubble().contents, null, 2),
+      },
+    ];
+
+    const input = document.getElementById("input");
+    const findingsEl = document.getElementById("findings");
+    const verdict = document.getElementById("verdict");
+    const verdictText = document.getElementById("verdict-text");
+    const verdictNote = document.getElementById("verdict-note");
+    const counts = document.getElementById("counts");
+    const sizeReadout = document.getElementById("size-readout");
+    const detect = document.getElementById("detect");
+    const detectValue = document.getElementById("detect-value");
+    const detectReason = document.getElementById("detect-reason");
+    const presetsEl = document.getElementById("presets");
+
+    const encoder = new TextEncoder();
+
+    PRESETS.forEach((preset, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "preset";
+      button.textContent = preset.name;
+      button.setAttribute("aria-pressed", "false");
+      button.addEventListener("click", () => load(index));
+      presetsEl.append(button);
+    });
+
+    function load(index) {
+      const preset = PRESETS[index];
+      input.value = preset.raw ? preset.raw() : JSON.stringify(preset.build(), null, 2);
+      [...presetsEl.children].forEach((button, i) => {
+        button.setAttribute("aria-pressed", String(i === index));
+      });
+      run();
+    }
+
+    function clearActivePreset() {
+      [...presetsEl.children].forEach((button) => button.setAttribute("aria-pressed", "false"));
+    }
+
+    function element(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+
+    function renderGroup(kind, label, note, items) {
+      const group = element("section", "group");
+      group.dataset.kind = kind;
+      const head = element("div", "group-head");
+      head.append(element("span", "group-label", `${label} — ${items.length}`));
+      head.append(element("span", "group-note", note));
+      group.append(head);
+
+      for (const finding of items) {
+        const row = element("article", "finding");
+        row.dataset.kind = kind;
+        const top = element("div", "finding-top");
+        top.append(element("span", "path", finding.path));
+        top.append(element("span", "rule-id", finding.rule));
+        row.append(top);
+        row.append(element("p", "finding-message", finding.message));
+        if (finding.hint) row.append(element("p", "finding-hint", finding.hint));
+        group.append(row);
+      }
+      return group;
+    }
+
+    function setVerdict(state, text, note) {
+      verdict.dataset.state = state;
+      verdictText.textContent = text;
+      verdictNote.textContent = note;
+    }
+
+    function run() {
+      const raw = input.value;
+      sizeReadout.textContent = raw.trim() === ""
+        ? "—"
+        : `${encoder.encode(raw).length.toLocaleString()} bytes`;
+
+      const detected = FlexGuard.looksLikeFlex(raw);
+      detect.dataset.flex = String(detected.looksLikeFlex);
+      detectValue.textContent = detected.looksLikeFlex
+        ? "sent as text, the JSON arrives as JSON"
+        : "nothing wrong with sending this as text";
+      detectReason.textContent = detected.reason;
+
+      findingsEl.replaceChildren();
+
+      if (raw.trim() === "") {
+        setVerdict("idle", "—", "");
+        counts.textContent = "—";
+        findingsEl.append(element("p", "empty", "Paste some JSON, or pick an example above"));
+        return;
+      }
+
+      let parsed;
+      try {
+        parsed = JSON.parse(raw);
+      } catch (error) {
+        setVerdict("fail", "This does not parse as JSON", "");
+        counts.textContent = "—";
+        findingsEl.append(element("p", "empty", String(error.message)));
+        return;
+      }
+
+      const result = FlexGuard.validate(parsed);
+      counts.textContent = `error ${result.errors.length} / warning ${result.warnings.length}`;
+
+      if (result.ok) {
+        setVerdict(
+          "pass",
+          "LINE will accept it",
+          result.warnings.length > 0 ? "and from here on, nobody will tell you" : "",
+        );
+      } else {
+        setVerdict("fail", "LINE will not accept it", "it fails at the point of sending");
+      }
+
+      if (result.errors.length > 0) {
+        findingsEl.append(renderGroup(
+          "error",
+          "error",
+          "The send itself fails. You find out straight away.",
+          result.errors,
+        ));
+      }
+      if (result.warnings.length > 0) {
+        findingsEl.append(renderGroup(
+          "warning",
+          "warning",
+          "It sends. Only their screen is different, and nothing comes back to you.",
+          result.warnings,
+        ));
+      }
+      if (result.findings.length === 0) {
+        findingsEl.append(element("p", "empty", "No findings"));
+      }
+    }
+
+    let timer;
+    input.addEventListener("input", () => {
+      clearActivePreset();
+      clearTimeout(timer);
+      timer = setTimeout(run, 180);
+    });
+
+    load(1);
+  })();
+</script>

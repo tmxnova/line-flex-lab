@@ -1,0 +1,4 @@
+# Line endings are pinned to LF, because a generated file is compared by
+# diff. Working on Windows converts them to CRLF, and then regenerating the
+# file on its own produces a difference.
+* text=auto eol=lf

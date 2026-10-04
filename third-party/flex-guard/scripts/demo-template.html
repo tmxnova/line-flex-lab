@@ -1,0 +1,671 @@
+<title>flex-guard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* Built on a marked-up proof: a cool paper ground, proof-pencil blue, and
+     findings in madder and ochre. The grey leans green so that it reads as a
+     colour somebody chose. */
+  :root {
+    --ground: #EDEFEA;
+    --surface: #FCFCFA;
+    --surface-sunk: #E4E7DF;
+    --ink: #191D18;
+    --ink-soft: #5C645B;
+    --ink-faint: #8B928A;
+    --rule: #D3D8CD;
+    --accent: #1C4E93;
+    --accent-soft: #E3EAF5;
+    --error: #A32A1C;
+    --error-soft: #F7E7E4;
+    --warn: #8A6510;
+    --warn-soft: #F6EEDC;
+    --pass: #2C6B4A;
+    --pass-soft: #E2EFE7;
+
+    --step--1: 0.8125rem;
+    --step-0: 0.9375rem;
+    --step-1: 1.125rem;
+    --step-2: 1.5rem;
+    --step-3: 2.25rem;
+
+    --sans: "Public Sans", ui-sans-serif, system-ui, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    --display: "Familjen Grotesk", "Public Sans", ui-sans-serif, system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #151813;
+      --surface: #1D211B;
+      --surface-sunk: #12150F;
+      --ink: #E4E7DF;
+      --ink-soft: #9AA196;
+      --ink-faint: #6E756B;
+      --rule: #2F342C;
+      --accent: #8DB1E9;
+      --accent-soft: #1C2635;
+      --error: #E88F80;
+      --error-soft: #33201C;
+      --warn: #D8B460;
+      --warn-soft: #2E2716;
+      --pass: #7FC79E;
+      --pass-soft: #17271E;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #151813;
+    --surface: #1D211B;
+    --surface-sunk: #12150F;
+    --ink: #E4E7DF;
+    --ink-soft: #9AA196;
+    --ink-faint: #6E756B;
+    --rule: #2F342C;
+    --accent: #8DB1E9;
+    --accent-soft: #1C2635;
+    --error: #E88F80;
+    --error-soft: #33201C;
+    --warn: #D8B460;
+    --warn-soft: #2E2716;
+    --pass: #7FC79E;
+    --pass-soft: #17271E;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 4vw, 2rem) 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  /* --- masthead --- */
+
+  .masthead { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, var(--step-3));
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .mark { color: var(--accent); font-weight: 600; }
+
+  .thesis {
+    max-width: 62ch;
+    color: var(--ink-soft);
+    margin: 0;
+    font-size: var(--step-1);
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+  .thesis strong { color: var(--ink); font-weight: 600; }
+
+  /* --- the bench --- */
+
+  .bench {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 1.25rem;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .bench { grid-template-columns: minmax(0, 1fr); } }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .panel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .panel-title {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .counter {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-faint);
+  }
+
+  /* --- input --- */
+
+  .presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.75rem 0.9rem;
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface-sunk);
+  }
+
+  .preset {
+    font: inherit;
+    font-size: var(--step--1);
+    font-family: var(--sans);
+    padding: 0.28rem 0.62rem;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    background: var(--surface);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: color 120ms, border-color 120ms, background 120ms;
+  }
+  .preset:hover { color: var(--accent); border-color: var(--accent); }
+  .preset[aria-pressed="true"] {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    font-weight: 600;
+  }
+  .preset:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  textarea {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    line-height: 1.6;
+    tab-size: 2;
+    border: 0;
+    resize: vertical;
+    min-height: 22rem;
+    padding: 0.9rem;
+    background: transparent;
+    color: var(--ink);
+    width: 100%;
+  }
+  textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  /* --- verdict --- */
+
+  .verdict {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.85rem 0.9rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .verdict-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .verdict-text { font-weight: 600; font-size: var(--step-1); font-family: var(--display); letter-spacing: -0.01em; }
+  .verdict-note { color: var(--ink-soft); font-size: var(--step--1); margin-left: auto; text-align: right; }
+
+  .verdict[data-state="pass"] { background: var(--pass-soft); }
+  .verdict[data-state="pass"] .verdict-dot { background: var(--pass); }
+  .verdict[data-state="pass"] .verdict-text { color: var(--pass); }
+  .verdict[data-state="fail"] { background: var(--error-soft); }
+  .verdict[data-state="fail"] .verdict-dot { background: var(--error); }
+  .verdict[data-state="fail"] .verdict-text { color: var(--error); }
+  .verdict[data-state="idle"] { background: var(--surface-sunk); }
+  .verdict[data-state="idle"] .verdict-dot { background: var(--ink-faint); }
+  .verdict[data-state="idle"] .verdict-text { color: var(--ink-soft); }
+
+  /* --- findings --- */
+
+  .findings { padding: 0.9rem; display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .group { display: flex; flex-direction: column; gap: 0.55rem; }
+
+  .group-head { display: flex; flex-direction: column; gap: 0.1rem; }
+  .group-label {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .group-note { font-size: var(--step--1); color: var(--ink-soft); }
+  .group[data-kind="error"] .group-label { color: var(--error); }
+  .group[data-kind="warning"] .group-label { color: var(--warn); }
+
+  /* A solid rule for error, a dashed one for warning. "It sends, so you never
+     find out" is marked by shape rather than colour, because colour alone
+     makes the two read as equally heavy. */
+  .finding {
+    padding: 0.55rem 0 0.55rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .finding[data-kind="error"] { border-left: 3px solid var(--error); background: var(--error-soft); }
+  .finding[data-kind="warning"] { border-left: 3px dashed var(--warn); background: var(--warn-soft); }
+
+  .finding-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; }
+
+  .path {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--ink);
+    word-break: break-all;
+  }
+
+  .rule-id {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.03em;
+    color: var(--ink-faint);
+  }
+
+  .finding-message { font-size: var(--step--1); }
+  .finding-hint {
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    padding-left: 0.85rem;
+    border-left: 1px solid var(--rule);
+    text-wrap: pretty;
+  }
+
+  .empty { color: var(--ink-faint); font-size: var(--step--1); padding: 1.5rem 0; text-align: center; }
+
+  /* --- the message-type check --- */
+
+  .detect {
+    margin-top: auto;
+    border-top: 1px solid var(--rule);
+    padding: 0.75rem 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: var(--step--1);
+    background: var(--surface-sunk);
+  }
+  .detect-label {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .detect-value { font-weight: 600; }
+  .detect[data-flex="true"] .detect-value { color: var(--error); }
+  .detect[data-flex="false"] .detect-value { color: var(--ink-soft); }
+  .detect-reason { color: var(--ink-soft); font-family: var(--mono); font-size: 0.6875rem; }
+
+  /* --- how to read it --- */
+
+  .reading {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .card[data-kind="error"] { border-top: 3px solid var(--error); }
+  .card[data-kind="warning"] { border-top: 3px dashed var(--warn); }
+
+  .card h2 {
+    font-family: var(--display);
+    font-size: var(--step-1);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .card[data-kind="error"] h2 { color: var(--error); }
+  .card[data-kind="warning"] h2 { color: var(--warn); }
+  .card p { margin: 0; color: var(--ink-soft); font-size: var(--step--1); text-wrap: pretty; }
+  .card p strong { color: var(--ink); font-weight: 600; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+    color: var(--ink-faint);
+    font-size: var(--step--1);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+  }
+  footer a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  footer code { font-family: var(--mono); font-size: 0.6875rem; color: var(--ink-soft); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">LINE Messaging API / Flex Message</div>
+    <h1>The Flex failures<br>types cannot catch</h1>
+    <p class="thesis">
+      Your types compile and LINE still returns <span class="mark">400</span>. And there
+      are two kinds of failure: <strong>one you notice immediately, and one you never
+      notice at all.</strong> Paste your own JSON, or pick an example below.
+    </p>
+  </header>
+
+  <div class="bench">
+    <section class="panel" aria-label="The JSON being checked">
+      <div class="panel-head">
+        <span class="panel-title">What you are about to send</span>
+        <span class="counter" id="size-readout">—</span>
+      </div>
+      <div class="presets" id="presets" role="group" aria-label="Pick an example"></div>
+      <textarea id="input" spellcheck="false" aria-label="A Flex message, as JSON"></textarea>
+    </section>
+
+    <section class="panel" aria-label="The result">
+      <div class="panel-head">
+        <span class="panel-title">Result</span>
+        <span class="counter" id="counts">—</span>
+      </div>
+      <div class="verdict" id="verdict" data-state="idle" role="status">
+        <span class="verdict-dot" aria-hidden="true"></span>
+        <span class="verdict-text" id="verdict-text">—</span>
+        <span class="verdict-note" id="verdict-note"></span>
+      </div>
+      <div class="findings" id="findings"></div>
+      <div class="detect" id="detect" data-flex="false">
+        <span class="detect-label">looksLikeFlex</span>
+        <span class="detect-value" id="detect-value">—</span>
+        <span class="detect-reason" id="detect-reason"></span>
+      </div>
+    </section>
+  </div>
+
+  <div class="reading">
+    <article class="card" data-kind="error">
+      <h2>error — LINE will not accept it</h2>
+      <p>
+        The send itself fails and <code>400</code> comes back. <strong>There is no option
+        of leaving it alone.</strong> A property not in the specification, a missing
+        required one, over 10KB or 50KB, or an action's <code>data</code> past 300
+        characters.
+      </p>
+    </article>
+    <article class="card" data-kind="warning">
+      <h2>warning — it sends</h2>
+      <p>
+        LINE accepts it and the delivery count goes up. It is just that on the
+        recipient's screen the text has dissolved into the background, or the image
+        slot is blank. <strong>No error comes back, and nothing reaches a log.</strong>
+        The only sign of it is the absence of a reply, so running it in production will
+        not tell you either.
+      </p>
+    </article>
+  </div>
+
+  <footer>
+    <span>What runs here is <code>flex-guard</code>'s own build output, not a rewrite for the demo.</span>
+    <span>The table of permitted properties is generated from LINE's published OpenAPI definition.</span>
+    <span>MIT</span>
+  </footer>
+</div>
+
+<script>
+/* __FLEX_GUARD_BUNDLE__ */
+</script>
+
+<script>
+  (() => {
+    const bubble = (extra = {}, bodyExtra = []) => ({
+      type: "flex",
+      altText: "Today's notice",
+      contents: {
+        type: "bubble",
+        size: "mega",
+        body: {
+          type: "box",
+          layout: "vertical",
+          spacing: "md",
+          contents: [
+            { type: "text", text: "Today's notice", weight: "bold", size: "lg" },
+            { type: "text", text: "Going out at 17:00", wrap: true },
+            ...bodyExtra,
+          ],
+        },
+        footer: {
+          type: "box",
+          layout: "vertical",
+          contents: [{
+            type: "button",
+            style: "primary",
+            action: { type: "postback", label: "Read more", data: "detail" },
+          }],
+        },
+      },
+      ...extra,
+    });
+
+    const withAction = (data) => {
+      const message = bubble();
+      message.contents.footer.contents[0].action.data = data;
+      return message;
+    };
+
+    const PRESETS = [
+      { name: "Nothing wrong", build: () => bubble() },
+      {
+        name: "Metadata left in",
+        build: () => bubble({ appMeta: { tapLimit: 1, group: "a3f" } }),
+      },
+      {
+        name: "Video with no thumbnail",
+        build: () => bubble({}, [{ type: "video", url: "https://cdn.example.com/spot.mp4" }]),
+      },
+      {
+        name: "data too long",
+        build: () => withAction(JSON.stringify({ action: "open", label: "Read more", target: "x".repeat(320) })),
+      },
+      {
+        name: "Disappears in dark mode",
+        build: () => {
+          const message = bubble();
+          message.contents.body.contents[0].color = "#FFFFFF";
+          message.contents.body.contents[1].color = "#F8F8F8";
+          return message;
+        },
+      },
+      {
+        name: "A placeholder that can break it",
+        build: () => {
+          const message = bubble();
+          message.contents.body.contents[0].text = "{name}, hello";
+          return message;
+        },
+      },
+      {
+        name: "Being sent as text",
+        raw: () => JSON.stringify(bubble().contents, null, 2),
+      },
+    ];
+
+    const input = document.getElementById("input");
+    const findingsEl = document.getElementById("findings");
+    const verdict = document.getElementById("verdict");
+    const verdictText = document.getElementById("verdict-text");
+    const verdictNote = document.getElementById("verdict-note");
+    const counts = document.getElementById("counts");
+    const sizeReadout = document.getElementById("size-readout");
+    const detect = document.getElementById("detect");
+    const detectValue = document.getElementById("detect-value");
+    const detectReason = document.getElementById("detect-reason");
+    const presetsEl = document.getElementById("presets");
+
+    const encoder = new TextEncoder();
+
+    PRESETS.forEach((preset, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "preset";
+      button.textContent = preset.name;
+      button.setAttribute("aria-pressed", "false");
+      button.addEventListener("click", () => load(index));
+      presetsEl.append(button);
+    });
+
+    function load(index) {
+      const preset = PRESETS[index];
+      input.value = preset.raw ? preset.raw() : JSON.stringify(preset.build(), null, 2);
+      [...presetsEl.children].forEach((button, i) => {
+        button.setAttribute("aria-pressed", String(i === index));
+      });
+      run();
+    }
+
+    function clearActivePreset() {
+      [...presetsEl.children].forEach((button) => button.setAttribute("aria-pressed", "false"));
+    }
+
+    function element(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+
+    function renderGroup(kind, label, note, items) {
+      const group = element("section", "group");
+      group.dataset.kind = kind;
+      const head = element("div", "group-head");
+      head.append(element("span", "group-label", `${label} — ${items.length}`));
+      head.append(element("span", "group-note", note));
+      group.append(head);
+
+      for (const finding of items) {
+        const row = element("article", "finding");
+        row.dataset.kind = kind;
+        const top = element("div", "finding-top");
+        top.append(element("span", "path", finding.path));
+        top.append(element("span", "rule-id", finding.rule));
+        row.append(top);
+        row.append(element("p", "finding-message", finding.message));
+        if (finding.hint) row.append(element("p", "finding-hint", finding.hint));
+        group.append(row);
+      }
+      return group;
+    }
+
+    function setVerdict(state, text, note) {
+      verdict.dataset.state = state;
+      verdictText.textContent = text;
+      verdictNote.textContent = note;
+    }
+
+    function run() {
+      const raw = input.value;
+      sizeReadout.textContent = raw.trim() === ""
+        ? "—"
+        : `${encoder.encode(raw).length.toLocaleString()} bytes`;
+
+      const detected = FlexGuard.looksLikeFlex(raw);
+      detect.dataset.flex = String(detected.looksLikeFlex);
+      detectValue.textContent = detected.looksLikeFlex
+        ? "sent as text, the JSON arrives as JSON"
+        : "nothing wrong with sending this as text";
+      detectReason.textContent = detected.reason;
+
+      findingsEl.replaceChildren();
+
+      if (raw.trim() === "") {
+        setVerdict("idle", "—", "");
+        counts.textContent = "—";
+        findingsEl.append(element("p", "empty", "Paste some JSON, or pick an example above"));
+        return;
+      }
+
+      let parsed;
+      try {
+        parsed = JSON.parse(raw);
+      } catch (error) {
+        setVerdict("fail", "This does not parse as JSON", "");
+        counts.textContent = "—";
+        findingsEl.append(element("p", "empty", String(error.message)));
+        return;
+      }
+
+      const result = FlexGuard.validate(parsed);
+      counts.textContent = `error ${result.errors.length} / warning ${result.warnings.length}`;
+
+      if (result.ok) {
+        setVerdict(
+          "pass",
+          "LINE will accept it",
+          result.warnings.length > 0 ? "and from here on, nobody will tell you" : "",
+        );
+      } else {
+        setVerdict("fail", "LINE will not accept it", "it fails at the point of sending");
+      }
+
+      if (result.errors.length > 0) {
+        findingsEl.append(renderGroup(
+          "error",
+          "error",
+          "The send itself fails. You find out straight away.",
+          result.errors,
+        ));
+      }
+      if (result.warnings.length > 0) {
+        findingsEl.append(renderGroup(
+          "warning",
+          "warning",
+          "It sends. Only their screen is different, and nothing comes back to you.",
+          result.warnings,
+        ));
+      }
+      if (result.findings.length === 0) {
+        findingsEl.append(element("p", "empty", "No findings"));
+      }
+    }
+
+    let timer;
+    input.addEventListener("input", () => {
+      clearActivePreset();
+      clearTimeout(timer);
+      timer = setTimeout(run, 180);
+    });
+
+    load(1);
+  })();
+</script>
