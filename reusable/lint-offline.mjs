@@ -1,6 +1,6 @@
-/** Community linter, NOT LINE's private validator. Requires Node >=22.18. */
+/** Community linter, NOT LINE's private validator. Uses the published flex-guard build (plain JS, no TS runtime needed). */
 import { readFileSync } from 'node:fs';
-import { validate } from '../third-party/flex-guard/src/index.ts';
+import { validate } from '../third-party/flex-guard/dist/src/index.js';
 export { validate as lintFlexOffline };
 
 if (process.argv[1] && import.meta.url === new URL(process.argv[1], 'file:').href) {
