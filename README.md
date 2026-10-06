@@ -11,7 +11,7 @@ Reverse-engineered from the official Flex Simulator. Verified 2026-10.
 | Piece | What it is |
 |---|---|
 | `samples/` | 12 official showcase templates: restaurant, hotel, shopping, ticket, todoapp, transit, realestate, menu, localsearch, receipt, social, apparel. |
-| `reusable/` | Zero-dependency ESM modules (Node >= 22.18 or browser): a port of the simulator's client Flex codec — `FlexToTree`, `TreeToFlex`, `errorPathMapper`, `createComponent` (`offline-data.mjs`), per-node component rules (`component-metadata.mjs`), an adapter to the real online server validator plus `parseJsonOffline()` (`validator-client.mjs`), and offline linting via vendored [flex-guard](https://github.com/loncoeng/flex-guard) (`lint-offline.mjs`). |
+| `reusable/` | Zero-dependency ESM modules (Node >= 18 or browser): an independent implementation of the simulator's editor tree model — `FlexToTree`, `TreeToFlex`, `errorPathMapper`, `createComponent` (`offline-data.mjs`), per-node component rules (`component-metadata.mjs`), an adapter to the real online server validator plus `parseJsonOffline()` (`validator-client.mjs`), and offline linting via vendored [flex-guard](https://github.com/loncoeng/flex-guard) (`lint-offline.mjs`). |
 | `tests/` | 18 offline tests: `node --test tests/offline-data.test.mjs` — all passing. |
 | `third-party/` | Source snapshots of [flex2html](https://github.com/PamornT/flex2html), [line-flex-renderer-npm](https://github.com/kanketsu-jp/line-flex-renderer-npm), [flex-guard](https://github.com/loncoeng/flex-guard), and LINE's own OpenAPI schema ([line/line-openapi](https://github.com/line/line-openapi)). Each keeps its original license. |
 | `research/` | Real LINE server evidence: unauthenticated API checks, render API 400 error payloads with exact property paths, and a comparison of community validators against observed server rejections. |
@@ -51,7 +51,7 @@ Worked example (from live 400s, `research/validation-observations.json`): `hero 
 ## Scope and limitations
 
 - Community validators (incl. `lint-offline.mjs`) do not replace LINE's server validator: some payloads they accept are rejected by LINE (see `research/flex-guard-comparison.json`). For final checks, POST to the real endpoint via `validator-client.mjs`.
-- `offline-data.mjs` is a port of the simulator's client algorithm; the import bubble is not a lossless codec for every optional field.
+- The tree model in `offline-data.mjs` intentionally mirrors the simulator's editor limitations: bubble round-trips preserve size/direction/blocks/styles but drop `bubble.action` and other bubble fields the editor does not model (verified in `tests/`). Keep your own copy of the input when those fields matter.
 - This repo intentionally does **not** include LINE's Flex Simulator client bundles or page assets: they are copyrighted and not licensed for redistribution. Use the official simulator for live visual preview: https://developers.line.biz/flex-simulator/
 
 ## License

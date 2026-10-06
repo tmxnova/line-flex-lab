@@ -4,7 +4,7 @@ LINE FLEX LAB — ชุดเครื่องมือศึกษาแล�
 
 - samples/ — ตัวอย่างทางการ 12 แบบ (restaurant, hotel, shopping, ticket, ...)
 - reusable/ — โมดูล ESM ไม่มี dependencies ใช้ได้ Node 22.18+ / browser
-  - offline-data.mjs — โค้ด codec Flex↔Tree, errorPathMapper, createComponent
+  - offline-data.mjs — codec Flex↔Tree, errorPathMapper, createComponent (re-implementation ใหม่ทั้งหมด ไม่ได้คัดลอกโค้ด LINE ตรวจ behavior เทียบ samples 12 แบบแล้ว)
   - component-metadata.mjs — กฎว่า node แต่ละชนิดเพิ่ม component อะไรได้
   - validator-client.mjs — เรียก server validator/render จริง (ต้องออนไลน์) + parseJsonOffline() ตรวจ syntax
   - lint-offline.mjs — ลint ออฟไลน์ผ่าน flex-guard (มี source ครบใน third-party/)

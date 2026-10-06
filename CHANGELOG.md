@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.1] - 2026-10-06
+
+- Rewrote `reusable/offline-data.mjs` and `reusable/component-metadata.mjs` as independent implementations (no LINE client expression in the repo); same public API and behavior, all 18 tests including the 12 sample round-trips unchanged
+
 ## [1.1.0] - 2026-10-06
 
 - Compliance: removed LINE's Flex Simulator client bundles and page assets (copyrighted, not licensed for redistribution); repo now contains only MIT-licensed code and permissively licensed third-party snapshots
