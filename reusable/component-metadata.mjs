@@ -3,8 +3,8 @@
  * added under each node, which nodes can be copied/moved/removed, and the
  * outline label for display.
  *
- * Independent implementation written from the public Flex Message spec and
- * the simulator's observed editor rules. This is NOT the server validator —
+ * Written from the public Flex Message spec and the editor rules observed in
+ * LINE's official Flex tooling. This is NOT the server validator —
  * a node being "addable" here only reflects editor UX, not what LINE accepts.
  */
 

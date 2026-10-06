@@ -1,0 +1,49 @@
+{
+  "name": "line-flex-lab",
+  "version": "1.2.0",
+  "description": "Open-source toolkit for building and validating LINE Flex messages: offline parse/validate/lint, tree-based authoring, component rules, and an adapter for LINE's official validator.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmxnova/line-flex-lab.git"
+  },
+  "keywords": [
+    "line",
+    "line-messaging-api",
+    "flex",
+    "flex-message",
+    "flex-card",
+    "chatbot",
+    "validator",
+    "linter",
+    "card-builder",
+    "offline"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "main": "./reusable/offline-data.mjs",
+  "exports": {
+    ".": "./reusable/offline-data.mjs",
+    "./offline-data": "./reusable/offline-data.mjs",
+    "./component-metadata": "./reusable/component-metadata.mjs",
+    "./validator": "./reusable/validator-client.mjs",
+    "./lint": "./reusable/lint-offline.mjs"
+  },
+  "files": [
+    "reusable/",
+    "samples/",
+    "tests/",
+    "research/",
+    "third-party/",
+    "LICENSE",
+    "README.md",
+    "README-TH.txt"
+  ],
+  "scripts": {
+    "test": "node --test tests/offline-data.test.mjs",
+    "example": "node reusable/example.mjs",
+    "lint:sample": "node reusable/lint-offline.mjs samples/restaurant.json"
+  }
+}

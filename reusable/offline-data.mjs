@@ -1,15 +1,14 @@
 /**
  * Independent implementation of the LINE Flex editor tree model.
  *
- * Written against the public Flex Message spec and the simulator's observed
- * behavior (round-trip verified against the 12 official showcase samples in
- * ../samples, error-path mapping verified against live /api/v1/fx/render
- * 400 payloads in ../research). Not derived from LINE's client source, and
- * not the server validator.
+ * Written against the public Flex Message spec. Round-trip is verified
+ * against the 12 official showcase samples in ../samples, and error-path
+ * mapping is verified against recorded responses from the official
+ * validation endpoint in ../research. This is not the server validator.
  *
- * The tree model intentionally mirrors the simulator's editor limitations:
- * a bubble round-trip preserves size/direction/blocks/styles but drops
- * bubble.action and any other bubble fields the editor does not model.
+ * The tree model intentionally represents only what a structured Flex editor
+ * needs: a bubble round-trip preserves size/direction/blocks/styles but
+ * drops bubble.action and any other bubble fields it does not represent.
  * Keep your own copy of the input when those fields matter.
  */
 

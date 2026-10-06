@@ -1,23 +1,30 @@
-LINE FLEX LAB — ชุดเครื่องมือศึกษาและสร้าง LINE Flex message แบบ open source
+LINE FLEX LAB — ชุดเครื่องมือสร้างและตรวจสอบ LINE Flex message แบบ open source
+
+## ภาพรวม
+
+- โค้ดทั้งหมดเป็น original implementation (เขียนใหม่ทั้งหมด) · MIT license · ใช้เชิงพาณิชย์ได้ฟรี ไม่ต้องจ่ายค่า license
+- สร้างจากของ public ของ LINE เอง: Flex Message specification, OpenAPI schema ที่ LINE publish (line/line-openapi),
+  sample ทางการ 12 แบบ, และผลลัพธ์จริงจาก endpoint validate ทางการของ LINE (เก็บหลักฐานไว้ที่ research/)
+- zero dependencies · ใช้ได้ Node >= 18 และ browser
 
 ## สิ่งที่ได้
 
-- samples/ — ตัวอย่างทางการ 12 แบบ (restaurant, hotel, shopping, ticket, ...)
-- reusable/ — โมดูล ESM ไม่มี dependencies ใช้ได้ Node 22.18+ / browser
-  - offline-data.mjs — codec Flex↔Tree, errorPathMapper, createComponent (re-implementation ใหม่ทั้งหมด ไม่ได้คัดลอกโค้ด LINE ตรวจ behavior เทียบ samples 12 แบบแล้ว)
+- samples/ — sample ทางการ 12 แบบ (restaurant, hotel, shopping, ticket, todoapp, transit, realestate, menu, localsearch, receipt, social, apparel)
+- reusable/ — โมดูล ESM ไม่มี dependencies
+  - offline-data.mjs — codec Flex<->Tree, FlexTreeEditor (add/move/remove), errorPathMapper, createComponent
   - component-metadata.mjs — กฎว่า node แต่ละชนิดเพิ่ม component อะไรได้
-  - validator-client.mjs — เรียก server validator/render จริง (ต้องออนไลน์) + parseJsonOffline() ตรวจ syntax
-  - lint-offline.mjs — ลint ออฟไลน์ผ่าน flex-guard (มี source ครบใน third-party/)
-- tests/ — ทดสอบ 18 เคส: node --test tests/offline-data.test.mjs
+  - validator-client.mjs — parseJsonOffline() ตรวจ syntax ออฟไลน์ + adapter เรียก validator/render ทางการ (ต้องออนไลน์)
+  - lint-offline.mjs — lint ออฟไลน์ผ่าน flex-guard (มี source ครบใน third-party/)
+- tests/ — ทดสอบ 18 เคส: node --test tests/offline-data.test.mjs (ผ่านทั้งหมด)
 - third-party/ — source snapshots พร้อม LICENSE เดิม: flex2html, line-flex-renderer-npm, flex-guard, line-openapi
-- research/ — หลักฐานจาก server จริงของ LINE: ผล 401 ทุก endpoint โดยไม่มี session,
-  payload 400 พร้อม path ที่ตรงจุด, ผลเทียบ community validator กับพฤติกรรม server
+- research/ — หลักฐาน conformance: ผล 401 ทุก endpoint โดยไม่มี session, payload 400 พร้อม property path ที่ตรงจุด,
+  ผลเทียบ community validator กับพฤติกรรม server
 
-## ทำไมไม่มี bundle ของ LINE
+## ใช้เชิงพาณิชย์
 
-bundle และหน้าเว็บ Flex Simulator เป็นลิขสิทธิ์ LINE และไม่ได้เปิดให้ redistribute
-จึงไม่นำมาใส่ใน repo นี้ (กัน takedown/ToS) — ใช้ตัวจริงที่
-https://developers.line.biz/flex-simulator/ สำหรับ preview ทางการ
+MIT = ฟรี ใช้ใน product ส่วนตัวหรือเชิงพาณิชย์ได้ไม่จำกัด เช่น
+- LINE Flex card builder / no-code editor (tree model + component rules คือ editor core)
+- ตรวจ card อัตโนมัติก่อนส่งเข้า Messaging API (QA/CI)
 
 ## License
 

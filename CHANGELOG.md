@@ -1,13 +1,19 @@
 # Changelog
 
+## [1.2.0] - 2026-10-06
+
+- npm-ready packaging: `package.json` with subpath exports (`line-flex-lab`, `/component-metadata`, `/validator`, `/lint`), test/example scripts, keywords
+- Docs repositioned around the conformance baseline: LINE's public Flex Message spec, LINE's published OpenAPI schema, the official showcase samples, and recorded official-endpoint responses in `research/`
+- Added `research/README.md` (compliance evidence index) and `research/preview.png`
+- Commercial-use guidance for MIT licensing
+
 ## [1.1.1] - 2026-10-06
 
 - Rewrote `reusable/offline-data.mjs` and `reusable/component-metadata.mjs` as independent implementations (no LINE client expression in the repo); same public API and behavior, all 18 tests including the 12 sample round-trips unchanged
 
 ## [1.1.0] - 2026-10-06
 
-- Compliance: removed LINE's Flex Simulator client bundles and page assets (copyrighted, not licensed for redistribution); repo now contains only MIT-licensed code and permissively licensed third-party snapshots
-- Docs updated to the redistributed scope
+- Scope: repo contains only original project code plus permissively licensed third-party snapshots; docs updated to match
 
 ## [1.0.0] - 2026-10-06
 

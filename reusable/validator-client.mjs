@@ -1,6 +1,6 @@
 /**
- * New, small adapter for the authenticated API used by the original simulator.
- * This calls LINE's actual renderer/validator. It is NOT an offline validator,
+ * Small adapter for LINE's official authenticated Flex validation/render
+ * API. It calls LINE's actual renderer/validator. It is NOT an offline validator,
  * and does not contain or reproduce LINE's private server implementation.
  * Use from an authorized, same-origin browser integration; localhost cannot
  * borrow a session from developers.line.biz. No cookies/tokens are included.
